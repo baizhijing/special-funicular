@@ -7,14 +7,15 @@ import java.math.BigDecimal;
 
 /**
  * @Author:bai
- * @data:2019/3/13
+ * @data:2019/3/14
  **/
-@Component
 @Data
-public class HardDisk {
+@Component
+public class Display {
     private Integer id;
     private String name;
     private String src;
     private BigDecimal price;
-    private String interf;
+    private Integer power;
+    private Double length;
 }
