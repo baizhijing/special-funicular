@@ -1,6 +1,7 @@
 package com.bzj.graduation.service;
 
 import com.bzj.graduation.bean.*;
+import com.bzj.graduation.dao.CoreDao;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ import java.util.Map;
 public class CoreService {
     @Autowired
     private ConfigList configList;
+
+    @Autowired
+    private CoreDao coreDao;
 
     //判断CPU规格，散热器可能同时支持两种
     public Boolean Core(ConfigList configList, Map<String,Object> map) {
@@ -61,7 +65,9 @@ public class CoreService {
             map.put("coremsg","主板与机箱不兼容!");
             return false;
         }
+
         map.put("coremsg","装机成功！");
+        coreDao.insertList(configList);
             return true;
     }
 }

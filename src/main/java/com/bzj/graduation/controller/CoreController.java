@@ -28,6 +28,7 @@ public class CoreController {
     public String Core(@ModelAttribute ConfigList configList,
                        Map<String,Object> map, HttpSession session){
         Boolean iftrue=coreService.Core(configList,map);
+
         return "结果";
     }
 }
