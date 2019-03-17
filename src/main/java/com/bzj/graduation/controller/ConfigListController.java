@@ -1,15 +1,13 @@
 package com.bzj.graduation.controller;
 
 import com.bzj.graduation.bean.ConfigList;
-import com.bzj.graduation.service.CoreService;
+import com.bzj.graduation.service.ConfigListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,18 +15,19 @@ import java.util.Map;
  * @data:2019/3/13
  **/
 @RestController
-public class CoreController {
+public class ConfigListController {
     @Autowired
     private ConfigList configList;
 
     @Autowired
-    CoreService coreService;
+    ConfigListService coreService;
 
     @PostMapping("/main/apis/core")
     public String Core(@ModelAttribute ConfigList configList,
                        Map<String,Object> map, HttpSession session){
+        int userId=(int)session.getAttribute("userId");
+        configList.setUserId(userId);
         Boolean iftrue=coreService.Core(configList,map);
-
         return "结果";
     }
 }

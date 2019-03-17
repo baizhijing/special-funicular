@@ -25,6 +25,8 @@ public class LoginController {
 
         if(!StringUtils.isEmpty(username) && loginService.LoginIsTrue(username,password)) {
             //登陆成功，防止表单重复提交，可以重定向到主页
+            int userId=loginService.getUserId(username);
+            session.setAttribute("userId",userId);
             session.setAttribute("loginUser", username);
             return "index";
         }

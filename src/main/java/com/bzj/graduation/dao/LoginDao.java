@@ -14,6 +14,10 @@ public class LoginDao {
     @Autowired
     private UserMapper userMapper;
 
+    public int getUserId(String username){
+        return userMapper.getUserId(username);
+    }
+
     public String getPassword(String username){
         return userMapper.getPassword(username);
     }

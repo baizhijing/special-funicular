@@ -10,12 +10,11 @@ import org.springframework.stereotype.Repository;
  * @data:2019/3/15
  **/
 @Repository
-public class CoreDao {
+public class ConfigListDao {
     @Autowired
     private UserMapper userMapper;
 
     public boolean insertList(ConfigList configList){
-
         return true;
     }
 }

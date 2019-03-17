@@ -20,5 +20,5 @@ public interface UserMapper {
     String getPassword(@PathVariable String username);
 
     @Select("select id from user where username=#{username}")
-    Integer getId(@PathVariable String username);
+    Integer getUserId(@PathVariable String username);
 }

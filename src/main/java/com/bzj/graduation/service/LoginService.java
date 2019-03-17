@@ -21,4 +21,8 @@ public class LoginService {
         else
             return false;
     }
+    public int getUserId(String username){
+        int userid=loginDao.getUserId(username);
+        return userid;
+    }
 }
