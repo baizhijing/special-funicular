@@ -1,13 +1,27 @@
 package com.bzj.graduation.dao;
 
+import com.bzj.graduation.bean.Box;
+import com.bzj.graduation.bean.PageBean;
 import com.bzj.graduation.mapper.BoxMapper;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class BoxDao {
     @Autowired
     private BoxMapper boxMapper;
+
+    public List<Box> selectCpuByPage(int currentPage, int pageSize){
+        PageHelper.startPage(currentPage, pageSize);
+        List<Box> allBoxs = boxMapper.selectAll();        //全部商品
+        int countNums = boxMapper.countBoxs();            //总记录数
+        PageBean<Box> pageData = new PageBean<>(currentPage, pageSize, countNums);
+        pageData.setItems(allBoxs);
+        return pageData.getItems();
+    }
 
     public Integer getDisplayCardById(int id){
         return boxMapper.selectDisplayCardById(id);

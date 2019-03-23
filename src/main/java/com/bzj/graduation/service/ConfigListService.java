@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -94,5 +95,9 @@ public class ConfigListService {
         map.put("coremsg","装机成功！");
         configListDao.insertList(configList);
             return true;
+    }
+
+    public List getCPU(){
+        return cpuList;
     }
 }

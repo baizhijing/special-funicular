@@ -1,14 +1,28 @@
 package com.bzj.graduation.dao;
 
 
+import com.bzj.graduation.bean.Cpu;
+import com.bzj.graduation.bean.PageBean;
 import com.bzj.graduation.mapper.CpuMapper;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class CpuDao {
     @Autowired
     private CpuMapper cpuMapper;
+
+    public List<Cpu> selectCpuByPage(int currentPage,int pageSize){
+        PageHelper.startPage(currentPage, pageSize);
+        List<Cpu> allCpus = cpuMapper.selectAll();        //全部商品
+        int countNums = cpuMapper.countCpus();            //总记录数
+        PageBean<Cpu> pageData = new PageBean<>(currentPage, pageSize, countNums);
+        pageData.setItems(allCpus);
+        return pageData.getItems();
+    }
 
     public String getInterfById(Integer id){
         return cpuMapper.selectInterfById(id);
@@ -22,5 +36,7 @@ public class CpuDao {
         return cpuMapper.selectGpuById(id);
     }
 
+    public List selectAllCPU(){
 
+    }
 }

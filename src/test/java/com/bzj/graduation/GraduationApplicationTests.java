@@ -13,4 +13,17 @@ public class GraduationApplicationTests {
     public void contextLoads() {
     }
 
+    @Test
+    public static double max(double... values){
+        double largest=Double.NEGATIVE_INFINITY;
+        for (double v:values)
+            if (v>largest)
+                largest=v;
+        return largest;
+    }
+
+    @Test
+    public void demo1(){
+
+    }
 }
