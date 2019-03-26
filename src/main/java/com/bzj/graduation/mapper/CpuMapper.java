@@ -25,4 +25,7 @@ public interface CpuMapper {
 
     @Select("select * from cpu")
     List<Cpu> selectAll();
+
+    @Select("select count(*) from cpu")
+    int selectCount();
 }

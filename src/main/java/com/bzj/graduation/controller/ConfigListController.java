@@ -33,10 +33,11 @@ public class ConfigListController {
         Boolean iftrue=configListService.Core(configList,map);
         return "结果";
     }
-
-    @GetMapping("...")
-    public List getCPU(){
-        List<Cpu> cpuLis=configListService
-        return
+/*
+https://www.cnblogs.com/onetwo/p/7371778.html分页查询参考博客
+ */
+    @PostMapping("/cpuPage")
+    public List<Cpu> getCPUPage(int currentPage,int pageSize){
+        return configListService.getCPUList(currentPage,pageSize);
     }
 }

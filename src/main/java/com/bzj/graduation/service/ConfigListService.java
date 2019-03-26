@@ -2,6 +2,7 @@ package com.bzj.graduation.service;
 
 import com.bzj.graduation.bean.*;
 import com.bzj.graduation.dao.*;
+import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -97,7 +98,12 @@ public class ConfigListService {
             return true;
     }
 
-    public List getCPU(){
-        return cpuList;
+    public List<Cpu> getCPUList(int currentPage,int pageSize){
+        PageHelper.startPage(currentPage,pageSize);
+        List<Cpu> allCpuList=cpuDao.selectAll();
+        int countNums= cpuDao.selectCount();
+        PageBean<Cpu> pageBean=new PageBean<>(currentPage,pageSize,countNums);
+        pageBean.setItems(allCpuList);
+        return pageBean.getItems();
     }
 }

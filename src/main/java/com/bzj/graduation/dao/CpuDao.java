@@ -36,7 +36,11 @@ public class CpuDao {
         return cpuMapper.selectGpuById(id);
     }
 
-    public List selectAllCPU(){
+    public List selectAll(){
+        return cpuMapper.selectAll();
+    }
 
+    public int selectCount(){
+        return cpuMapper.selectCount();
     }
 }
