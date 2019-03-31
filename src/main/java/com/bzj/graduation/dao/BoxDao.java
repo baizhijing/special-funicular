@@ -14,13 +14,17 @@ public class BoxDao {
     @Autowired
     private BoxMapper boxMapper;
 
-    public List<Box> selectCpuByPage(int currentPage, int pageSize){
+    public List<Box> selectBoxByPage(int currentPage, int pageSize){
         PageHelper.startPage(currentPage, pageSize);
         List<Box> allBoxs = boxMapper.selectAll();        //全部商品
         int countNums = boxMapper.countBoxs();            //总记录数
         PageBean<Box> pageData = new PageBean<>(currentPage, pageSize, countNums);
         pageData.setItems(allBoxs);
         return pageData.getItems();
+    }
+
+    public Integer getCount(){
+        return boxMapper.countBoxs();
     }
 
     public Integer getDisplayCardById(int id){

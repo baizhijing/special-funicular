@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta charset="utf-8">
+		<title>小白装机网</title>
+		<link href="css/gerenzhongxin.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<div id="main">
+			<div id="top">
+				<div id="image"></div>
+				<div id="daohang">
+					<ul>
+					  <li><a href="http://localhost:8080/index">主页</a></li>
+					  <li><a href="http://localhost:8080/luntan">论坛</a></li>
+					  <li><a href="http://localhost:8080/ziyuan">资源</a></li>
+					  <li><a class="active" href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
+					</ul>
+				</div>
+			</div>
+			<div id="body">
+				<div id="body_top">
+					<ul>
+						<li>用户名：</li>
+						<li>等级</li>
+						<button>签到</button>
+					</ul>
+				</div>
+				<div id="body_bottom_left"></div>
+				<div id="body_bottom_right"></div>
+			</div>
+			<div id="bottom"></div>
+		</div>
+	</body>
+	<script src="js/vue.min.js"></script>
+	<script src="js/axios.min.js"></script>
+</html>

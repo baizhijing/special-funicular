@@ -1,0 +1,88 @@
+#main{
+	width: 1200px;
+	height: 1200px;
+/* 	font-family:"微软雅黑"; */
+	margin: 0 auto;
+	/* 设置水平居中 */
+}
+#top{
+	margin: 0px;
+	width: 1200px;
+	height: 250px;
+	background-color: #FAEBD7;
+}
+
+#body{
+	margin: 0px;
+	width: 1200px;
+	height: 700px;
+}
+
+#body_top{
+	height: 100px;
+}
+
+#body_bottom_left{
+	width: 600px;
+	height: 600px;
+	background-color: ghostwhite;
+	float: left;
+}
+
+#body_bottom_right{
+	width: 600px;
+	height: 600px;
+	background-color:beige;
+	float: right;
+}
+
+/* 提交配置单按钮样式 */
+.button {
+    background-color: cadetblue;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+	margin-top: 20px;
+}
+
+/* 导航栏 */
+#daohang ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #e7e7e7;
+    background-color: #f3f3f3;
+}
+
+#daohang li {
+    float: left;
+}
+
+#daohang li a {
+    display: block;
+    color: #666;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+#daohang li a:hover:not(.active) {
+    background-color: #ddd;
+}
+
+#daohang li a.active {
+    color: white;
+    background-color: #4CAF50;
+}
+
+#bottom{
+	background-color:#f3f3f3;
+	height: 100px;
+}

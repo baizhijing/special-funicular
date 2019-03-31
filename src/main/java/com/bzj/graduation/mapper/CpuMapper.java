@@ -14,13 +14,13 @@ public interface CpuMapper {
     @Select("select Interf from cpu where id=#{id}")
     String selectInterfById(Integer id);
 
-    @Select("select")
+    @Select("select power from cpu where id=#{id}")
     int selectPowerById(Integer id);
 
     @Select("select count(*) from cpu")
     int countCpus();
 
-    @Select("select")
+    @Select("select GPU from cpu where id=#{id}")
     String selectGpuById(Integer id);
 
     @Select("select * from cpu")

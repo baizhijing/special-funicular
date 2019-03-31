@@ -13,4 +13,24 @@ public class MvcController {
     public String Hello(){
         return "login";
     }
+
+    @RequestMapping("/index")
+    public String index(){
+        return  "index";
+    }
+
+    @RequestMapping("/ziyuan")
+    public String ziyuan(){
+        return  "ziyuan";
+    }
+
+    @RequestMapping("/luntan")
+    public String luntan(){
+        return  "luntan";
+    }
+
+    @RequestMapping("/gerenzhongxin")
+    public String gerenzhongxin(){
+        return  "gerenzhongxin";
+    }
 }

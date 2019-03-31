@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>小白装机网</title>
-		<link href="css/login.css" th:href="@{/css/login.css}" rel="stylesheet">
+		<link href="css/luntan.css" rel="stylesheet" type="text/css" />
 	</head>
 	<body>
 		<div id="main">
@@ -11,8 +11,8 @@
 				<div id="image"></div>
 				<div id="daohang">
 					<ul>
-					  <li><a class="active" href="http://localhost:8080/index">主页</a></li>
-					  <li><a href="http://localhost:8080/luntan">论坛</a></li>
+					  <li><a href="http://localhost:8080/index">主页</a></li>
+					  <li><a class="active" href="http://localhost:8080/luntan">论坛</a></li>
 					  <li><a href="http://localhost:8080/ziyuan">资源</a></li>
 					  <li><a href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
 					</ul>
@@ -20,26 +20,9 @@
 			</div>
 			<div id="body">
 				<div id="body_left">
-					<div id="parts-head">
-						<h3>请选择配件</h3>
-						<ul class="url1">
-							<li id="topSubSel_1" ><span>cpu</span></li>
-							<li id="topSubSel_2"><span>主板</span></li>
-							<li id="topSubSel_3"><span>内存</span></li>
-							<li id="topSubSel_4"><span>硬盘</span></li>        
-							<li id="topSubSel_5"><span>显卡</span></li>
-							<li id="topSubSel_6"><span>机箱</span></li>
-							<li id="topSubSel_7"><span>电源</span></li>        
-							<li id="topSubSel_8"><span>散热器</span></li>        
-						</ul>
-						<button class="button">提交配置单</button>
-					</div>
-				</div>
-				<div id="body_right">
-					<div id="body_right_top">
-						查询出来的list
-					</div>
-					<div id="body_right_bottom">
+					<div id="body_left_top"></div>
+					<!-- 分页 -->
+					<div id="body_left_bottom">
 						<div class="page-bar">
 						    <ul>
 						        <li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
@@ -54,14 +37,27 @@
 						</div>
 					</div>
 				</div>
+				<div id="body_right">
+					<div id="body_right_top">
+						<ul>
+							<li>用户名：<br /></li>
+							<li>等级：</li>
+						</ul>
+					</div>
+					<button class="button">发表新帖</button>
+				</div>
 			</div>
 			<div id="bottom"></div>
 		</div>
 	</body>
 	<script src="js/vue.min.js"></script>
 	<script src="js/axios.min.js"></script>
-	<!--<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>-->
 	<script type="text/javascript">
+	// window.onload=function () {
+	// 	new Vue({
+	//
+	// 	})
+	// }
 	var pageBar = new Vue({
 	    el: '.page-bar',
 	    data: {

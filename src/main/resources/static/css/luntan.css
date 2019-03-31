@@ -1,0 +1,164 @@
+#main{
+	width: 1200px;
+	height: 1200px;
+/* 	font-family:"微软雅黑"; */
+	margin: 0 auto;
+	/* 设置水平居中 */
+}
+
+#top{
+	margin: 0px;
+	width: 1200px;
+	height: 250px;
+	background-color: #FAEBD7;
+}
+
+#body{
+	margin: 0px;
+	width: 1200px;
+	height: 700px;
+}
+
+#body_left{
+	width: 1000px;
+	height: 700px;
+	background-color: ghostwhite;
+	float: left;
+}
+
+#body_left_top{
+	width: 1000px;
+	height: 620px;
+	background: #000000;
+}
+
+#body_left_bottom{
+	width: 1000px;
+	height: 80px;
+}
+
+#body_right{
+	width: 200px;
+	height: 700px;
+	background-color:beige;
+	float: right;
+}
+
+/* 提交配置单按钮样式 */
+.button {
+    background-color: cadetblue;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+	margin-top: 20px;
+	margin-left: 35px;
+}
+
+/* 导航栏 */
+#daohang ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #e7e7e7;
+    background-color: #f3f3f3;
+}
+
+#daohang li {
+    float: left;
+}
+
+#daohang li a {
+    display: block;
+    color: #666;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+#daohang li a:hover:not(.active) {
+    background-color: #ddd;
+}
+
+#daohang li a.active {
+    color: white;
+    background-color: #4CAF50;
+}
+
+#bottom{
+	background-color:#f3f3f3;
+	height: 100px;
+}
+
+/* 分页 */
+.page-bar{
+	margin-left: 220px;
+    margin-top: 20px;
+}
+
+#body_left_bottom ul{
+	margin: 0 auto;
+}
+
+#body_left_bottom li{
+    /* margin: 0 auto; */
+    padding: 0px;
+}
+
+#body_left_bottom li{
+    list-style: none
+}
+#body_left_bottom .page-bar li:first-child>a {
+   margin-left: 0px
+}
+#body_left_bottom .page-bar a{
+    border: 1px solid #ddd;
+    text-decoration: none;
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    cursor: pointer
+}
+#body_left_bottom .page-bar a:hover{
+    background-color: #eee;
+}
+#body_left_bottom .page-bar a.banclick{
+    cursor:not-allowed;
+}
+#body_left_bottom .page-bar .active a{
+    color: #fff;
+    cursor: default;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+#body_left_bottom .page-bar i{
+    font-style:normal;
+    color: #d44950;
+    margin: 0px 4px;
+    font-size: 12px;
+}
+
+/* #body_right_bottom ul{
+	font-size: 16px;
+	margin: 8px;
+} */
+
+#body_right_top ul{
+	font-size: 16px;
+	margin: 8px;
+}
+
+#body_right_top li{
+	font-size: 16px;
+	margin-top: 8px;
+	list-style-type: none;
+}

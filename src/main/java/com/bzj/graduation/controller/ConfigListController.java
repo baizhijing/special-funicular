@@ -1,7 +1,6 @@
 package com.bzj.graduation.controller;
 
-import com.bzj.graduation.bean.ConfigList;
-import com.bzj.graduation.bean.Cpu;
+import com.bzj.graduation.bean.*;
 import com.bzj.graduation.service.ConfigListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,8 +35,96 @@ public class ConfigListController {
 /*
 https://www.cnblogs.com/onetwo/p/7371778.html分页查询参考博客
  */
-    @PostMapping("/cpuPage")
-    public List<Cpu> getCPUPage(int currentPage,int pageSize){
+    @PostMapping("/allCpuByPage")
+    public List<Cpu> getCPUPage(Integer currentPage,Integer pageSize){
         return configListService.getCPUList(currentPage,pageSize);
     }
+
+    @GetMapping("/getCPUPageNum")
+    public Integer getCPUPageNum(Integer pageSize){
+        return configListService.getCPUPage(pageSize);
+    }
+
+    @PostMapping("/allBoxByPage")
+    public List<Box> getBoxPage(Integer currentPage, Integer pageSize){
+        return configListService.getBoxList(currentPage,pageSize);
+    }
+
+    @GetMapping("/getBoxPageNum")
+    public Integer getBoxPageNum(Integer pageSize){
+        return configListService.getBoxPage(pageSize);
+    }
+
+    @PostMapping("/allDisplayByPage")
+    public List<Display> getDisplayPage(Integer currentPage, Integer pageSize){
+        return configListService.getDisplayList(currentPage,pageSize);
+    }
+
+    @GetMapping("/getDisplayPageNum")
+    public Integer getDisplayPageNum(Integer pageSize){
+        return configListService.getDisplayPage(pageSize);
+    }
+
+    @PostMapping("/allHardDriverByPage")
+    public List<HardDisk> getHardDriverPage(Integer currentPage, Integer pageSize){
+        return configListService.getHardDiskList(currentPage,pageSize);
+    }
+
+    @GetMapping("/getHardDiskPageNum")
+    public Integer getHardDiskPageNum(Integer pageSize){
+        return configListService.getHardDiskPage(pageSize);
+    }
+
+    @PostMapping("/allMainBoardByPage")
+    public List<MainBoard> getMainBoardPage(Integer currentPage, Integer pageSize){
+        return configListService.getMainBoardList(currentPage,pageSize);
+    }
+
+    @GetMapping("/getMainBoardNum")
+    public Integer getHardMainBoardNum(Integer pageSize){
+        return configListService.getMainBoardPage(pageSize);
+    }
+
+    @PostMapping("/allMemoryByPage")
+    public List<Memory> getMemoryPage(Integer currentPage, Integer pageSize){
+        return configListService.getMemoryList(currentPage,pageSize);
+    }
+
+    @GetMapping("/getMemoryNum")
+    public Integer getMemoryNum(Integer pageSize){
+        return configListService.getMemoryPage(pageSize);
+    }
+
+    @PostMapping("/allPowerByPage")
+    public List<Power> getPowerPage(Integer currentPage, Integer pageSize){
+        return configListService.getPowerList(currentPage,pageSize);
+    }
+
+    @GetMapping("/getPowerNum")
+    public Integer getPowerNum(Integer pageSize){
+        return configListService.getPowerPage(pageSize);
+    }
+
+    @PostMapping("/allRadiatorByPage")
+    public List<Radiator> getRadiatorPage(Integer currentPage, Integer pageSize){
+        return configListService.getRadiatorList(currentPage,pageSize);
+    }
+
+    @GetMapping("/getRadiatorNum")
+    public Integer getRadiatorNum(Integer pageSize){
+        return configListService.getRadiatorPage(pageSize);
+    }
+
+//    @PostMapping("/allRadiatorByPage")
+//    public List<Radiator> getRadiatorPage(Integer currentPage, Integer pageSize){
+//        return configListService.getRadiatorList(currentPage,pageSize);
+//    }
+//
+//    @GetMapping("/getRadiatorNum")
+//    public Integer getRadiatorNum(Integer pageSize){
+//        return configListService.getRadiatorPage(pageSize);
+//    }
+
+
+
 }

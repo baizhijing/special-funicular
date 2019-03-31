@@ -8,13 +8,13 @@ import java.util.List;
 
 @Mapper
 public interface BoxMapper {
-    @Select("")
+    @Select("select displayCard from box where id =#{id}")
     Integer selectDisplayCardById(int id);
 
-    @Select("")
+    @Select("select radiator from box where id =#{id}")
     double selectRadiatorById(int id);
 
-    @Select("")
+    @Select("select type from box where id =#{id}")
     String selectTypeById(int id);
 
     @Select("select * from box")
