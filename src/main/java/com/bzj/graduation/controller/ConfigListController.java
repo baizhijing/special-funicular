@@ -3,10 +3,8 @@ package com.bzj.graduation.controller;
 import com.bzj.graduation.bean.*;
 import com.bzj.graduation.service.ConfigListService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +73,9 @@ https://www.cnblogs.com/onetwo/p/7371778.html分页查询参考博客
     }
 
     @PostMapping("/allMainBoardByPage")
-    public List<MainBoard> getMainBoardPage(Integer currentPage, Integer pageSize){
+    public List<MainBoard> getMainBoardPage(@RequestBody Map<String,Integer> map){
+        Integer currentPage=map.get("currentPage");
+        Integer pageSize=map.get("pageSize");
         return configListService.getMainBoardList(currentPage,pageSize);
     }
 
