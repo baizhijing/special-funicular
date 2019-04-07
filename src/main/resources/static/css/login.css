@@ -102,6 +102,13 @@ h3{
 	color: white;
 }
 
+.url1 li:active{
+    background-color:cadetblue;
+}
+
+.url1 li span:active{
+    color: white;
+}
 
 /* 导航栏 */
 #daohang ul {

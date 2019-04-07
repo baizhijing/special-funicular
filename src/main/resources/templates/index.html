@@ -23,14 +23,14 @@
 					<div id="parts-head">
 						<h3>请选择配件</h3>
 						<ul class="url1">
-							<li id="topSubSel_1" ><span>CPU</span></li>
+							<li v-on:click="getCPU" id="topSubSel_1" ><span>CPU</span></li>
 							<li v-on:click="getMainBoard" id="topSubSel_2"><span>主板</span></li>
-							<li id="topSubSel_3"><span>内存</span></li>
-							<li id="topSubSel_4"><span>硬盘</span></li>
-							<li id="topSubSel_5"><span>显卡</span></li>
-							<li id="topSubSel_6"><span>机箱</span></li>
-							<li id="topSubSel_7"><span>电源</span></li>
-							<li id="topSubSel_8"><span>散热器</span></li>        
+							<li v-on:click="getMemory" id="topSubSel_3"><span>内存</span></li>
+							<li v-on:click="getHardDriver" id="topSubSel_4"><span>硬盘</span></li>
+							<li v-on:click="getDisplay" id="topSubSel_5"><span>显卡</span></li>
+							<li v-on:click="getBox" id="topSubSel_6"><span>机箱</span></li>
+							<li v-on:click="getPower" id="topSubSel_7"><span>电源</span></li>
+							<li v-on:click="getRadiator" id="topSubSel_8"><span>散热器</span></li>
 						</ul>
 						<button class="button">提交配置单</button>
 					</div>
@@ -64,97 +64,272 @@
 	<script src="js/vue.min.js"></script>
 	<script src="js/axios.min.js"></script>
 	<script>
-			new Vue({
+			let getList=new Vue({
 				el: '#body',
 				data:{
 					object:{
-						id:'',
-						price:'',
-						src:'',
-						name:''
 					}
 				},
+				mounted:function(){
+					this.getCPU();
+				},
+				//获取页数，获取列表
 				methods:{
-					getMainBoard(){
+					getCPU(){
 						let self=this;
-						let obj;
-						axios.post('http://localhost:8080/allMainBoardByPage',{
+						// let page=pageBar;
+						axios.post('http://localhost:8080/allCpuByPage',{
 							currentPage:1,
 							pageSize:5
 						})
 								.then(function (response) {
 									console.log(response);
-									// response.data.
+									let page=pageBar;
+									axios.get('http://localhost:8080/getCPUPageNum',{
+										params:{pageSize:5}
+									})
+											.then(function (response) {
+												page.all=response.data;
+												console.log(response);
+											})
+											.catch(function (error) {
+												console.log(error);
+											});
 									self.object=response.data;
 								})
 								.catch(function (error) {
 									console.log(error);
 								});
 					},
-					getMainBoardNum(){
-						axios.get('http://localhost:8080/getMainBoardNum',{
-							params:{pageSize:2}
+					getMainBoard(){
+						let self=this;
+						axios.post('http://localhost:8080/allMainBoardByPage',{
+							currentPage:1,
+							pageSize:5
 						})
 								.then(function (response) {
 									console.log(response);
+									let page=pageBar;
+									axios.get('http://localhost:8080/getMainBoardNum',{
+										params:{pageSize:5}
+									})
+											.then(function (response) {
+												page.all=response.data;
+												console.log(response);
+											})
+											.catch(function (error) {
+												console.log(error);
+											});
+									self.object=response.data;
 								})
 								.catch(function (error) {
 									console.log(error);
 								});
-					}
+					},
+					getMemory(){
+						let self=this;
+						axios.post('http://localhost:8080/allMemoryByPage',{
+							currentPage:1,
+							pageSize:5
+						})
+								.then(function (response) {
+									console.log(response);
+									let page=pageBar;
+									axios.get('http://localhost:8080/getMemoryNum',{
+										params:{pageSize:5}
+									})
+											.then(function (response) {
+												page.all=response.data;
+												console.log(response);
+											})
+											.catch(function (error) {
+												console.log(error);
+											});
+									self.object=response.data;
+								})
+								.catch(function (error) {
+									console.log(error);
+								});
+					},
+					getHardDriver(){
+						let self=this;
+						axios.post('http://localhost:8080/allHardDriverByPage',{
+							currentPage:1,
+							pageSize:5
+						})
+								.then(function (response) {
+									console.log(response);
+									let page=pageBar;
+									axios.get('http://localhost:8080/getHardDiskPageNum',{
+										params:{pageSize:5}
+									})
+											.then(function (response) {
+												page.all=response.data;
+												console.log(response);
+											})
+											.catch(function (error) {
+												console.log(error);
+											});
+									self.object=response.data;
+								})
+								.catch(function (error) {
+									console.log(error);
+								});
+					},
+					getDisplay(){
+						let self=this;
+						axios.post('http://localhost:8080/allDisplayByPage',{
+							currentPage:1,
+							pageSize:5
+						})
+								.then(function (response) {
+									console.log(response);
+									let page=pageBar;
+									axios.get('http://localhost:8080/getDisplayPageNum',{
+										params:{pageSize:5}
+									})
+											.then(function (response) {
+												page.all=response.data;
+												console.log(response);
+											})
+											.catch(function (error) {
+												console.log(error);
+											});
+									self.object=response.data;
+								})
+								.catch(function (error) {
+									console.log(error);
+								});
+					},
+					getBox(){
+						let self=this;
+						axios.post('http://localhost:8080/allBoxByPage',{
+							currentPage:1,
+							pageSize:5
+						})
+								.then(function (response) {
+									console.log(response);
+									let page=pageBar;
+									axios.get('http://localhost:8080/getBoxPageNum',{
+										params:{pageSize:5}
+									})
+											.then(function (response) {
+												page.all=response.data;
+												console.log(response);
+											})
+											.catch(function (error) {
+												console.log(error);
+											});
+									self.object=response.data;
+								})
+								.catch(function (error) {
+									console.log(error);
+								});
+					},
+					getPower(){
+						let self=this;
+						axios.post('http://localhost:8080/allPowerByPage',{
+							currentPage:1,
+							pageSize:5
+						})
+								.then(function (response) {
+									console.log(response);
+									let page=pageBar;
+									axios.get('http://localhost:8080/getPowerNum',{
+										params:{pageSize:5}
+									})
+											.then(function (response) {
+												page.all=response.data;
+												console.log(response);
+											})
+											.catch(function (error) {
+												console.log(error);
+											});
+									self.object=response.data;
+								})
+								.catch(function (error) {
+									console.log(error);
+								});
+					},
+					getRadiator(){
+						let self=this;
+						axios.post('http://localhost:8080/allRadiatorByPage',{
+							currentPage:1,
+							pageSize:5
+						})
+								.then(function (response) {
+									console.log(response);
+									let page=pageBar;
+									axios.get('http://localhost:8080/getRadiatorNum',{
+										params:{pageSize:5}
+									})
+											.then(function (response) {
+												page.all=response.data;
+												console.log(response);
+											})
+											.catch(function (error) {
+												console.log(error);
+											});
+									self.object=response.data;
+								})
+								.catch(function (error) {
+									console.log(error);
+								});
+					},
+
 				}
 			})
-	</script>
-	<script type="text/javascript">
-	var pageBar = new Vue({
-	    el: '.page-bar',
-	    data: {
-	        all: 8, //总页数
-	        cur: 1//当前页码
-	    },
-	    watch: {
-	        cur: function(oldValue , newValue){
-	            console.log(arguments);
-	        }
-	    },
-	     methods: {
-	        btnClick: function(data){//页码点击事件
-	            if(data != this.cur){
-	                this.cur = data
-	            }
-	        },
-	        pageClick: function(){
-	            console.log('现在在'+this.cur+'页');
-	        }
-	    },
 
-	    computed: {
-	        indexs: function(){
-	          var left = 1;
-	          var right = this.all;
-	          var ar = [];
-	          if(this.all>= 5){
-	            if(this.cur > 3 && this.cur < this.all-2){
-	                    left = this.cur - 2
-	                    right = this.cur + 2
-	            }else{
-	                if(this.cur<=3){
-	                    left = 1
-	                    right = 5
-	                }else{
-	                    right = this.all
-	                    left = this.all -4
-	                }
-	            }
-	         }
-	        while (left <= right){
-	            ar.push(left)
-	            left ++
-	        }
-	        return ar
-	       }
+			var pageBar = new Vue({
+				el: '.page-bar',
+				data: {
+					all: 8, //总页数
+					cur: 1//当前页码
+				},
+				watch: {
+					cur: function(oldValue , newValue){
+						console.log(arguments);
+					}
+				},
+				methods: {
+					btnClick: function(data){//页码点击事件
+						if(data != this.cur){
+							currentPage=data;
+							this.cur = data;
+						}
+					},
+					pageClick: function(){
+						console.log('现在在'+this.cur+'页');
+					}
+				},
 
-	    }
-	})
+				computed: {
+					indexs: function(){
+						var left = 1;
+						var right = this.all;
+						var ar = [];
+						if(this.all>= 5){
+							if(this.cur > 3 && this.cur < this.all-2){
+								left = this.cur - 2
+								right = this.cur + 2
+							}else{
+								if(this.cur<=3){
+									left = 1
+									right = 5
+								}else{
+									right = this.all
+									left = this.all -4
+								}
+							}
+						}
+						while (left <= right){
+							ar.push(left)
+							left ++
+						}
+						return ar
+					}
+
+				}
+			})
 	</script>
 </html>

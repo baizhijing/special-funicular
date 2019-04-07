@@ -5,12 +5,14 @@ import com.bzj.graduation.bean.Power;
 import com.bzj.graduation.bean.Radiator;
 import com.bzj.graduation.mapper.RadiatorMapper;
 import com.github.pagehelper.PageHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public class RadiatorDao {
+    @Autowired
     private RadiatorMapper radiatorMapper;
 
     public String getInterfById(int id){
@@ -22,7 +24,7 @@ public class RadiatorDao {
     }
 
     //分页查询
-    public List selectRadiatorByPage(int currentPage, int pageSize){
+    public List selectRadiatorByPage(Integer currentPage, Integer pageSize){
         PageHelper.startPage(currentPage, pageSize);
         List<Radiator> allRadiator = radiatorMapper.getAll();        //全部商品
         int countNums = radiatorMapper.getCount();            //总记录数

@@ -33,7 +33,9 @@ public class ConfigListController {
 https://www.cnblogs.com/onetwo/p/7371778.html分页查询参考博客
  */
     @PostMapping("/allCpuByPage")
-    public List<Cpu> getCPUPage(Integer currentPage,Integer pageSize){
+    public List<Cpu> getCPUPage(@RequestBody Map<String,Integer> map){
+        Integer currentPage=map.get("currentPage");
+        Integer pageSize=map.get("pageSize");
         return configListService.getCPUList(currentPage,pageSize);
     }
 
@@ -43,7 +45,9 @@ https://www.cnblogs.com/onetwo/p/7371778.html分页查询参考博客
     }
 
     @PostMapping("/allBoxByPage")
-    public List<Box> getBoxPage(Integer currentPage, Integer pageSize){
+    public List<Box> getBoxPage(@RequestBody Map<String,Integer> map){
+        Integer currentPage=map.get("currentPage");
+        Integer pageSize=map.get("pageSize");
         return configListService.getBoxList(currentPage,pageSize);
     }
 
@@ -53,7 +57,9 @@ https://www.cnblogs.com/onetwo/p/7371778.html分页查询参考博客
     }
 
     @PostMapping("/allDisplayByPage")
-    public List<Display> getDisplayPage(Integer currentPage, Integer pageSize){
+    public List<Display> getDisplayPage(@RequestBody Map<String,Integer> map){
+        Integer currentPage=map.get("currentPage");
+        Integer pageSize=map.get("pageSize");
         return configListService.getDisplayList(currentPage,pageSize);
     }
 
@@ -63,7 +69,9 @@ https://www.cnblogs.com/onetwo/p/7371778.html分页查询参考博客
     }
 
     @PostMapping("/allHardDriverByPage")
-    public List<HardDisk> getHardDriverPage(Integer currentPage, Integer pageSize){
+    public List<HardDisk> getHardDriverPage(@RequestBody Map<String,Integer> map){
+        Integer currentPage=map.get("currentPage");
+        Integer pageSize=map.get("pageSize");
         return configListService.getHardDiskList(currentPage,pageSize);
     }
 
@@ -85,7 +93,9 @@ https://www.cnblogs.com/onetwo/p/7371778.html分页查询参考博客
     }
 
     @PostMapping("/allMemoryByPage")
-    public List<Memory> getMemoryPage(Integer currentPage, Integer pageSize){
+    public List<Memory> getMemoryPage(@RequestBody Map<String,Integer> map){
+        Integer currentPage=map.get("currentPage");
+        Integer pageSize=map.get("pageSize");
         return configListService.getMemoryList(currentPage,pageSize);
     }
 
@@ -95,7 +105,9 @@ https://www.cnblogs.com/onetwo/p/7371778.html分页查询参考博客
     }
 
     @PostMapping("/allPowerByPage")
-    public List<Power> getPowerPage(Integer currentPage, Integer pageSize){
+    public List<Power> getPowerPage(@RequestBody Map<String,Integer> map){
+        Integer currentPage=map.get("currentPage");
+        Integer pageSize=map.get("pageSize");
         return configListService.getPowerList(currentPage,pageSize);
     }
 
@@ -105,7 +117,9 @@ https://www.cnblogs.com/onetwo/p/7371778.html分页查询参考博客
     }
 
     @PostMapping("/allRadiatorByPage")
-    public List<Radiator> getRadiatorPage(Integer currentPage, Integer pageSize){
+    public List<Radiator> getRadiatorPage(@RequestBody Map<String,Integer> map){
+        Integer currentPage=map.get("currentPage");
+        Integer pageSize=map.get("pageSize");
         return configListService.getRadiatorList(currentPage,pageSize);
     }
 
