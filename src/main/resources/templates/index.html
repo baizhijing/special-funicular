@@ -23,14 +23,14 @@
 					<div id="parts-head">
 						<h3>请选择配件</h3>
 						<ul class="url1">
-							<li v-on:click="getCPU" id="topSubSel_1" ><span>CPU</span></li>
-							<li v-on:click="getMainBoard" id="topSubSel_2"><span>主板</span></li>
-							<li v-on:click="getMemory" id="topSubSel_3"><span>内存</span></li>
-							<li v-on:click="getHardDriver" id="topSubSel_4"><span>硬盘</span></li>
-							<li v-on:click="getDisplay" id="topSubSel_5"><span>显卡</span></li>
-							<li v-on:click="getBox" id="topSubSel_6"><span>机箱</span></li>
-							<li v-on:click="getPower" id="topSubSel_7"><span>电源</span></li>
-							<li v-on:click="getRadiator" id="topSubSel_8"><span>散热器</span></li>
+							<li v-on:click="getCPU(1)" onclick="initCur()" id="topSubSel_1" ><span>CPU</span></li>
+							<li v-on:click="getMainBoard(1)" onclick="initCur()" id="topSubSel_2"><span>主板</span></li>
+							<li v-on:click="getMemory(1)" onclick="initCur()" id="topSubSel_3"><span>内存</span></li>
+							<li v-on:click="getHardDriver(1)" onclick="initCur()" id="topSubSel_4"><span>硬盘</span></li>
+							<li v-on:click="getDisplay(1)" onclick="initCur()" id="topSubSel_5"><span>显卡</span></li>
+							<li v-on:click="getBox(1)" onclick="initCur()" id="topSubSel_6"><span>机箱</span></li>
+							<li v-on:click="getPower(1)" onclick="initCur()" id="topSubSel_7"><span>电源</span></li>
+							<li v-on:click="getRadiator(1)" onclick="initCur()" id="topSubSel_8"><span>散热器</span></li>
 						</ul>
 						<button class="button">提交配置单</button>
 					</div>
@@ -39,7 +39,7 @@
 						<ul id="list">
 							<li v-for="value in object">
 								<img :src="value.src" height="100px" width="100px">
-								{{ value.name }}<br>
+								{{ value.name }}<br><br>
 								价格：{{ value.price }}
 							</li>
 						</ul>
@@ -61,9 +61,10 @@
 			</div>
 		</div>
 	</body>
-	<script src="js/vue.min.js"></script>
-	<script src="js/axios.min.js"></script>
+	<script type="text/javascript" th:src="@{/js/vue.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/axios.min.js}"></script>
 	<script>
+			let hard=1;//设置全局变量，1代表当前在操作CPU，2代表主板，3代表内存，4硬盘，5显卡，6机箱，7电源，8散热器
 			let getList=new Vue({
 				el: '#body',
 				data:{
@@ -75,16 +76,20 @@
 				},
 				//获取页数，获取列表
 				methods:{
-					getCPU(){
+					getCPU:function(currentPage){
+						if(currentPage==null)
+							currentPage=1;
+						hard=1;
+						console.log("hard="+hard);
 						let self=this;
-						// let page=pageBar;
 						axios.post('http://localhost:8080/allCpuByPage',{
-							currentPage:1,
+							currentPage:currentPage,
 							pageSize:5
 						})
 								.then(function (response) {
 									console.log(response);
 									let page=pageBar;
+									// page.cur=1;
 									axios.get('http://localhost:8080/getCPUPageNum',{
 										params:{pageSize:5}
 									})
@@ -101,10 +106,14 @@
 									console.log(error);
 								});
 					},
-					getMainBoard(){
+					getMainBoard:function(currentPage){
+						if(currentPage==null)
+							currentPage=1;
+						hard=2;
+						console.log("hard="+hard);
 						let self=this;
 						axios.post('http://localhost:8080/allMainBoardByPage',{
-							currentPage:1,
+							currentPage:currentPage,
 							pageSize:5
 						})
 								.then(function (response) {
@@ -126,10 +135,14 @@
 									console.log(error);
 								});
 					},
-					getMemory(){
+					getMemory:function(currentPage){
+						if(currentPage==null)
+							currentPage=1;
+						hard=3;
+						console.log("hard="+hard);
 						let self=this;
 						axios.post('http://localhost:8080/allMemoryByPage',{
-							currentPage:1,
+							currentPage:currentPage,
 							pageSize:5
 						})
 								.then(function (response) {
@@ -151,10 +164,14 @@
 									console.log(error);
 								});
 					},
-					getHardDriver(){
+					getHardDriver:function(currentPage){
+						if(currentPage==null)
+							currentPage=1;
+						hard=4;
+						console.log(hard);
 						let self=this;
 						axios.post('http://localhost:8080/allHardDriverByPage',{
-							currentPage:1,
+							currentPage:currentPage,
 							pageSize:5
 						})
 								.then(function (response) {
@@ -176,10 +193,13 @@
 									console.log(error);
 								});
 					},
-					getDisplay(){
+					getDisplay:function(currentPage){
+						if(currentPage==null)
+							currentPage=1;
+						hard=5;
 						let self=this;
 						axios.post('http://localhost:8080/allDisplayByPage',{
-							currentPage:1,
+							currentPage:currentPage,
 							pageSize:5
 						})
 								.then(function (response) {
@@ -201,10 +221,13 @@
 									console.log(error);
 								});
 					},
-					getBox(){
+					getBox:function(currentPage){
+						if(currentPage==null)
+							currentPage=1;
+						hard=6;
 						let self=this;
 						axios.post('http://localhost:8080/allBoxByPage',{
-							currentPage:1,
+							currentPage:currentPage,
 							pageSize:5
 						})
 								.then(function (response) {
@@ -226,10 +249,13 @@
 									console.log(error);
 								});
 					},
-					getPower(){
+					getPower:function(currentPage){
+						if(currentPage==null)
+							currentPage=1;
+						hard=7;
 						let self=this;
 						axios.post('http://localhost:8080/allPowerByPage',{
-							currentPage:1,
+							currentPage:currentPage,
 							pageSize:5
 						})
 								.then(function (response) {
@@ -251,10 +277,13 @@
 									console.log(error);
 								});
 					},
-					getRadiator(){
+					getRadiator:function(currentPage){
+						if(currentPage==null)
+							currentPage=1;
+						hard=8;
 						let self=this;
 						axios.post('http://localhost:8080/allRadiatorByPage',{
-							currentPage:1,
+							currentPage:currentPage,
 							pageSize:5
 						})
 								.then(function (response) {
@@ -288,18 +317,45 @@
 				},
 				watch: {
 					cur: function(oldValue , newValue){
-						console.log(arguments);
+						// console.log(arguments);
 					}
 				},
 				methods: {
 					btnClick: function(data){//页码点击事件
-						if(data != this.cur){
-							currentPage=data;
+					    let list=getList;
+						if(data != this.cur) {
 							this.cur = data;
+							console.log(hard);
 						}
+							// 1代表当前在操作CPU，2代表主板，3代表内存，4硬盘，5显卡，6机箱，7电源，8散热器
+							if (hard==1){
+                                list.getCPU(data);
+							}
+							else if (hard==2){
+								list.getMainBoard(data);
+							}
+							else if (hard==3){
+								list.getMemory(data);
+							}
+							else if (hard==4){
+								list.getHardDriver(data);
+							}
+							else if (hard==5){
+								list.getDisplay(data);
+							}
+							else if (hard==6){
+								list.getBox(data);
+							}
+							else if (hard==7){
+								list.getPower(data);
+							}
+							else {
+								list.getPower(data);
+							}
 					},
 					pageClick: function(){
 						console.log('现在在'+this.cur+'页');
+						this.btnClick(this.cur)
 					}
 				},
 
@@ -331,5 +387,10 @@
 
 				}
 			})
+			//每次触发点击事件时，初始化页数为1
+			function initCur() {
+				let page =pageBar;
+				pageBar.cur=1;
+			};
 	</script>
 </html>

@@ -19,16 +19,16 @@
 }
 
 #body_left{
-	width: 1000px;
+	width: 600px;
 	height: 700px;
-	background-color: ghostwhite;
+	background-color:beige;
 	float: left;
 }
 
 #body_right{
-	width: 200px;
+	width: 600px;
 	height: 700px;
-	background-color:beige;
+	background-color:ghostwhite;
 	float: right;
 }
 

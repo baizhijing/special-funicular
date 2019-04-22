@@ -14,7 +14,7 @@ import java.util.Date;
 @Data
 public class Record {
     private Integer id;
-    private Integer createId;
+    private String userName;
     private String title;
-    private Date createTime;
+    private String createTime;
 }

@@ -3,43 +3,51 @@ package com.bzj.graduation.controller;
 import com.bzj.graduation.bean.Record;
 import com.bzj.graduation.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-@RestController
+@Controller
 public class RecordController {
     @Autowired
     private RecordService recordService;
 
     @PostMapping("/addRecord")
-    public void addRecord(Integer userId,String title){
+    public String addRecord(@RequestParam("title") String title, HttpSession session){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String userName=(String)session.getAttribute("loginUser");
         String content=df.format(new Date()).toString();
-        recordService.Insert(userId,title,content);
+        recordService.Insert(userName,title,content);
+        return "luntan";
     }
 
+    @ResponseBody
     @GetMapping("/getRecordNum")
     public Integer getRecordNum(int pageSize){
         return recordService.getRecordNum(pageSize);
     }
 
+    @ResponseBody
     @PostMapping("/getAllRecord")
-    public List<Record> getAll(int currentPage, int pageSize){
+    public List<Record> getAll(@RequestBody Map<String,Integer> map){
+        Integer currentPage=map.get("currentPage");
+        Integer pageSize=map.get("pageSize");
         return recordService.getAll(currentPage,pageSize);
     }
 
     @PostMapping("/getPersonRecord")
-    public List<Record> getPersonRecord(int currentPage, int pageSize,int userId){
-        return recordService.getPersonRecord(currentPage,pageSize,userId);
+    public List<Record> getPersonRecord(int currentPage, int pageSize,String userName){
+        return recordService.getPersonRecord(currentPage,pageSize,userName);
     }
 
     @PostMapping("/getPersonRecordCount")
-    public Integer getPersonRecordCount(int pageSize,int userId){
-        return recordService.getPersonRecordCount(userId,pageSize);
+    public Integer getPersonRecordCount(int pageSize,String userName){
+        return recordService.getPersonRecordCount(userName,pageSize);
     }
 
     //删除

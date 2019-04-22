@@ -12,9 +12,9 @@
 		<link href="css/signin.css" th:href="@{/css/signin.css}" rel="stylesheet">
 	</head>
 	<body class="text-center">
-		<form class="form-signin" action="dashboard.html" th:action="@{/user/login}" method="post">
+		<form class="form-signin" action="dashboard.html" th:action="@{/user/regist}" method="post">
 			<img class="mb-4" src="img/bootstrap-solid.svg" th:src="@{/img/bootstrap-solid.svg}" alt="" width="72" height="72">
-			<h1 class="h3 mb-3 font-weight-normal">请登录</h1>
+			<h1 class="h3 mb-3 font-weight-normal">注册账号</h1>
 			<label class="sr-only">Username</label>
 			<p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
 			<input type="text" name="username" class="form-control"  placeholder="账号" required="" autofocus="">
@@ -22,8 +22,7 @@
 			<input type="password" name="password" class="form-control" placeholder="密码" required="">
 			<div class="checkbox mb-3">
 			</div>
-			<button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
-			<a class="btn btn-sm" href="http://localhost:8080/regist">注册</a>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">注册并登录</button>
 		</form>
 	</body>
 

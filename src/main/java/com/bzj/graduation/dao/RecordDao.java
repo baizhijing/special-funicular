@@ -2,6 +2,7 @@ package com.bzj.graduation.dao;
 
 import com.bzj.graduation.bean.PageBean;
 import com.bzj.graduation.bean.Record;
+import com.bzj.graduation.bean.User;
 import com.bzj.graduation.mapper.RecordMapper;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,8 @@ public class RecordDao {
     @Autowired
     private RecordMapper recordMapper;
 
-    public void insertRecord(Integer userId,String title,String content){
-        recordMapper.InsertRecord(userId,title,content);
+    public void insertRecord(String userName,String title,String content){
+        recordMapper.InsertRecord(userName,title,content);
     }
 
     public void delRecord(Integer id){
@@ -36,18 +37,20 @@ public class RecordDao {
         return recordMapper.getCount();
     }
 
-    public int getPersonRecordCount(int userId){
-        return recordMapper.getPerosonRecordCount(userId);
+    public int getPersonRecordCount(String userName){
+        return recordMapper.getPerosonRecordCount(userName);
     }
 
-    public List<Record> selectPersonRecordByPage(int currentPage, int pageSize,int userId){
+    public List<Record> selectPersonRecordByPage(int currentPage, int pageSize,String userName){
         PageHelper.startPage(currentPage, pageSize);
-        List<Record> personRecords = recordMapper.getPerosonRecord(userId);        //全部商品
-        int countNums = recordMapper.getPerosonRecordCount(userId);            //总记录数
+        List<Record> personRecords = recordMapper.getPerosonRecord(userName);        //全部商品
+        int countNums = recordMapper.getPerosonRecordCount(userName);            //总记录数
         PageBean<Record> pageData = new PageBean<>(currentPage, pageSize, countNums);
         pageData.setItems(personRecords);
         return pageData.getItems();
     }
+
+
 
 
 

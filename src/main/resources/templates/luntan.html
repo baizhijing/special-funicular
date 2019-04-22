@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml"
+	  xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-if="http://www.w3.org/1999/xhtml"
+	  xmlns:v-for="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta charset="utf-8">
 		<title>小白装机网</title>
@@ -20,7 +22,19 @@
 			</div>
 			<div id="body">
 				<div id="body_left">
-					<div id="body_left_top"></div>
+					<div id="body_left_top">
+						<ul id="list">
+							<li v-for="value in object"  style="list-style: none">
+								<table id="table1">
+									<tr>
+										<td style="width: 350px">标题：{{ value.title }}</td>
+										<td style="width: 300px">创建人：{{ value.userName }}</td>
+										<td>创建时间:{{ value.createTime}}</td>
+									</tr>
+								</table>
+							</li>
+						</ul>
+					</div>
 					<!-- 分页 -->
 					<div id="body_left_bottom">
 						<div class="page-bar">
@@ -40,73 +54,181 @@
 				<div id="body_right">
 					<div id="body_right_top">
 						<ul>
-							<li>用户名：<br /></li>
-							<li>等级：</li>
+							<li>
+								<br><br>
+								用户名：{{object.username}} <br><br>
+								积分：{{object.integ}}
+							</li><br />
 						</ul>
 					</div>
-					<button class="button">发表新帖</button>
+					<input class="button" type="button" name="popBox" value="发表新帖" onclick="popBox()"><br>
+					<input class="button" type="button" name="popBox" value="今日签到"><br>
 				</div>
 			</div>
 			<div id="bottom"></div>
 		</div>
+		<div id="popLayer"></div>
+		<!--新建帖子弹窗-->
+		<div id="popBox">
+			<div class="content">
+				<form th:action="@{/addRecord}" method="post">
+					请输入帖子名称：<input type="text" name="title"><br/>
+					<button  type="submit">创建帖子</button>
+				</form>
+			</div>
+			<div class="close">
+				<a href="javascript:void(0)" onclick="closeBox()">关闭</a>
+			</div>
+		</div>
 	</body>
 	<script src="js/vue.min.js"></script>
 	<script src="js/axios.min.js"></script>
+	<script src="js/jquery-3.2.1.slim.min.js"></script>
 	<script type="text/javascript">
-	// window.onload=function () {
-	// 	new Vue({
-	//
-	// 	})
-	// }
-	var pageBar = new Vue({
-	    el: '.page-bar',
-	    data: {
-	        all: 8, //总页数
-	        cur: 1//当前页码
-	    },
-	    watch: {
-	        cur: function(oldValue , newValue){
-	            console.log(arguments);
-	        }
-	    },    
-	     methods: {
-	        btnClick: function(data){//页码点击事件
-	            if(data != this.cur){
-	                this.cur = data 
-	            }
-	        },
-	        pageClick: function(){
-	            console.log('现在在'+this.cur+'页');
-	        }
-	    },
-	    
-	    computed: {
-	        indexs: function(){
-	          var left = 1;
-	          var right = this.all;
-	          var ar = [];
-	          if(this.all>= 5){
-	            if(this.cur > 3 && this.cur < this.all-2){
-	                    left = this.cur - 2
-	                    right = this.cur + 2
-	            }else{
-	                if(this.cur<=3){
-	                    left = 1
-	                    right = 5
-	                }else{
-	                    right = this.all
-	                    left = this.all -4
-	                }
-	            }
-	         }
-	        while (left <= right){
-	            ar.push(left)
-	            left ++
-	        }
-	        return ar
-	       }
-	         
-	    }
-	})
+		function popBox() {
+			var popBox = document.getElementById("popBox");
+			var popLayer = document.getElementById("popLayer");
+			popBox.style.display = "block";
+			popLayer.style.display = "block";    };
+		/*点击关闭按钮*/
+		function closeBox() {
+			var popBox = document.getElementById("popBox");
+			var popLayer = document.getElementById("popLayer");
+			popBox.style.display = "none";
+			popLayer.style.display = "none";    };
+		var user=new Vue({
+			el:'#body_right_top',
+			data:{
+				object:{
+				}
+			},
+			mounted:function(){
+				this.getUser();
+			},
+			methods:{
+				getUser(){
+					let self1=this;
+					axios.get('http://localhost:8080/getLoginUserMsg',{
+					})
+							.then(function (response){
+								self1.object=response.data;
+							}).catch(function (error) {
+								console.log(error);
+					});
+				}
+			}
+		})
+		var record=new Vue({
+			el:'#body_left_top',
+			data:{
+				object:{
+				}
+			},
+			mounted:function(){
+				this.getRecord(1);
+			},
+			//获取页数，获取列表
+			methods:{
+				getRecord:function(currentPage){
+					if (currentPage==null)
+						currentPage=1;
+					let self=this;
+					axios.post('http://localhost:8080/getAllRecord',{
+						currentPage:currentPage,
+						pageSize:10
+					})
+							.then(function (response) {
+								console.log(response);
+								let page=pageBar;
+								axios.get('http://localhost:8080/getRecordNum',{
+									params:{pageSize:10}
+								})
+										.then(function (response) {
+											page.all=response.data;
+											console.log(response);
+										})
+										.catch(function (error) {
+											console.log(error);
+										});
+								self.object=response.data;
+							})
+							.catch(function (error) {
+								console.log(error);
+							});
+				},
+				// getRecordDeatil:function(val){
+				//     let self=this;
+				//     axios.post('http://loacalhost:8080/getRecordDetailByPage',{
+				//         currentPage:1,
+				//         pageSize:10
+				//     })
+				//         .then(function (response) {
+				//             let page=pageBar;
+				//             axios.get('http://localhost:8080/getRecordDetailCount',{
+				//                 params:{pageSize:10}
+				//             })
+				//                 .then(function (response) {
+				//                     page.all=response.data;
+				//                 })
+				//                 .catch(function (error) {
+				//                     console.log(error)
+				//                 })
+				//             self.object=response.data;
+				//         })
+				// },
+			}
+		})
+
+		let pageBar = new Vue({
+			el: '.page-bar',
+			data: {
+				all: 8, //总页数
+				cur: 1//当前页码
+			},
+			watch: {
+				cur: function(oldValue , newValue){
+					console.log(arguments);
+				}
+			},
+			 methods: {
+				btnClick: function(data){//页码点击事件
+					if(data != this.cur){
+						this.cur = data
+					}
+					let self=record;
+					self.getRecord(data);
+				},
+				pageClick: function(){
+					console.log('现在在'+this.cur+'页');
+				}
+			},
+			computed: {
+				indexs: function(){
+				  var left = 1;
+				  var right = this.all;
+				  var ar = [];
+				  if(this.all>= 5){
+					if(this.cur > 3 && this.cur < this.all-2){
+							left = this.cur - 2
+							right = this.cur + 2
+					}else{
+						if(this.cur<=3){
+							left = 1
+							right = 5
+						}else{
+							right = this.all
+							left = this.all -4
+						}
+					}
+				 }
+				while (left <= right){
+					ar.push(left)
+					left ++
+				}
+				return ar
+			   }
+
+			}
+		})
 	</script>
 </html>

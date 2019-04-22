@@ -1,5 +1,6 @@
 package com.bzj.graduation.service;
 
+import com.bzj.graduation.bean.User;
 import com.bzj.graduation.dao.LoginDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,5 +25,15 @@ public class LoginService {
     public int getUserId(String username){
         int userid=loginDao.getUserId(username);
         return userid;
+    }
+    public boolean ifExitUsername(String username){
+        return loginDao.ifExitUsername(username);
+    }
+    public User getUserByUserName(String username){
+        return loginDao.getUser(username);
+    }
+
+    public void addUser(String username,String password){
+        loginDao.addUser(username,password);
     }
 }

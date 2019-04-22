@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 /**
  * @Author:bai
  * @data:2019/3/7
@@ -15,4 +17,5 @@ public class User {
     private String username;
     private String password;
     private Integer integ;//积分
+    private Date lastSignTime;
 }

@@ -1,6 +1,7 @@
 package com.bzj.graduation.mapper;
 
 import com.bzj.graduation.bean.User;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,4 +22,13 @@ public interface UserMapper {
 
     @Select("select id from user where username=#{username}")
     Integer getUserId(@PathVariable String username);
+
+    @Insert("insert into user values(0,#{username},#{password},1)")
+    void insertUser(String username,String password);
+
+    @Select("select * from user where username=#{userName}")
+    User selectUserByName(String userName);
+
+    @Select("update user set integ=integ+#{integNum} where userName=#{username}")
+    void addInteg(Integer integNum,String username);
 }

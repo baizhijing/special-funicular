@@ -1,6 +1,7 @@
 package com.bzj.graduation.service;
 
 import com.bzj.graduation.bean.Record;
+import com.bzj.graduation.dao.LoginDao;
 import com.bzj.graduation.dao.RecordDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +13,12 @@ public class RecordService {
     @Autowired
     private RecordDao recordDao;
 
-    public void Insert(Integer userId,String title,String content){
-        recordDao.insertRecord(userId,title,content);
+    @Autowired
+    private LoginDao loginDao;
+
+    public void Insert(String userName,String title,String content){
+        recordDao.insertRecord(userName,title,content);
+        loginDao.addInteg(1,userName);
     }
 
     public void delete(Integer id){
@@ -31,12 +36,12 @@ public class RecordService {
         return countNums/pageSize+1;
     }
 
-    public List<Record> getPersonRecord(int currentPage, int pageSize,int userId){
-        return recordDao.selectPersonRecordByPage(currentPage,pageSize,userId);
+    public List<Record> getPersonRecord(int currentPage, int pageSize,String userName){
+        return recordDao.selectPersonRecordByPage(currentPage,pageSize,userName);
     }
 
-    public Integer getPersonRecordCount(int userId,int pageSize){
-        int countNums= recordDao.getPersonRecordCount(userId);
+    public Integer getPersonRecordCount(String userName,int pageSize){
+        int countNums= recordDao.getPersonRecordCount(userName);
         if (countNums%pageSize==0)
             return countNums/pageSize;
         return countNums/pageSize+1;

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml"
+	  xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-for="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta charset="utf-8">
 		<title>小白装机网</title>
@@ -11,7 +12,7 @@
 				<div id="image"></div>
 				<div id="daohang">
 					<ul>
-					  <li><a href="http://localhost:8080/index.html">主页</a></li>
+					  <li><a href="http://localhost:8080/index">主页</a></li>
 					  <li><a href="http://localhost:8080/luntan">论坛</a></li>
 					  <li><a class="active" href="http://localhost:8080/ziyuan">资源</a></li>
 					  <li><a href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
@@ -19,11 +20,93 @@
 				</div>
 			</div>
 			<div id="body">
-				
+				<div id="body_left">
+					<p>软件资源</p>
+					<div id="body_left_content" v-for="value in object">
+						<ul>
+							<li></li>
+						</ul>
+					</div>
+					<div id="body_left_bottom"></div>
+				</div>
+				<div id="body_right">
+					<p>公共配置单</p>
+					<div id="body_right_content"></div>
+					<div id="body_right_bottom"></div>
+				</div>
 			</div>
 			<div id="bottom"></div>
 		</div>
 	</body>
 	<script src="js/vue.min.js"></script>
 	<script src="js/axios.min.js"></script>
+	<script>
+		let Resource=new Vue({
+			el:'body_left',
+			data:{
+				object:{
+				}
+			},
+			mounted:function () {
+
+			},
+			methods:{
+				getResource:function(currentPage,type){
+					if (currentPage==null)
+						currentPage=1;
+					let self=this;
+					if (type==null){
+						axios.post('http://localhost:8080/resource/list',{
+							currentPage:currentPage,
+							pageSize:10
+						})
+								.then(function (response) {
+									console.log(response);
+									let page=pageBar;
+									axios.get('http://localhost:8080/resource/getAllCount',{
+										params:{pageSize:10}
+									})
+											.then(function (response) {
+												page.all=response.data;
+												console.log(response);
+											})
+											.catch(function (error) {
+												console.log(error);
+											});
+									self.object=response.data;
+								})
+								.catch(function (error) {
+									console.log(error);
+								});
+					}
+					else{
+						axios.post('http://localhost:8080/resource/listByType',{
+							type:type,
+							currentPage:currentPage,
+							pageSize:10
+						})
+								.then(function (response) {
+									console.log(response);
+									let page=pageBar;
+									axios.get('http://localhost:8080/resource/getCountByType',{
+										params:{pageSize:10}
+									})
+											.then(function (response) {
+												page.all=response.data;
+												console.log(response);
+											})
+											.catch(function (error) {
+												console.log(error);
+											});
+									self.object=response.data;
+								})
+								.catch(function (error) {
+									console.log(error);
+								});
+					}
+
+				}
+			}
+		})
+	</script>
 </html>

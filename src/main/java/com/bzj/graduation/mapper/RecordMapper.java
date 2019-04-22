@@ -10,8 +10,8 @@ import java.util.List;
 
 @Mapper
 public interface RecordMapper {
-    @Insert("insert into record values(0,#{userId},#{title},#{content})")
-    void InsertRecord(Integer userId,String title,String content);
+    @Insert("insert into record values(0,#{userName},#{title},#{content})")
+    void InsertRecord(String userName,String title,String content);
 
     @Delete("delete from record where id=#{id}")
     void delRecord(Integer id);
@@ -25,9 +25,9 @@ public interface RecordMapper {
 
 
     //个人帖子
-    @Select("select create_id from record where id=#{id}")
-    List<Record> getPerosonRecord(Integer id);
+    @Select("select userName from record where id=#{id}")
+    List<Record> getPerosonRecord(String userName);
 
-    @Select("select count(*)from record where createId=#{createId}")
-    Integer getPerosonRecordCount(Integer createId);
+    @Select("select count(*) from record where userName=#{userName}")
+    Integer getPerosonRecordCount(String userName);
 }

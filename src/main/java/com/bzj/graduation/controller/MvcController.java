@@ -33,4 +33,7 @@ public class MvcController {
     public String gerenzhongxin(){
         return  "gerenzhongxin";
     }
+
+    @RequestMapping("/regist")
+    public String regist(){return "regist";}
 }
