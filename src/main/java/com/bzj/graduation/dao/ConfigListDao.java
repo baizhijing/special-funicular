@@ -31,6 +31,15 @@ public class ConfigListDao {
         pageData.setItems(allConfigLists);
         return pageData.getItems();
     }
+//私人配置单
+    public List<ConfigList> selectPersonConfigListByPage(int currentPage, int pageSize,Integer userId){
+        PageHelper.startPage(currentPage, pageSize);
+        List<ConfigList> allConfigLists = configListMapper.selectByUserId(userId);        //全部商品
+        int countNums = configListMapper.getPersonCount();            //总记录数
+        PageBean<ConfigList> pageData = new PageBean<>(currentPage, pageSize, countNums);
+        pageData.setItems(allConfigLists);
+        return pageData.getItems();
+    }
 
     public Integer getCount(){
         return configListMapper.getCount();

@@ -22,8 +22,8 @@ public class LoginService {
         else
             return false;
     }
-    public int getUserId(String username){
-        int userid=loginDao.getUserId(username);
+    public Integer getUserId(String username){
+        Integer userid=loginDao.getUserId(username);
         return userid;
     }
     public boolean ifExitUsername(String username){

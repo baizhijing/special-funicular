@@ -54,12 +54,12 @@
 					<p>公共配置单</p>
 					<div id="body_right_content">
 						<ul>
-							<li  v-for="value in object2">
+							<li  v-for="value2 in object2">
 								<table>
 									<tr>
-										<td style="width: 300px">{{value.name}}</td>
+										<td style="width: 300px">{{value2.name}}</td>
 										<br>
-										<td>类型：{{value.price}}</td>
+										<td>价格：{{value2.price}}</td>
 									</tr>
 								</table>
 							</li>
@@ -216,12 +216,14 @@
 				}
 			},
 			mounted:function () {
-				this.getList();
+				let self=this;
+				self.getList();
 			},
 			methods:{
 				getList:function (currentPage) {
 					if (currentPage==null)
 						currentPage=1;
+					let self=this;
 					axios.post('http://localhost:8080/configlist/getList',{
 						currentPage:currentPage,
 						pageSize:10
@@ -239,7 +241,6 @@
 										.catch(function (error) {
 											console.log(error);
 										});
-								let self=this;
 								self.object2=response.data;
 							})
 							.catch(function (error) {
@@ -270,7 +271,7 @@
 				},
 				pageClick: function(){
 					console.log('现在在'+this.cur+'页');
-					this.btnClick(this.cur)
+					this.btnClick(this.cur);
 				}
 			},
 			computed: {

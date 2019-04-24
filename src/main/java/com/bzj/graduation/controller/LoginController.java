@@ -63,4 +63,11 @@ public class LoginController {
         String username=(String)session.getAttribute("loginUser");
         return loginService.getUserByUserName(username);
     }
+
+    @ResponseBody
+    @GetMapping("/getLoginUserId")
+    public Integer getLoginUserId(HttpSession session){
+        String username=(String)session.getAttribute("loginUser");
+        return loginService.getUserId(username);
+    }
 }

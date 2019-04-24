@@ -238,4 +238,46 @@ public class ConfigListService {
             return countNums/pageSize;
         return countNums/pageSize+1;
     }
+
+//    获取私人配置单
+public List<ConfigListDto> getPersonConfigListByPage(Integer currentPage,Integer pageSize,Integer userId){
+    List<ConfigList> list=configListDao.selectPersonConfigListByPage(currentPage,pageSize,userId);
+    List<ConfigListDto> listDto=new ArrayList<ConfigListDto>();
+    for (int i=0;i<list.size();i++){
+        ConfigList ct=list.get(i);
+        ConfigListDto configListDto0=new ConfigListDto();
+        listDto.add(configListDto0);
+        ConfigListDto configListDto=listDto.get(i);
+        configListDto.setUserId(ct.getUserId());
+        configListDto.setCpuId(ct.getCpuId());
+        configListDto.setCpuName(ct.getCpuName());
+        configListDto.setHardDiskId(ct.getHardDiskId());
+        configListDto.setHardDiskName(ct.getHardDiskName());
+        configListDto.setRadiatorId(ct.getRadiatorId());
+        configListDto.setRadiatorName(ct.getRadiatorName());
+        configListDto.setBoxId(ct.getBoxId());
+        configListDto.setBoxName(ct.getBoxName());
+        configListDto.setPowerId(ct.getPowerId());
+        configListDto.setPowerName(ct.getPowerName());
+        configListDto.setMemoryId(ct.getMemoryId());
+        configListDto.setMemoryName(ct.getMemoryName());
+        configListDto.setMainBoardId(ct.getMainBoardId());
+        configListDto.setMainBoardName(ct.getMainBoardName());
+        configListDto.setName(ct.getName());
+        configListDto.setDisplayId(ct.getDisplayId());
+        configListDto.setDisplayName(ct.getDisplayName());
+        //计算配置单总价格
+        double sum=0;
+        sum+=cpuDao.getPriceById(ct.getCpuId())
+                +boxDao.getPriceById(ct.getBoxId())
+                +displayDao.getPriceById(ct.getDisplayId())
+                +hardDiskDao.getPriceById(ct.getHardDiskId())
+                +mainBoardDao.getPriceById(ct.getMainBoardId())
+                +memoryDao.getPriceById(ct.getMemoryId())
+                +powerDao.getPriceById(ct.getPowerId())
+                +radiatorDao.getPriceById(ct.getRadiatorId());
+        configListDto.setPrice(sum);
+    }
+    return listDto;
+}
 }

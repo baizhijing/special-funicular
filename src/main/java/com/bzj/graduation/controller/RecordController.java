@@ -40,13 +40,19 @@ public class RecordController {
         return recordService.getAll(currentPage,pageSize);
     }
 
+    @ResponseBody
     @PostMapping("/getPersonRecord")
-    public List<Record> getPersonRecord(int currentPage, int pageSize,String userName){
+    public List<Record> getPersonRecord(@RequestBody Map<String,Integer> map,HttpSession session){
+        String userName=(String)session.getAttribute("loginUser");
+        Integer currentPage=map.get("currentPage");
+        Integer pageSize=map.get("pageSize");
         return recordService.getPersonRecord(currentPage,pageSize,userName);
     }
 
-    @PostMapping("/getPersonRecordCount")
-    public Integer getPersonRecordCount(int pageSize,String userName){
+    @ResponseBody
+    @GetMapping("/getPersonRecordCount")
+    public Integer getPersonRecordCount(int pageSize,HttpSession session){
+        String userName=(String) session.getAttribute("loginUser");
         return recordService.getPersonRecordCount(userName,pageSize);
     }
 

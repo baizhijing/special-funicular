@@ -140,5 +140,18 @@ https://www.cnblogs.com/onetwo/p/7371778.html分页查询参考博客
         return configListService.getConfiglistPageNum(pageSize);
     }
 
+//    私人配置单
+    @PostMapping("/configlist/getPersonList")
+    public List<ConfigListDto> getPersonConfigList(@RequestBody Map<String,Integer> map){
+        Integer currentPage=map.get("currentPage");
+        Integer pageSize=map.get("pageSize");
+        Integer userId=map.get("userId");
+        return  configListService.getPersonConfigListByPage(currentPage,pageSize,userId);
+    }
+
+    @GetMapping("/configlist/getPersonCount")
+    public Integer getPersonConfiglistCount(Integer pageSize){
+        return configListService.getConfiglistPageNum(pageSize);
+    }
 
 }

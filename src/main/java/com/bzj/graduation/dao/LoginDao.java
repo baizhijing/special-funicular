@@ -15,7 +15,7 @@ public class LoginDao {
     @Autowired
     private UserMapper userMapper;
 
-    public int getUserId(String username){
+    public Integer getUserId(String username){
         return userMapper.getUserId(username);
     }
 

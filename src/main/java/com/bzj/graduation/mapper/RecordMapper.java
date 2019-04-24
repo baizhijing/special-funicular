@@ -25,7 +25,7 @@ public interface RecordMapper {
 
 
     //个人帖子
-    @Select("select userName from record where id=#{id}")
+    @Select("select * from record where userName=#{userName}")
     List<Record> getPerosonRecord(String userName);
 
     @Select("select count(*) from record where userName=#{userName}")

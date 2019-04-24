@@ -19,19 +19,281 @@
 				</div>
 			</div>
 			<div id="body">
-				<div id="body_top">
+				<div id="body_left">
 					<ul>
-						<li>用户名：</li>
-						<li>等级</li>
-						<button>签到</button>
+						<table style="text-align: left;font-family: '微软雅黑';font-size: 14px;">
+							<tr>
+								<th>用户名：{{object.username}}</th>
+							</tr>
+							<tr>
+								<th></th>
+							</tr>
+							<tr>
+								<th>积分 ：{{object.integ}}</th>
+							</tr>
+						</table>
 					</ul>
 				</div>
-				<div id="body_bottom_left"></div>
-				<div id="body_bottom_right"></div>
+				<div id="body_right">
+					<div id="body_right_top">
+						<p>我的帖子</p>
+						<div id="body_right_top_content">
+
+						</div>
+						<div id="body_right_top_bottom">
+							<div class="page-bar">
+								<ul>
+									<li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
+									<li v-if="cur==1"><a class="banclick">上一页</a></li>
+									<li v-for="index in indexs"  v-bind:class="{ 'active': cur == index}">
+										<a v-on:click="btnClick(index)">{{ index }}</a>
+									</li>
+									<li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
+									<li v-if="cur == all"><a class="banclick">下一页</a></li>
+									<li><a>共<i>{{all}}</i>页</a></li>
+								</ul>
+							</div>
+						</div>
+						<p>我的配置单</p>
+						<div id="body_right_bottom_content"></div>
+						<div id="body_right_bottom_bottom">
+							<div class="page-bar">
+								<ul>
+									<li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
+									<li v-if="cur==1"><a class="banclick">上一页</a></li>
+									<li v-for="index in indexs"  v-bind:class="{ 'active': cur == index}">
+										<a v-on:click="btnClick(index)">{{ index }}</a>
+									</li>
+									<li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
+									<li v-if="cur == all"><a class="banclick">下一页</a></li>
+									<li><a>共<i>{{all}}</i>页</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div id="bottom"></div>
 		</div>
+		<div id="bottom"></div>
+
 	</body>
 	<script src="js/vue.min.js"></script>
 	<script src="js/axios.min.js"></script>
+	<script>
+		let user=new Vue({
+			el:'#body_left',
+			data:{
+				object:{
+				}
+			},
+			mounted:function(){
+				this.getUser();
+			},
+			methods:{
+				getUser(){
+					let self=this;
+					axios.get('http://localhost:8080/getLoginUserMsg',{
+					})
+							.then(function (response){
+								self.object=response.data;
+							}).catch(function (error) {
+						console.log(error);
+					});
+				}
+			}
+		})
+
+		let record=new Vue({
+			el:'body_right_top_content',
+			data:{
+				object:{
+				}
+			},
+			mounted:function () {
+				this.getPersonRecordList(1);
+			},
+			methods: {
+				getPersonRecordList(currentPage){
+					let self=this;
+					axios.post('http://localhost:8080/getPersonRecord',{
+						currentPage:currentPage,
+						pageSize:10
+					})
+							.then(function (response) {
+								console.log(response);
+								let page=pageBar;
+								axios.get('http://localhost:8080/getPersonRecordCount',{
+									params:{pageSize:10}
+								})
+										.then(function (response) {
+											page.all=response.data;
+											console.log(response);
+										})
+										.catch(function (error) {
+											console.log(error);
+										});
+								self.object=response.data;
+							})
+							.catch(function (error) {
+								console.log(error);
+							});
+				}
+			}
+		})
+
+		//分页1
+		let pageBar = new Vue({
+			el: '#body_right_top_bottom',
+			data: {
+				all: 8, //总页数
+				cur: 1//当前页码
+			},
+			watch: {
+				cur: function(oldValue , newValue){
+					console.log(arguments);
+				}
+			},
+			methods: {
+				btnClick: function(data){//页码点击事件
+					if(data != this.cur){
+						this.cur = data
+					}
+					let self=record;
+					self.getRecord(data);
+				},
+				pageClick: function(){
+					this.btnClick(this.cur);
+					console.log('现在在'+this.cur+'页');
+				}
+			},
+			computed: {
+				indexs: function(){
+					var left = 1;
+					var right = this.all;
+					var ar = [];
+					if(this.all>= 5){
+						if(this.cur > 3 && this.cur < this.all-2){
+							left = this.cur - 2
+							right = this.cur + 2
+						}else{
+							if(this.cur<=3){
+								left = 1
+								right = 5
+							}else{
+								right = this.all
+								left = this.all -4
+							}
+						}
+					}
+					while (left <= right){
+						ar.push(left)
+						left ++
+					}
+					return ar
+				}
+
+			}
+		})
+
+		let perSonConfigList=new Vue({
+			el:'#body_right_bottom_content',
+			data:{
+				object:{
+				},
+				userId:0
+			},
+			mounted:function () {
+				this.getPersonConfigList(1);
+			},
+			methods: {
+				getPersonConfigList(currentPage){
+					let self=this;
+					axios.get('http://localhost:8080/getLoginUserId',{
+					})
+							.then(function (response) {
+								self.userId=response.data;
+								axios.post('http://localhost:8080/configlist/getPersonList',{
+									currentPage:currentPage,
+									pageSize:10,
+									userId:self.userId
+								})
+										.then(function (response) {
+											self.object=response.data;
+										})
+										.catch(function (error) {
+											console.log(error);
+										});
+							})
+					axios.get('http://localhost:8080/configlist/getPersonCount',{
+						params:{
+							pageSize:10
+						}
+					})
+							.then(function (response) {
+								console.log(response);
+								let page=pageBar2;
+								page.all=response.data;
+							})
+							.catch(function (error) {
+								console.log(error);
+							});
+				}
+			}
+		})
+
+		let pageBar2 = new Vue({
+			el: '#body_right_bottom_bottom',
+			data: {
+				all: 8, //总页数
+				cur: 1//当前页码
+			},
+			watch: {
+				cur: function(oldValue , newValue){
+					console.log(arguments);
+				}
+			},
+			methods: {
+				btnClick: function(data){//页码点击事件
+					if(data != this.cur){
+						this.cur = data
+					}
+					let self=perSonConfigList;
+					self.getPersonConfigList(data);
+				},
+				pageClick: function(){
+					this.btnClick(this.cur);
+					console.log('现在在'+this.cur+'页');
+					let self=perSonConfigList;
+					self.getPersonConfigList(this.cur);
+				}
+			},
+			computed: {
+				indexs: function(){
+					var left = 1;
+					var right = this.all;
+					var ar = [];
+					if(this.all>= 5){
+						if(this.cur > 3 && this.cur < this.all-2){
+							left = this.cur - 2
+							right = this.cur + 2
+						}else{
+							if(this.cur<=3){
+								left = 1
+								right = 5
+							}else{
+								right = this.all
+								left = this.all -4
+							}
+						}
+					}
+					while (left <= right){
+						ar.push(left)
+						left ++
+					}
+					return ar
+				}
+
+			}
+		})
+	</script>
 </html>

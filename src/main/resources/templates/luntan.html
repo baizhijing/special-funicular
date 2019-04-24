@@ -96,7 +96,8 @@
 			var popLayer = document.getElementById("popLayer");
 			popBox.style.display = "none";
 			popLayer.style.display = "none";    };
-		var user=new Vue({
+
+		let user=new Vue({
 			el:'#body_right_top',
 			data:{
 				object:{
@@ -118,6 +119,7 @@
 				}
 			}
 		})
+
 		var record=new Vue({
 			el:'#body_left_top',
 			data:{
@@ -199,6 +201,7 @@
 					self.getRecord(data);
 				},
 				pageClick: function(){
+					this.btnClick(this.cur);
 					console.log('现在在'+this.cur+'页');
 				}
 			},

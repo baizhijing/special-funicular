@@ -21,7 +21,7 @@ public interface UserMapper {
     String getPassword(@PathVariable String username);
 
     @Select("select id from user where username=#{username}")
-    Integer getUserId(@PathVariable String username);
+    Integer getUserId(String username);
 
     @Insert("insert into user values(0,#{username},#{password},1)")
     void insertUser(String username,String password);
