@@ -25,10 +25,14 @@ public class ConfigListDao {
 
     public List<ConfigList> selectConfigListByPage(int currentPage, int pageSize){
         PageHelper.startPage(currentPage, pageSize);
-        List<ConfigList> allBoxs = configListMapper.getAll();        //全部商品
+        List<ConfigList> allConfigLists = configListMapper.getAll();        //全部商品
         int countNums = configListMapper.getCount();            //总记录数
         PageBean<ConfigList> pageData = new PageBean<>(currentPage, pageSize, countNums);
-        pageData.setItems(allBoxs);
+        pageData.setItems(allConfigLists);
         return pageData.getItems();
+    }
+
+    public Integer getCount(){
+        return configListMapper.getCount();
     }
 }

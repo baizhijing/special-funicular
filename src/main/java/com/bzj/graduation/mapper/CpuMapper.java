@@ -5,6 +5,7 @@ import com.bzj.graduation.bean.Cpu;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -28,4 +29,7 @@ public interface CpuMapper {
 
     @Select("select count(*) from cpu")
     int selectCount();
+
+    @Select("select price from cpu where id=#{id}")
+    Double selectPriceById(Integer id);
 }

@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -34,5 +35,9 @@ public class DisplayDao {
 
     public int getCount(){
         return displayMapper.getCount();
+    }
+
+    public Double getPriceById(Integer id){
+        return displayMapper.selectPriceById(id);
     }
 }

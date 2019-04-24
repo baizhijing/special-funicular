@@ -4,6 +4,7 @@ import com.bzj.graduation.bean.Display;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -19,4 +20,7 @@ public interface DisplayMapper {
 
     @Select("select count(*) from displaycard")
     int getCount();
+
+    @Select("select price from displaycard where id=#{id}")
+    Double selectPriceById(Integer id);
 }

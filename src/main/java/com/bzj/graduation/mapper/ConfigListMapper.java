@@ -22,4 +22,7 @@ public interface ConfigListMapper {
 
     @Select("select count(*) from configlist")
     int getCount();
+
+    @Select("select * from configlist where userId=#{userId}")
+    List<ConfigList> selectByUserId(Integer userId);
 }

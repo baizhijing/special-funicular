@@ -4,6 +4,7 @@ import com.bzj.graduation.bean.Box;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -22,4 +23,7 @@ public interface BoxMapper {
 
     @Select("select count(*) from box")
     int countBoxs();
+
+    @Select("select price from box where id=#{id}")
+    Double selectPriceById(Integer id);
 }

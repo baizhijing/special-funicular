@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -37,5 +38,9 @@ public class BoxDao {
 
     public String getTypeById(int id){
         return boxMapper.selectTypeById(id);
+    }
+
+    public Double getPriceById(Integer id){
+        return boxMapper.selectPriceById(id);
     }
 }

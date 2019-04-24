@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -30,5 +31,9 @@ public class HardDiskDao {
 
     public Integer getCount(){
         return hardDiskMapper.getCount();
+    }
+
+    public Double getPriceById(Integer id){
+        return hardDiskMapper.selectPriceById(id);
     }
 }

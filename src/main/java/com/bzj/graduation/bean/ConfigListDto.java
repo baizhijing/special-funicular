@@ -5,15 +5,12 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-/**
- * @Author:bai
- *  * @data:2019/3/13
- **/
 @Component
 @Data
-public class ConfigList {
+public class ConfigListDto {
     private Integer id;
 
+//    配置单名称
     private String name;
 
     private Integer userId;
@@ -49,5 +46,7 @@ public class ConfigList {
     private Integer displayId;
 
     private String displayName;
+
+    private Double price;
 
 }

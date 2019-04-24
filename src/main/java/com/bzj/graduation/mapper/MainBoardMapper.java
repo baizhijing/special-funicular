@@ -4,6 +4,7 @@ import com.bzj.graduation.bean.MainBoard;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -25,5 +26,8 @@ public interface MainBoardMapper {
 
     @Select("select count(*) from mainboard")
     int getCount();
+
+    @Select("select price from mainboard where id=#{id}")
+    Double selectPriceById(Integer id);
 
 }

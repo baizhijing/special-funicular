@@ -5,6 +5,11 @@
 	margin: 0 auto;
 	/* 设置水平居中 */
 }
+
+li{
+    list-style: none;
+}
+
 #top{
 	margin: 0px;
 	width: 1200px;
@@ -81,4 +86,131 @@
 #bottom{
 	background-color:#f3f3f3;
 	height: 100px;
+}
+
+#body_left_content{
+    margin-top: 50px;
+    margin-left: 25px;
+    width: 550px;
+    height: 500px;
+}
+
+
+
+#body_left_content li:hover{
+    margin-right: 70px;
+    background-color: #e2e6ea;
+}
+
+#body_left_bottom{
+     margin-top: 5px;
+     margin-left: 80px;
+     width: 600px;
+     height: 100px;
+ }
+
+#body_left_bottom ul{
+    margin: 0 auto;
+}
+
+#body_left_bottom li{
+    /* margin: 0 auto; */
+    padding: 0px;
+}
+
+#body_left_bottom li{
+    list-style: none
+}
+#body_left_bottom .page-bar li:first-child>a {
+    margin-left: 0px
+}
+#body_left_bottom .page-bar a{
+    border: 1px solid #ddd;
+    text-decoration: none;
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    cursor: pointer
+}
+#body_left_bottom .page-bar a:hover{
+    background-color: #eee;
+}
+#body_left_bottom .page-bar a.banclick{
+    cursor:not-allowed;
+}
+#body_left_bottom .page-bar .active a{
+    color: #fff;
+    cursor: default;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+#body_left_bottom .page-bar i{
+    font-style:normal;
+    color: #d44950;
+    margin: 0px 4px;
+    font-size: 12px;
+}
+
+
+#body_right_content{
+    margin-top: 50px;
+    margin-left: 25px;
+    width: 550px;
+    height: 500px;
+}
+
+/*第二个分页插件*/
+#body_right_bottom{
+    margin-top: 5px;
+    margin-left: 80px;
+    width: 600px;
+    height: 100px;
+}
+
+#body_right_bottom ul{
+    margin: 0 auto;
+}
+
+#body_right_bottom li{
+    /* margin: 0 auto; */
+    padding: 0px;
+}
+
+#body_right_bottom li{
+    list-style: none
+}
+#body_right_bottom .page-bar li:first-child>a {
+    margin-left: 0px
+}
+#body_right_bottom .page-bar a{
+    border: 1px solid #ddd;
+    text-decoration: none;
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    cursor: pointer
+}
+#body_right_bottom .page-bar a:hover{
+    background-color: #eee;
+}
+#body_right_bottom .page-bar a.banclick{
+    cursor:not-allowed;
+}
+#body_right_bottom .page-bar .active a{
+    color: #fff;
+    cursor: default;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+#body_right_bottom .page-bar i{
+    font-style:normal;
+    color: #d44950;
+    margin: 0px 4px;
+    font-size: 12px;
 }

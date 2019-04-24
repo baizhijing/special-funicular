@@ -19,11 +19,17 @@ public class DownloadService {
         return downloadDao.selectResourceTypeByPage(currentPage,pageSize,type);
     }
 
-    public Integer getAllCount(){
-        return downloadDao.getAllCount();
+    public Integer getAllCount(Integer pageSize){
+        Integer countNums= downloadDao.getAllCount();
+        if (countNums%pageSize==0)
+            return countNums/pageSize;
+        return countNums/pageSize+1;
     }
 
-    public Integer getCountByType(String type){
-        return downloadDao.getCountByType(type);
+    public Integer getCountByType(String type,Integer pageSize){
+        Integer countNums= downloadDao.getCountByType(type);
+        if (countNums%pageSize==0)
+            return countNums/pageSize;
+        return countNums/pageSize+1;
     }
 }

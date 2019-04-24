@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -35,5 +36,9 @@ public class RadiatorDao {
 
     public Integer getCount(){
         return radiatorMapper.getCount();
+    }
+
+    public Double getPriceById(Integer id){
+        return radiatorMapper.selectPriceById(id);
     }
 }

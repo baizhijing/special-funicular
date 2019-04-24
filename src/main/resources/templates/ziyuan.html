@@ -22,17 +22,63 @@
 			<div id="body">
 				<div id="body_left">
 					<p>软件资源</p>
-					<div id="body_left_content" v-for="value in object">
+					<div id="body_left_content">
 						<ul>
-							<li></li>
+							<li  v-for="value in object">
+								<table>
+									<tr>
+										<td style="width: 300px">{{value.name}}</td>
+										<br>
+										<td>类型：{{value.type}}</td>
+									</tr>
+								</table>
+							</li>
 						</ul>
 					</div>
-					<div id="body_left_bottom"></div>
+					<div id="body_left_bottom">
+						<div class="page-bar">
+							<ul>
+								<li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
+								<li v-if="cur==1"><a class="banclick">上一页</a></li>
+								<li v-for="index in indexs"  v-bind:class="{ 'active': cur == index}">
+									<a v-on:click="btnClick(index)">{{ index }}</a>
+								</li>
+								<li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
+								<li v-if="cur == all"><a class="banclick">下一页</a></li>
+								<li><a>共<i>{{all}}</i>页</a></li>
+							</ul>
+						</div>
+					</div>
 				</div>
 				<div id="body_right">
 					<p>公共配置单</p>
-					<div id="body_right_content"></div>
-					<div id="body_right_bottom"></div>
+					<div id="body_right_content">
+						<ul>
+							<li  v-for="value in object2">
+								<table>
+									<tr>
+										<td style="width: 300px">{{value.name}}</td>
+										<br>
+										<td>类型：{{value.price}}</td>
+									</tr>
+								</table>
+							</li>
+						</ul>
+					</div>
+					<div id="body_right_bottom">
+						<div class="page-bar">
+							<ul>
+								<li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
+								<li v-if="cur==1"><a class="banclick">上一页</a></li>
+								<li v-for="index in indexs"  v-bind:class="{ 'active': cur == index}">
+									<a v-on:click="btnClick(index)">{{ index }}</a>
+								</li>
+								<li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
+								<li v-if="cur == all"><a class="banclick">下一页</a></li>
+								<li><a>共<i>{{all}}</i>页</a></li>
+							</ul>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div id="bottom"></div>
@@ -42,13 +88,13 @@
 	<script src="js/axios.min.js"></script>
 	<script>
 		let Resource=new Vue({
-			el:'body_left',
+			el:'#body_left_content',
 			data:{
 				object:{
 				}
 			},
 			mounted:function () {
-
+				this.getResource(1);
 			},
 			methods:{
 				getResource:function(currentPage,type){
@@ -67,7 +113,7 @@
 										params:{pageSize:10}
 									})
 											.then(function (response) {
-												page.all=response.data;
+												page.all=response.data;//将返回总条数传给插件总页数
 												console.log(response);
 											})
 											.catch(function (error) {
@@ -106,6 +152,153 @@
 					}
 
 				}
+			}
+		})
+
+		let pageBar = new Vue({
+			el: '#body_left_bottom',
+			data: {
+				all: 8, //总页数
+				cur: 1//当前页码
+			},
+			watch: {
+				cur: function(oldValue , newValue){
+					// console.log(arguments);
+				}
+			},
+			methods: {
+				btnClick: function(data){//页码点击事件
+					let resource=Resource;
+					if(data != this.cur) {
+						this.cur = data;
+					}
+					resource.getResource(data,resource.type)
+				},
+				pageClick: function(){
+					console.log('现在在'+this.cur+'页');
+					this.btnClick(this.cur)
+				}
+			},
+
+			computed: {
+				indexs: function(){
+					var left = 1;
+					var right = this.all;
+					var ar = [];
+					if(this.all>= 5){
+						if(this.cur > 3 && this.cur < this.all-2){
+							left = this.cur - 2
+							right = this.cur + 2
+						}else{
+							if(this.cur<=3){
+								left = 1
+								right = 5
+							}else{
+								right = this.all
+								left = this.all -4
+							}
+						}
+					}
+					while (left <= right){
+						ar.push(left)
+						left ++
+					}
+					return ar
+				}
+
+			}
+		})
+
+		let configList=new Vue({
+			el:'#body_right_content',
+			data:{
+				object2:{
+				}
+			},
+			mounted:function () {
+				this.getList();
+			},
+			methods:{
+				getList:function (currentPage) {
+					if (currentPage==null)
+						currentPage=1;
+					axios.post('http://localhost:8080/configlist/getList',{
+						currentPage:currentPage,
+						pageSize:10
+					})
+							.then(function (response) {
+								console.log(response);
+								let page=pageBar2;
+								axios.get('http://localhost:8080/configlist/getCount',{
+									params:{pageSize:10}
+								})
+										.then(function (response) {
+											page.all=response.data;
+											console.log(response);
+										})
+										.catch(function (error) {
+											console.log(error);
+										});
+								let self=this;
+								self.object2=response.data;
+							})
+							.catch(function (error) {
+								console.log(error);
+							});
+				}
+			}
+		})
+
+		let pageBar2 = new Vue({
+			el: '#body_right_bottom',
+			data: {
+				all: 8, //总页数
+				cur: 1//当前页码
+			},
+			watch: {
+				cur: function(oldValue , newValue){
+					// console.log(arguments);
+				}
+			},
+			methods: {
+				btnClick: function(data){//页码点击事件
+					let configList=configList;
+					if(data != this.cur) {
+						this.cur = data;
+					}
+					configList.getList(data)
+				},
+				pageClick: function(){
+					console.log('现在在'+this.cur+'页');
+					this.btnClick(this.cur)
+				}
+			},
+			computed: {
+				indexs: function(){
+					var left = 1;
+					var right = this.all;
+					var ar = [];
+					if(this.all>= 5){
+						if(this.cur > 3 && this.cur < this.all-2){
+							left = this.cur - 2
+							right = this.cur + 2
+						}else{
+							if(this.cur<=3){
+								left = 1
+								right = 5
+							}else{
+								right = this.all
+								left = this.all -4
+							}
+						}
+					}
+					while (left <= right){
+						ar.push(left)
+						left ++
+					}
+					return ar
+				}
+
 			}
 		})
 	</script>

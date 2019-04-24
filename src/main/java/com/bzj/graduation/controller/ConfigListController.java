@@ -127,4 +127,18 @@ https://www.cnblogs.com/onetwo/p/7371778.html分页查询参考博客
     public Integer getRadiatorNum(Integer pageSize){
         return configListService.getRadiatorPage(pageSize);
     }
+
+    @PostMapping("/configlist/getList")
+    public List<ConfigListDto> getConfigList(@RequestBody Map<String,Integer> map){
+        Integer currentPage=map.get("currentPage");
+        Integer pageSize=map.get("pageSize");
+        return  configListService.getConfigListByPage(currentPage,pageSize);
+    }
+
+    @GetMapping("/configlist/getCount")
+    public Integer getConfiglistCount(Integer pageSize){
+        return configListService.getConfiglistPageNum(pageSize);
+    }
+
+
 }

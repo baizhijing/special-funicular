@@ -30,13 +30,13 @@ public class DownloadController {
     }
 
     @RequestMapping("/resource/getAllCount")
-    public Integer getAllCount()
+    public Integer getAllCount(Integer pageSize)
     {
-        return downloadService.getAllCount();
+        return downloadService.getAllCount(pageSize);
     }
 
     @RequestMapping("/resource/getCountByType")
-    public Integer getCountByType(String type){
-        return downloadService.getCountByType(type);
+    public Integer getCountByType(String type,Integer pageSize){
+        return downloadService.getCountByType(type,pageSize);
     }
 }
