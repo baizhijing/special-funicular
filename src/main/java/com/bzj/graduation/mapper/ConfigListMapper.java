@@ -27,5 +27,5 @@ public interface ConfigListMapper {
     List<ConfigList> selectByUserId(Integer userId);
 
     @Select("select count(*) from configlist where userId=#{userId}")
-    Integer getPersonCount();
+    Integer getPersonCount(Integer userId);
 }

@@ -36,8 +36,19 @@
 				</div>
 				<div id="body_right">
 					<div id="body_right_top">
-						<p>我的帖子</p>
-						<div id="body_right_top_content">
+						<p style="text-align: center;">我的帖子</p>
+						<div id="body_right_top_content"  style="height: 450px;">
+							<ul style="list-style: none;">
+								<li v-for="value in object">
+									<table style="font-family: '微软雅黑';font-size: 16px;">
+										<tr>
+											<td style="width: 650px;">标题：{{value.title}}</td>
+											<td>创建时间：{{value.createTime}}</td>
+										</tr>
+									</table>
+									<br>
+								</li>
+							</ul>
 
 						</div>
 						<div id="body_right_top_bottom">
@@ -54,8 +65,22 @@
 								</ul>
 							</div>
 						</div>
-						<p>我的配置单</p>
-						<div id="body_right_bottom_content"></div>
+						<br>
+						<div id="body_right_bottom_content" style="margin-top: 50px;height: 450px">
+							<hr>
+							<p style="text-align: center;">我的配置单</p>
+							<ul style="list-style: none;">
+								<li v-for="value in object">
+									<table style="font-family: '微软雅黑';font-size: 16px;">
+										<tr>
+											<td style="width: 650px;">标题：{{value.name}}</td>
+											<td>价格：{{value.price}}</td>
+										</tr>
+									</table>
+									<br>
+								</li>
+							</ul>
+						</div>
 						<div id="body_right_bottom_bottom">
 							<div class="page-bar">
 								<ul>
@@ -104,7 +129,7 @@
 		})
 
 		let record=new Vue({
-			el:'body_right_top_content',
+			el:'#body_right_top_content',
 			data:{
 				object:{
 				}
@@ -122,6 +147,7 @@
 							.then(function (response) {
 								console.log(response);
 								let page=pageBar;
+								self.object=response.data;
 								axios.get('http://localhost:8080/getPersonRecordCount',{
 									params:{pageSize:10}
 								})
@@ -132,7 +158,6 @@
 										.catch(function (error) {
 											console.log(error);
 										});
-								self.object=response.data;
 							})
 							.catch(function (error) {
 								console.log(error);
@@ -159,10 +184,11 @@
 						this.cur = data
 					}
 					let self=record;
-					self.getRecord(data);
+					self.getPersonRecordList(data);
 				},
 				pageClick: function(){
 					this.btnClick(this.cur);
+					self.getPersonRecordList(this.cur);
 					console.log('现在在'+this.cur+'页');
 				}
 			},
@@ -219,24 +245,26 @@
 								})
 										.then(function (response) {
 											self.object=response.data;
+											axios.get('http://localhost:8080/configlist/getPersonCount',{
+												params:{
+													pageSize:10,
+													userId:self.userId
+												}
+											})
+													.then(function (response) {
+														console.log(response);
+														let page=pageBar2;
+														page.all=response.data;
+													})
+													.catch(function (error) {
+														console.log(error);
+													});
 										})
 										.catch(function (error) {
 											console.log(error);
 										});
 							})
-					axios.get('http://localhost:8080/configlist/getPersonCount',{
-						params:{
-							pageSize:10
-						}
-					})
-							.then(function (response) {
-								console.log(response);
-								let page=pageBar2;
-								page.all=response.data;
-							})
-							.catch(function (error) {
-								console.log(error);
-							});
+
 				}
 			}
 		})

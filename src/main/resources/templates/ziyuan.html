@@ -263,15 +263,16 @@
 			},
 			methods: {
 				btnClick: function(data){//页码点击事件
-					let configList=configList;
+					let list=configList;
 					if(data != this.cur) {
 						this.cur = data;
 					}
-					configList.getList(data)
+					list.getList(data)
 				},
 				pageClick: function(){
 					console.log('现在在'+this.cur+'页');
-					this.btnClick(this.cur);
+					let list=configList;
+					list.getList(this.cur);
 				}
 			},
 			computed: {

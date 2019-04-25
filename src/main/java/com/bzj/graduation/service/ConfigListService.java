@@ -239,6 +239,13 @@ public class ConfigListService {
         return countNums/pageSize+1;
     }
 
+    public Integer getPersonConfiglistPageNum(Integer pageSize,Integer userId){
+        int countNums= configListDao.getPersonCount(userId);
+        if (countNums%pageSize==0)
+            return countNums/pageSize;
+        return countNums/pageSize+1;
+    }
+
 //    获取私人配置单
 public List<ConfigListDto> getPersonConfigListByPage(Integer currentPage,Integer pageSize,Integer userId){
     List<ConfigList> list=configListDao.selectPersonConfigListByPage(currentPage,pageSize,userId);

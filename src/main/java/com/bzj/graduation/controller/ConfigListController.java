@@ -150,8 +150,9 @@ https://www.cnblogs.com/onetwo/p/7371778.html分页查询参考博客
     }
 
     @GetMapping("/configlist/getPersonCount")
-    public Integer getPersonConfiglistCount(Integer pageSize){
-        return configListService.getConfiglistPageNum(pageSize);
+    public Integer getPersonConfiglistCount(Integer pageSize,Integer userId){
+
+        return configListService.getPersonConfiglistPageNum(pageSize,userId);
     }
 
 }
