@@ -16,9 +16,14 @@ public class CpuDao {
     @Autowired
     private CpuMapper cpuMapper;
 
-    public List<Cpu> selectCpuByPage(int currentPage,int pageSize){
+    public List<Cpu> selectCpuByPage(int currentPage,int pageSize,String type){
         PageHelper.startPage(currentPage, pageSize);
-        List<Cpu> allCpus = cpuMapper.selectAll();        //全部商品
+        List<Cpu> allCpus;
+        if (type==null){
+            allCpus = cpuMapper.selectAll();        //全部商品
+        }
+        else
+            allCpus=cpuMapper.selectByType(type);
         int countNums = cpuMapper.countCpus();            //总记录数
         PageBean<Cpu> pageData = new PageBean<>(currentPage, pageSize, countNums);
         pageData.setItems(allCpus);
@@ -41,8 +46,11 @@ public class CpuDao {
         return cpuMapper.selectAll();
     }
 
-    public int selectCount(){
+    public int selectCount(String type){
+        if (type==null)
         return cpuMapper.selectCount();
+        else
+            return cpuMapper.selectCountByType(type);
     }
 
     public Double getPriceById(Integer id){

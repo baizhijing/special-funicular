@@ -9,14 +9,20 @@ import java.util.List;
 
 @Mapper
 public interface MemoryMapper {
-    @Select("select memory_type from memory where id=#{id}")
+    @Select("select memoryType from memory where id=#{id}")
     String selectMemoryTypeById(int id);
 
     @Select("select count(*) from memory")
     int getCount();
 
+    @Select("select count(*) from memory where name like CONCAT('%',#{type},'%')")
+    int countByType(String type);
+
     @Select("select * from memory")
     List<Memory> getAll();
+
+    @Select("select * from memory where name like CONCAT('%',#{type},'%')")
+    List<Memory> selectAllByType(String type);
 
     @Select("select price from memory where id=#{id}")
     Double selectPriceById(Integer id);

@@ -14,11 +14,11 @@ import java.util.List;
 @Mapper
 public interface RecordDetailMapper {
     @Insert("insert into record_detail values(0,#{recordId},#{username},#{time},#{comment},#{userId})")
-    void insertRecordDeatil(int recordId,String username,String userId,String comment,String time);
+    void insertRecordDeatil(int recordId,String username,Integer userId,String comment,String time);
 
-    @Select("select * from record_detail")
-    List<RecordDetail> selectAll();
+    @Select("select * from record_detail where recordId=#{recordId}")
+    List<RecordDetail> selectAll(Integer recordId);
 
-    @Select("select count(*) from record_detail")
-    Integer getCount();
+    @Select("select count(*) from record_detail where recordId=#{recordId}")
+    Integer getCount(Integer recordId);
 }

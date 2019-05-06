@@ -31,17 +31,28 @@ public class MainBoardDao {
     public String getTypeById(int id){ return mainBoardMapper.selectTypeById(id);}
 
     //分页查询
-    public List selectMainBoardByPage(int currentPage, int pageSize){
+    public List selectMainBoardByPage(int currentPage, int pageSize,String type){
+        List<MainBoard> allMainBoard;
+        int countNums;
         PageHelper.startPage(currentPage, pageSize);
-        List<MainBoard> allMainBoard = mainBoardMapper.getAll();        //全部商品
-        int countNums = mainBoardMapper.getCount();            //总记录数
+        if (type==null){
+            allMainBoard= mainBoardMapper.getAll();        //全部商品
+            countNums= mainBoardMapper.getCount();            //总记录数
+        }
+         else{
+             allMainBoard=mainBoardMapper.selectAllByType(type);
+             countNums=mainBoardMapper.countByType(type);
+        }
         PageBean<MainBoard> pageData = new PageBean<>(currentPage, pageSize, countNums);
         pageData.setItems(allMainBoard);
         return pageData.getItems();
     }
 
-    public Integer getCount(){
+    public Integer getCount(String type){
+        if (type==null)
         return mainBoardMapper.getCount();
+        else
+            return mainBoardMapper.countByType(type);
     }
 
     public Double getPriceById(Integer id){

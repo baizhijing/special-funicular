@@ -14,10 +14,11 @@ import java.util.List;
  **/
 @Mapper
 public interface ConfigListMapper {
-//    @Insert("insert into configlist values(0,'自定义',#{},#{}")
-//    void InsertList(@PathVariable ConfigList configList);
-
-    @Select("select * from configlist")
+    @Insert("insert into configlist values(0,#{userId},#{cpuId},#{hardDiskId},#{radiatorId},#{boxId},#{powerId},#{memoryId},#{mainBoardId},#{name},#{cpuName},#{hardDiskName},#{radiatorName},#{boxName},#{powerName},#{memoryName},#{mainBoardName},#{displayId},#{displayName},#{isPublic})")
+    void InsertList(Integer cpuId,Integer userId,Integer hardDiskId,Integer radiatorId,Integer boxId,Integer powerId,Integer memoryId,Integer mainBoardId,
+                    String name,String cpuName,String hardDiskName,String radiatorName,String boxName,String powerName,String memoryName,String mainBoardName,
+                    Integer displayId,String displayName,Integer isPublic);
+    @Select("select * from configlist where isPublic=1")
     List<ConfigList> getAll();
 
     @Select("select count(*) from configlist")

@@ -2,15 +2,11 @@ package com.bzj.graduation.service;
 
 import com.bzj.graduation.bean.*;
 import com.bzj.graduation.dao.*;
-import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author:bai
@@ -46,47 +42,55 @@ public class ConfigListService {
     @Autowired
     private BoxDao boxDao;
 
+//    @Autowired
+//    private ConfigList configList;
+
     //判断CPU规格，散热器可能同时支持两种
-    public Boolean Core(ConfigList configList, Map<String,Object> map) {
-        Integer cpuId = configList.getCpuId();
-        Integer mainBoardId = configList.getMainBoardId();
-        Integer powerId = configList.getPowerId();
-        Integer radiatorId = configList.getRadiatorId();
-        Integer memoryId = configList.getMemoryId();
-        Integer displayId=configList.getDisplayId();
-        Integer hardDiskId=configList.getHardDiskId();
-        Integer boxId=configList.getBoxId();
+    public String Core(Map<String,Object> map,ConfigList configList) {
+        Integer cpuId = (Integer) map.get("cpuId");
+        Integer mainBoardId = (Integer) map.get("mainBoardId");
+        Integer powerId = (Integer) map.get("powerId");
+        Integer radiatorId = (Integer) map.get("radiatorId");
+        Integer memoryId = (Integer) map.get("memoryId");
+        Integer displayId=(Integer) map.get("displayId");
+        Integer hardDiskId=(Integer) map.get("hardDiskId");
+        Integer boxId=(Integer) map.get("boxId");
         Integer userId=configList.getUserId();
+        String cpuName=(String) map.get("cpuName");
+        String mainBoardName=(String) map.get("mainBoardName");
+        String powerName=(String) map.get("powerName");
+        String radiatorName=(String) map.get("radiatorName");
+        String memoryName=(String) map.get("memoryName");
+        String displayName=(String) map.get("displayName");
+        String hardDiskName=(String) map.get("hardDiskName");
+        String boxName=(String) map.get("boxName");
         //判断cpu兼容性
-        if (!cpuDao.getInterfById(userId).equals(mainBoardDao.getInterfById(mainBoardId)) || radiatorDao.getInterfById(radiatorId).indexOf(cpuDao.getInterfById(userId))==-1) {
-            map.put("coremsg", "请检查主板，散热器是否支持cpu!");
-            return false;
+        if (!cpuDao.getInterfById(cpuId).equals(mainBoardDao.getInterfById(mainBoardId))) {
+            return "请检查主板，散热器是否支持cpu!";
+        }
+        else if (radiatorDao.getInterfById(radiatorId).indexOf(cpuDao.getInterfById(userId))==-1){
+            return "散热器不兼容此CPU";
         }
         //判断内存兼容性
         else if (!(mainBoardDao.getMemoryTypeById(mainBoardId).equals(memoryDao.getMemoryTypeById(memoryId)))) {
-            map.put("coremsg","请检查内存规格是否兼容主板!");
-            return false;
+            return "请检查内存规格是否兼容主板!";
         }
         //判断电源功率
         else if ((cpuDao.getPowerById(cpuId)+displayDao.getPowerById(displayId)+100)>powerDao.getNumById(powerId)){
-            map.put("coremsg","电源功率不足！");
-            return false;
+            return "电源功率不足!";
         }
         //硬盘兼容性
         else if (hardDiskDao.getInterfById(hardDiskId)=="m.2" && mainBoardDao.getM2ById(mainBoardId)==0){
-            map.put("coremsg","硬盘不兼容，主板缺少M.2接口！");
-            return false;
+            return "硬盘不兼容，主板缺少M.2接口！!";
         }
         else if ( StringUtils.isBlank(cpuDao.getGpuById(cpuId)) && displayId==null ){
-            map.put("coremsg","该CPU没有显示核心，请添加独立显卡!");
-            return false;
+            return "该CPU没有显示核心，请添加独立显卡!";
         }
         else if (boxDao.getDisplayCardById(boxId)<displayDao.getLengthById(displayId)){
-            map.put("coremsg","显卡过长，请更换显卡或机箱!");
+            return "显卡过长，请更换显卡或机箱!";
         }
         else if (radiatorDao.getHighById(radiatorId)>boxDao.getRadiatorById(boxId)){
-            map.put("coremsg","散热器过高，请更换散热器或机箱!");
-            return false;
+            return "散热器过高，请更换散热器或机箱!";
         }
 
         //散热器接口需要判断，有些只兼容intel或AMD的
@@ -94,104 +98,118 @@ public class ConfigListService {
         //显卡供电接口？？
 
         else if (boxDao.getTypeById(boxId).indexOf(mainBoardDao.getTypeById(mainBoardId))==-1){
-            map.put("coremsg","主板与机箱不兼容!");
-            return false;
+            return "主板与机箱不兼容!";
         }
 
-        map.put("coremsg","装机成功！");
+        configList.setRadiatorId(radiatorId);
+        configList.setRadiatorName(radiatorName);
+        configList.setPowerId(powerId);
+        configList.setPowerName(powerName);
+        configList.setBoxId(boxId);
+        configList.setBoxName(boxName);
+        configList.setCpuId(cpuId);
+        configList.setCpuName(cpuName);
+        configList.setDisplayId(displayId);
+        configList.setDisplayName(displayName);
+        configList.setHardDiskId(hardDiskId);
+        configList.setHardDiskName(hardDiskName);
+        configList.setMainBoardId(mainBoardId);
+        configList.setMainBoardName(mainBoardName);
+        configList.setMemoryId(memoryId);
+        configList.setMemoryName(memoryName);
         configListDao.insertList(configList);
-            return true;
+            return "装机成功！";
     }
 
-    public Integer getCPUPage(Integer pageSize){
-        int countNums= cpuDao.selectCount();
+    public Integer getCPUPage(Integer pageSize,String type){
+        int countNums=cpuDao.selectCount(type);
         if (countNums%pageSize==0)
             return countNums/pageSize;
         return countNums/pageSize+1;
     }
 
-    public List<Cpu> getCPUList(Integer currentPage,Integer pageSize){
-        return cpuDao.selectCpuByPage(currentPage,pageSize);
+    public List<Cpu> getCPUList(Integer currentPage,Integer pageSize,String type){
+        return cpuDao.selectCpuByPage(currentPage,pageSize,type);
     }
 
-    public Integer getBoxPage(Integer pageSize){
-        int countNums= boxDao.getCount();
+    public Integer getBoxPage(Integer pageSize,String type){
+        int countNums= boxDao.getCount(type);
         if (countNums%pageSize==0)
             return countNums/pageSize;
         return countNums/pageSize+1;
     }
 
-    public List<Box> getBoxList(Integer currentPage,Integer pageSize){
-        return boxDao.selectBoxByPage(currentPage,pageSize);
+    public List<Box> getBoxList(Integer currentPage,Integer pageSize,String type){
+        return boxDao.selectBoxByPage(currentPage,pageSize,type);
     }
 
-    public Integer getDisplayPage(Integer pageSize){
-        int countNums= displayDao.getCount();
+    public Integer getDisplayPage(Integer pageSize,String type){
+        int countNums= displayDao.getCount(type);
         if (countNums%pageSize==0)
             return countNums/pageSize;
         return countNums/pageSize+1;
     }
 
-    public List<Display> getDisplayList(Integer currentPage,Integer pageSize){
-        return displayDao.selectDisplayByPage(currentPage,pageSize);
+    public List<Display> getDisplayList(Integer currentPage,Integer pageSize,String type){
+        return displayDao.selectDisplayByPage(currentPage,pageSize,type);
     }
 
-    public Integer getHardDiskPage(Integer pageSize){
-        int countNums= hardDiskDao.getCount();
+    public Integer getHardDiskPage(Integer pageSize,String type){
+        int countNums= hardDiskDao.getCount(type);
         if (countNums%pageSize==0)
             return countNums/pageSize;
         return countNums/pageSize+1;
     }
 
-    public List<HardDisk> getHardDiskList(Integer currentPage,Integer pageSize){
-        return hardDiskDao.selectHardDiskByPage(currentPage,pageSize);
+    public List<HardDisk> getHardDiskList(Integer currentPage,Integer pageSize,String type){
+        return hardDiskDao.selectHardDiskByPage(currentPage,pageSize,type);
     }
 
-    public Integer getMainBoardPage(Integer pageSize){
-        int countNums= mainBoardDao.getCount();
+    public Integer getMainBoardPage(Integer pageSize,String type){
+        int countNums= mainBoardDao.getCount(type);
         if (countNums%pageSize==0)
             return countNums/pageSize;
         return countNums/pageSize+1;
     }
 
-    public List<MainBoard> getMainBoardList(Integer currentPage,Integer pageSize){
-        return mainBoardDao.selectMainBoardByPage(currentPage,pageSize);
+    public List<MainBoard> getMainBoardList(Integer currentPage,Integer pageSize,String type){
+        return mainBoardDao.selectMainBoardByPage(currentPage,pageSize,type);
     }
 
-    public Integer getMemoryPage(Integer pageSize){
-        int countNums= memoryDao.getCount();
+    public Integer getMemoryPage(Integer pageSize,String type){
+        int countNums= memoryDao.getCount(type);
         if (countNums%pageSize==0)
             return countNums/pageSize;
         return countNums/pageSize+1;
     }
 
-    public List<Memory> getMemoryList(Integer currentPage,Integer pageSize){
-        return memoryDao.selectMemoryByPage(currentPage,pageSize);
+    public List<Memory> getMemoryList(Integer currentPage,Integer pageSize,String type){
+        return memoryDao.selectMemoryByPage(currentPage,pageSize,type);
     }
 
-    public Integer getPowerPage(Integer pageSize){
-        int countNums= powerDao.getCount();
+    public Integer getPowerPage(Integer pageSize,String type){
+        int countNums= powerDao.getCount(type);
         if (countNums%pageSize==0)
             return countNums/pageSize;
         return countNums/pageSize+1;
     }
 
-    public List<Power> getPowerList(Integer currentPage,Integer pageSize){
-        return powerDao.selectPowerByPage(currentPage,pageSize);
+    public List<Power> getPowerList(Integer currentPage,Integer pageSize,String type){
+        return powerDao.selectPowerByPage(currentPage,pageSize,type);
     }
 
-    public Integer getRadiatorPage(Integer pageSize){
-        int countNums= radiatorDao.getCount();
+    public Integer getRadiatorPage(Integer pageSize,String type){
+        int countNums= radiatorDao.getCount(type);
         if (countNums%pageSize==0)
             return countNums/pageSize;
         return countNums/pageSize+1;
     }
 
-    public List<Radiator> getRadiatorList(Integer currentPage,Integer pageSize){
-        return radiatorDao.selectRadiatorByPage(currentPage,pageSize);
+    public List<Radiator> getRadiatorList(Integer currentPage,Integer pageSize,String type){
+        return radiatorDao.selectRadiatorByPage(currentPage,pageSize,type);
     }
 
-    public List<ConfigListDto> getConfigListByPage(Integer currentPage,Integer pageSize){
+    public List<ConfigListDto> getConfigListByPage(Integer currentPage,Integer pageSize,Integer sortConfigList){
         List<ConfigList> list=configListDao.selectConfigListByPage(currentPage,pageSize);
         List<ConfigListDto> listDto=new ArrayList<ConfigListDto>();
         for (int i=0;i<list.size();i++){
@@ -229,7 +247,14 @@ public class ConfigListService {
                     +radiatorDao.getPriceById(ct.getRadiatorId());
             configListDto.setPrice(sum);
         }
-        return listDto;
+        System.out.println(listDto);
+        if (sortConfigList!=1)
+            return listDto;
+        else{
+            Collections.sort(listDto);
+            System.out.println(listDto);
+            return listDto;
+        }
     }
 
     public Integer getConfiglistPageNum(Integer pageSize){

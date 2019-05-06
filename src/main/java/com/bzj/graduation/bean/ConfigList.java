@@ -2,9 +2,6 @@ package com.bzj.graduation.bean;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
-
-import java.math.BigDecimal;
-
 /**
  * @Author:bai
  *  * @data:2019/3/13
@@ -49,5 +46,7 @@ public class ConfigList {
     private Integer displayId;
 
     private String displayName;
+
+    private Integer isPublic;
 
 }

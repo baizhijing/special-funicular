@@ -12,7 +12,7 @@ import java.util.List;
 public interface CpuMapper {
 
 
-    @Select("select Interf from cpu where id=#{id}")
+    @Select("select interf from cpu where id=#{id}")
     String selectInterfById(Integer id);
 
     @Select("select power from cpu where id=#{id}")
@@ -27,8 +27,14 @@ public interface CpuMapper {
     @Select("select * from cpu")
     List<Cpu> selectAll();
 
+    @Select("select * from cpu where name like CONCAT('%',#{type},'%')")
+    List<Cpu> selectByType(String type);
+
     @Select("select count(*) from cpu")
     int selectCount();
+
+    @Select("select count(*) from cpu where name like CONCAT('%',#{type},'%')")
+    int selectCountByType(String type);
 
     @Select("select price from cpu where id=#{id}")
     Double selectPriceById(Integer id);

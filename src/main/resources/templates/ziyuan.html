@@ -9,7 +9,6 @@
 	<body>
 		<div id="main">
 			<div id="top">
-				<div id="image"></div>
 				<div id="daohang">
 					<ul>
 					  <li><a href="http://localhost:8080/index">主页</a></li>
@@ -18,15 +17,17 @@
 					  <li><a href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
 					</ul>
 				</div>
+				<div id="image"><img class="mb-4" src="img/title.jpg" th:src="@{/img/title.jpg}"></div>
 			</div>
 			<div id="body">
 				<div id="body_left">
 					<p>软件资源</p>
 					<div id="body_left_content">
 						<ul>
+							<input style="height:30px; width: 180px;padding-left: 5px;margin-left: 50px" type="text" v-model="message" @keyup.enter="select(message)" placeholder="软件搜索">
 							<li  v-for="value in object">
 								<table>
-									<tr>
+									<tr v-on:click="popOpen(value)">
 										<td style="width: 300px">{{value.name}}</td>
 										<br>
 										<td>类型：{{value.type}}</td>
@@ -34,6 +35,15 @@
 								</table>
 							</li>
 						</ul>
+						<div id="popLayer" v-if="popLayer"></div>
+						<div id="popBoxSoftWare" v-if="softWarePop">
+							<ul>
+								<li>软件名：{{softWareDetail.name}}</li>
+								<li>类别：{{softWareDetail.type}}</li>
+								<p style="text-align: left;">下载地址：{{softWareDetail.url}}</p>
+								<input class="button" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-on:click="popClose()" value="返回">
+							</ul>
+						</div>
 					</div>
 					<div id="body_left_bottom">
 						<div class="page-bar">
@@ -54,9 +64,10 @@
 					<p>公共配置单</p>
 					<div id="body_right_content">
 						<ul>
+							<input style="height:30px; width: 180px;padding-left: 5px;margin-left: 50px" type="button" value="排序" v-on:click="sort()">
 							<li  v-for="value2 in object2">
 								<table>
-									<tr>
+									<tr v-on:click="popOpen(value2)">
 										<td style="width: 300px">{{value2.name}}</td>
 										<br>
 										<td>价格：{{value2.price}}</td>
@@ -64,6 +75,22 @@
 								</table>
 							</li>
 						</ul>
+						<div id="popLayer2" v-if="popLayer"></div>
+						<div id="popBoxConfigList" v-if="ConfigListPop">
+							<ul>
+								<li>配置单名称：{{configListDetail.name}}</li>
+								<li>CPU：{{configListDetail.cpuName}}</li>
+								<li>主板：{{configListDetail.mainBoardName}}</li>
+								<li>内存：{{configListDetail.memoryName}}</li>
+								<li>硬盘：{{configListDetail.hardDiskName}}</li>
+								<li>显卡：{{configListDetail.displayName}}</li>
+								<li>机箱：{{configListDetail.boxName}}</li>
+								<li>电源：{{configListDetail.powerName}}</li>
+								<li>散热器：{{configListDetail.radiatorName}}</li>
+								<li>总价格：{{configListDetail.price}}</li>
+								<input class="button" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-on:click="popClose()" value="返回">
+							</ul>
+						</div>
 					</div>
 					<div id="body_right_bottom">
 						<div class="page-bar">
@@ -90,27 +117,61 @@
 		let Resource=new Vue({
 			el:'#body_left_content',
 			data:{
+				message:'',
 				object:{
-				}
+				},
+				softWarePop:false,
+				popLayer:false,
+				softWareDetail:{
+					name:'',
+					type:'',
+					url:''
+				},
+				selectType:''
 			},
 			mounted:function () {
 				this.getResource(1);
 			},
 			methods:{
-				getResource:function(currentPage,type){
+				select:function(message){
+					let self=this;
+					self.selectType=message;
+					self.getResource(1);
+				},
+				initSelect:function(){
+					let self=this;
+					self.message='';
+				},
+				popOpen:function(value){
+					let self=this;
+					self.softWareDetail.name=value.name;
+					self.softWareDetail.type=value.type;
+					self.softWareDetail.url=value.url;
+					self.softWarePop=true;
+					self.popLayer=true;
+				},
+				popClose:function(){
+					let self=this;
+					self.softWarePop=false;
+					self.popLayer=false;
+				},
+				getResource:function(currentPage){
 					if (currentPage==null)
 						currentPage=1;
 					let self=this;
-					if (type==null){
 						axios.post('http://localhost:8080/resource/list',{
 							currentPage:currentPage,
-							pageSize:10
+							pageSize:10,
+							type:self.selectType,
 						})
 								.then(function (response) {
 									console.log(response);
 									let page=pageBar;
 									axios.get('http://localhost:8080/resource/getAllCount',{
-										params:{pageSize:10}
+										params:{
+											pageSize:10,
+										 	type:self.selectType
+										}
 									})
 											.then(function (response) {
 												page.all=response.data;//将返回总条数传给插件总页数
@@ -124,32 +185,6 @@
 								.catch(function (error) {
 									console.log(error);
 								});
-					}
-					else{
-						axios.post('http://localhost:8080/resource/listByType',{
-							type:type,
-							currentPage:currentPage,
-							pageSize:10
-						})
-								.then(function (response) {
-									console.log(response);
-									let page=pageBar;
-									axios.get('http://localhost:8080/resource/getCountByType',{
-										params:{pageSize:10}
-									})
-											.then(function (response) {
-												page.all=response.data;
-												console.log(response);
-											})
-											.catch(function (error) {
-												console.log(error);
-											});
-									self.object=response.data;
-								})
-								.catch(function (error) {
-									console.log(error);
-								});
-					}
 
 				}
 			}
@@ -213,20 +248,61 @@
 			el:'#body_right_content',
 			data:{
 				object2:{
-				}
+				},
+				ConfigListPop:false,
+				popLayer:false,
+				configListDetail:{
+					name:'',
+					boxName:'',
+					cpuName:'',
+					displayName:'',
+					hardDiskName:'',
+					mainBoardName:'',
+					memoryName:'',
+					powerName:'',
+					price:0,
+					radiatorName:''
+				},
+				sortConfigList:0
 			},
 			mounted:function () {
 				let self=this;
 				self.getList();
 			},
 			methods:{
+				sort:function(){
+					let self=this;
+					self.sortConfigList=1;
+					self.getList(1);
+				},
+				popOpen:function(value){
+					let self=this;
+					self.configListDetail.name=value.name;
+					self.configListDetail.boxName=value.boxName;
+					self.configListDetail.cpuName=value.cpuName;
+					self.configListDetail.displayName=value.displayName;
+					self.configListDetail.hardDiskName=value.hardDiskName;
+					self.configListDetail.mainBoardName=value.mainBoardName;
+					self.configListDetail.memoryName=value.memoryName;
+					self.configListDetail.powerName=value.powerName;
+					self.configListDetail.price=value.price;
+					self.configListDetail.radiatorName=value.radiatorName;
+					self.ConfigListPop=true;
+					self.popLayer=true;
+				},
+				popClose:function(){
+					let self=this;
+					self.ConfigListPop=false;
+					self.popLayer=false;
+				},
 				getList:function (currentPage) {
 					if (currentPage==null)
 						currentPage=1;
 					let self=this;
 					axios.post('http://localhost:8080/configlist/getList',{
 						currentPage:currentPage,
-						pageSize:10
+						pageSize:10,
+						sortConfigList:self.sortConfigList
 					})
 							.then(function (response) {
 								console.log(response);
@@ -270,7 +346,7 @@
 					list.getList(data)
 				},
 				pageClick: function(){
-					console.log('现在在'+this.cur+'页');
+					// console.log('现在在'+this.cur+'页');
 					let list=configList;
 					list.getList(this.cur);
 				}

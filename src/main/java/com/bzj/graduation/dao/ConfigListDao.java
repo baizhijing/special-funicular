@@ -20,6 +20,27 @@ public class ConfigListDao {
     private ConfigListMapper configListMapper;
 
     public boolean insertList(ConfigList configList){
+        Integer cpuId=configList.getCpuId();
+        Integer userId=configList.getUserId();
+        Integer hardDiskId=configList.getHardDiskId();
+        Integer radiatorId=configList.getRadiatorId();
+        Integer boxId=configList.getBoxId();
+        Integer powerId=configList.getPowerId();
+        Integer memoryId=configList.getMemoryId();
+        Integer mainBoardId=configList.getMainBoardId();
+        String name="peizhi1";
+        String cpuName=configList.getCpuName();
+        String hardDiskName=configList.getHardDiskName();
+        String radiatorName=configList.getRadiatorName();
+        String boxName=configList.getBoxName();
+        String powerName=configList.getPowerName();
+        String memoryName=configList.getMemoryName();
+        String mainBoardName=configList.getMainBoardName();
+        Integer displayId=configList.getDisplayId();
+        String displayName=configList.getDisplayName();
+        Integer isPublic=0;
+        configListMapper.InsertList(cpuId,userId,hardDiskId,radiatorId,boxId,powerId,memoryId,mainBoardId,
+                name,cpuName,hardDiskName,radiatorName,boxName,powerName,memoryName,mainBoardName,displayId,displayName,isPublic);
         return true;
     }
 

@@ -2,7 +2,10 @@ package com.bzj.graduation.controller;
 
 import com.bzj.graduation.bean.*;
 import com.bzj.graduation.service.ConfigListService;
+import com.bzj.graduation.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -19,120 +22,131 @@ public class ConfigListController {
     private ConfigList configList;
 
     @Autowired
+    private LoginService loginService;
+
+    @Autowired
     ConfigListService configListService;
 
+
     @PostMapping("/main/apis/core")
-    public String Core(@ModelAttribute ConfigList configList,
-                       Map<String,Object> map, HttpSession session){
-        int userId=(int)session.getAttribute("userId");
-        configList.setUserId(userId);
-        Boolean iftrue=configListService.Core(configList,map);
-        return "结果";
+    public String Core(@RequestBody Map<String,Object> map, HttpSession session){
+        String username=(String)session.getAttribute("loginUser");
+        configList.setUserId(loginService.getUserId(username));
+        return configListService.Core(map,configList);
     }
 /*
 https://www.cnblogs.com/onetwo/p/7371778.html分页查询参考博客
  */
     @PostMapping("/allCpuByPage")
-    public List<Cpu> getCPUPage(@RequestBody Map<String,Integer> map){
-        Integer currentPage=map.get("currentPage");
-        Integer pageSize=map.get("pageSize");
-        return configListService.getCPUList(currentPage,pageSize);
+    public List<Cpu> getCPUPage(@RequestBody Map<String,Object> map){
+        Integer currentPage=(Integer) map.get("currentPage");
+        Integer pageSize=(Integer)map.get("pageSize");
+        String type=(String)map.get("type");
+        return configListService.getCPUList(currentPage,pageSize,type);
     }
 
     @GetMapping("/getCPUPageNum")
-    public Integer getCPUPageNum(Integer pageSize){
-        return configListService.getCPUPage(pageSize);
+    public Integer getCPUPageNum(Integer pageSize,String type){
+        return configListService.getCPUPage(pageSize,type);
     }
 
     @PostMapping("/allBoxByPage")
-    public List<Box> getBoxPage(@RequestBody Map<String,Integer> map){
-        Integer currentPage=map.get("currentPage");
-        Integer pageSize=map.get("pageSize");
-        return configListService.getBoxList(currentPage,pageSize);
+    public List<Box> getBoxPage(@RequestBody Map<String,Object> map){
+        Integer currentPage=(Integer) map.get("currentPage");
+        Integer pageSize=(Integer)map.get("pageSize");
+        String type=(String)map.get("type");
+        return configListService.getBoxList(currentPage,pageSize,type);
     }
 
     @GetMapping("/getBoxPageNum")
-    public Integer getBoxPageNum(Integer pageSize){
-        return configListService.getBoxPage(pageSize);
+    public Integer getBoxPageNum(Integer pageSize,String type){
+        return configListService.getBoxPage(pageSize,type);
     }
 
     @PostMapping("/allDisplayByPage")
-    public List<Display> getDisplayPage(@RequestBody Map<String,Integer> map){
-        Integer currentPage=map.get("currentPage");
-        Integer pageSize=map.get("pageSize");
-        return configListService.getDisplayList(currentPage,pageSize);
+    public List<Display> getDisplayPage(@RequestBody Map<String,Object> map){
+        Integer currentPage=(Integer) map.get("currentPage");
+        Integer pageSize=(Integer)map.get("pageSize");
+        String type=(String)map.get("type");
+        return configListService.getDisplayList(currentPage,pageSize,type);
     }
 
     @GetMapping("/getDisplayPageNum")
-    public Integer getDisplayPageNum(Integer pageSize){
-        return configListService.getDisplayPage(pageSize);
+    public Integer getDisplayPageNum(Integer pageSize,String type){
+        return configListService.getDisplayPage(pageSize,type);
     }
 
     @PostMapping("/allHardDriverByPage")
-    public List<HardDisk> getHardDriverPage(@RequestBody Map<String,Integer> map){
-        Integer currentPage=map.get("currentPage");
-        Integer pageSize=map.get("pageSize");
-        return configListService.getHardDiskList(currentPage,pageSize);
+    public List<HardDisk> getHardDriverPage(@RequestBody Map<String,Object> map){
+        Integer currentPage=(Integer) map.get("currentPage");
+        Integer pageSize=(Integer)map.get("pageSize");
+        String type=(String)map.get("type");
+        return configListService.getHardDiskList(currentPage,pageSize,type);
     }
 
     @GetMapping("/getHardDiskPageNum")
-    public Integer getHardDiskPageNum(Integer pageSize){
-        return configListService.getHardDiskPage(pageSize);
+    public Integer getHardDiskPageNum(Integer pageSize,String type){
+        return configListService.getHardDiskPage(pageSize,type);
     }
 
     @PostMapping("/allMainBoardByPage")
-    public List<MainBoard> getMainBoardPage(@RequestBody Map<String,Integer> map){
-        Integer currentPage=map.get("currentPage");
-        Integer pageSize=map.get("pageSize");
-        return configListService.getMainBoardList(currentPage,pageSize);
+    public List<MainBoard> getMainBoardPage(@RequestBody Map<String,Object> map){
+        Integer currentPage=(Integer) map.get("currentPage");
+        Integer pageSize=(Integer)map.get("pageSize");
+        String type=(String)map.get("type");
+        return configListService.getMainBoardList(currentPage,pageSize,type);
     }
 
     @GetMapping("/getMainBoardNum")
-    public Integer getHardMainBoardNum(Integer pageSize){
-        return configListService.getMainBoardPage(pageSize);
+    public Integer getHardMainBoardNum(Integer pageSize,String type){
+        return configListService.getMainBoardPage(pageSize,type);
     }
 
     @PostMapping("/allMemoryByPage")
-    public List<Memory> getMemoryPage(@RequestBody Map<String,Integer> map){
-        Integer currentPage=map.get("currentPage");
-        Integer pageSize=map.get("pageSize");
-        return configListService.getMemoryList(currentPage,pageSize);
+    public List<Memory> getMemoryPage(@RequestBody Map<String,Object> map){
+        Integer currentPage=(Integer) map.get("currentPage");
+        Integer pageSize=(Integer)map.get("pageSize");
+        String type=(String)map.get("type");
+        return configListService.getMemoryList(currentPage,pageSize,type);
     }
 
     @GetMapping("/getMemoryNum")
-    public Integer getMemoryNum(Integer pageSize){
-        return configListService.getMemoryPage(pageSize);
+    public Integer getMemoryNum(Integer pageSize,String type){
+        return configListService.getMemoryPage(pageSize,type);
     }
 
     @PostMapping("/allPowerByPage")
-    public List<Power> getPowerPage(@RequestBody Map<String,Integer> map){
-        Integer currentPage=map.get("currentPage");
-        Integer pageSize=map.get("pageSize");
-        return configListService.getPowerList(currentPage,pageSize);
+    public List<Power> getPowerPage(@RequestBody Map<String,Object> map){
+        Integer currentPage=(Integer) map.get("currentPage");
+        Integer pageSize=(Integer)map.get("pageSize");
+        String type=(String)map.get("type");
+        return configListService.getPowerList(currentPage,pageSize,type);
     }
 
     @GetMapping("/getPowerNum")
-    public Integer getPowerNum(Integer pageSize){
-        return configListService.getPowerPage(pageSize);
+    public Integer getPowerNum(Integer pageSize,String type){
+        return configListService.getPowerPage(pageSize,type);
     }
 
     @PostMapping("/allRadiatorByPage")
-    public List<Radiator> getRadiatorPage(@RequestBody Map<String,Integer> map){
-        Integer currentPage=map.get("currentPage");
-        Integer pageSize=map.get("pageSize");
-        return configListService.getRadiatorList(currentPage,pageSize);
+    public List<Radiator> getRadiatorPage(@RequestBody Map<String,Object> map){
+        Integer currentPage=(Integer) map.get("currentPage");
+        Integer pageSize=(Integer)map.get("pageSize");
+        String type=(String)map.get("type");
+        return configListService.getRadiatorList(currentPage,pageSize,type);
     }
 
     @GetMapping("/getRadiatorNum")
-    public Integer getRadiatorNum(Integer pageSize){
-        return configListService.getRadiatorPage(pageSize);
+    public Integer getRadiatorNum(Integer pageSize,String type){
+        return configListService.getRadiatorPage(pageSize,type);
     }
 
     @PostMapping("/configlist/getList")
     public List<ConfigListDto> getConfigList(@RequestBody Map<String,Integer> map){
         Integer currentPage=map.get("currentPage");
         Integer pageSize=map.get("pageSize");
-        return  configListService.getConfigListByPage(currentPage,pageSize);
+        Integer sortConfigList=map.get("sortConfigList");
+        return  configListService.getConfigListByPage(currentPage,pageSize,sortConfigList);
     }
 
     @GetMapping("/configlist/getCount")

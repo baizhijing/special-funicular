@@ -15,7 +15,7 @@ import java.util.Date;
 public class RecordDetail {
     private Integer id;
     private Integer recordId;//帖子ID
-    private Date createTime;
+    private String createTime;
     private String comment;
     private Integer userId;
     private String username;

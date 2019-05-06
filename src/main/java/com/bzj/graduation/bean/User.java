@@ -17,5 +17,5 @@ public class User {
     private String username;
     private String password;
     private Integer integ;//积分
-    private Date lastSignTime;
+    private String lastSignTime;
 }

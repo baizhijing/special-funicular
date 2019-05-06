@@ -4,6 +4,7 @@ import com.bzj.graduation.bean.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
@@ -31,4 +32,10 @@ public interface UserMapper {
 
     @Select("update user set integ=integ+#{integNum} where userName=#{username}")
     void addInteg(Integer integNum,String username);
+
+    @Update("update user set lastSignTime=#{time} where username=#{username}")
+    void updateLastSignTime(String time,String username);
+
+    @Select("select lastSignTime from user where username=#{username}")
+    String getSignInTime(String username);
 }

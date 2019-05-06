@@ -8,41 +8,138 @@
 	<body>
 		<div id="main">
 			<div id="top">
-				<div id="image"></div>
 				<div id="daohang">
 					<ul>
-					  <li><a class="active" href="http://localhost:8080/index">主页</a></li>
-					  <li><a href="http://localhost:8080/luntan">论坛</a></li>
-					  <li><a href="http://localhost:8080/ziyuan">资源</a></li>
-					  <li><a href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
+						<li><a class="active" href="http://localhost:8080/index">主页</a></li>
+						<li><a href="http://localhost:8080/luntan">论坛</a></li>
+						<li><a href="http://localhost:8080/ziyuan">资源</a></li>
+						<li><a href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
 					</ul>
 				</div>
+				<div id="image"><img class="mb-4" src="img/title.jpg" th:src="@{/img/title.jpg}"></div>
 			</div>
 			<div id="body">
 				<div id="body_left">
 					<div id="parts-head">
-						<h3>请选择配件</h3>
+						<h4>请选择配件</h4>
 						<ul class="url1">
-							<li v-on:click="getCPU(1)" onclick="initCur()" id="topSubSel_1" ><span>CPU</span></li>
-							<li v-on:click="getMainBoard(1)" onclick="initCur()" id="topSubSel_2"><span>主板</span></li>
-							<li v-on:click="getMemory(1)" onclick="initCur()" id="topSubSel_3"><span>内存</span></li>
-							<li v-on:click="getHardDriver(1)" onclick="initCur()" id="topSubSel_4"><span>硬盘</span></li>
-							<li v-on:click="getDisplay(1)" onclick="initCur()" id="topSubSel_5"><span>显卡</span></li>
-							<li v-on:click="getBox(1)" onclick="initCur()" id="topSubSel_6"><span>机箱</span></li>
-							<li v-on:click="getPower(1)" onclick="initCur()" id="topSubSel_7"><span>电源</span></li>
-							<li v-on:click="getRadiator(1)" onclick="initCur()" id="topSubSel_8"><span>散热器</span></li>
+							<li v-on:click="initSelect(),getCPU(1)" onclick="initCur()" id="topSubSel_1" ><span>CPU {{cpuName}}</span></li>
+							<li v-on:click="initSelect(),getMainBoard(1)" onclick="initCur()" id="topSubSel_2"><span>主板 {{mainBoardName}}</span></li>
+							<li v-on:click="initSelect(),getMemory(1)" onclick="initCur()" id="topSubSel_3"><span>内存 {{memoryName}}</span></li>
+							<li v-on:click="initSelect(),getHardDriver(1)" onclick="initCur()" id="topSubSel_4"><span>硬盘 {{hardDriverName}}</span></li>
+							<li v-on:click="initSelect(),getDisplay(1)" onclick="initCur()" id="topSubSel_5"><span>显卡 {{displayName}}</span></li>
+							<li v-on:click="initSelect(),getBox(1)" onclick="initCur()" id="topSubSel_6"><span>机箱 {{boxName}}</span></li>
+							<li v-on:click="initSelect(),getPower(1)" onclick="initCur()" id="topSubSel_7"><span>电源 {{powerName}}</span></li>
+							<li v-on:click="initSelect(),getRadiator(1)" onclick="initCur()" id="topSubSel_8"><span>散热器 {{radiatorName}}</span></li>
 						</ul>
-						<button class="button">提交配置单</button>
+						<input class="button" v-on:click="coreService()" type="button" name="popBox" value="提交配置单"/>
+						<p style="color: red" v-bind:text="msg" v-if="msg !=''"></p>
 					</div>
 				</div>
 				<div id="body_right">
 						<ul id="list">
-							<li v-for="value in object">
+							<input style="height:30px; width: 180px;padding-left: 5px;margin-left: 50px" type="text" v-model="message" @keyup.enter="select(message)" placeholder="搜索硬件">
+							<li v-for="(value,key) in object">
 								<img :src="value.src" height="100px" width="100px">
 								{{ value.name }}<br><br>
 								价格：{{ value.price }}
+								<div id="details"><input type="button" class="button2" value="详情" v-on:click="popBox(value)"></div>
+								<div id="add"><input type="button" class="button2" value="添加" v-on:click="insert(value.name,value.id)"></div>
 							</li>
 						</ul>
+				</div>
+				<!--遮罩层-->
+				<div id="popLayer" v-if="popLayer"></div>
+				<!--v-bind:class="display:isDisplay"-->
+				<!--详情弹窗-->
+				<div id="popBoxCpu" v-if="cpuDisplay">
+					<img :src="cpuDetail.src" height="100px" width="100px">
+					<ul>
+						<li>名称：{{cpuDetail.name}}</li>
+						<li>功耗(瓦)：{{cpuDetail.power}}</li>
+						<li>接口类型：{{cpuDetail.interf}}</li>
+						<li>GPU类型（空代表没有GPU）：{{cpuDetail.gpu}}</li>
+						<li>价格：{{cpuDetail.price}}</li>
+						<input class="button2" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-on:click="closeBox()" value="返回">
+					</ul>
+				</div>
+				<div id="popBoxMainBoard" v-if="mainBoardDisplay">
+					<img :src="mainBoardDetail.src" height="100px" width="100px">
+					<ul>
+						<li>名称：{{mainBoardDetail.name}}</li>
+						<li>m.2硬盘接口数量：{{mainBoardDetail.m2}}</li>
+						<li>内存插槽数量：{{mainBoardDetail.memoryNum}}</li>
+						<li>内存类型：{{mainBoardDetail.memoryType}}</li>
+						<li>供电接口数：{{mainBoardDetail.power}}</li>
+						<li>价格：{{mainBoardDetail.price}}</li>
+						<li>sata口数量：{{mainBoardDetail.sata}}</li>
+						<li>版型：{{mainBoardDetail.type}}</li>
+						<input class="button2" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-on:click="closeBox()" value="返回">
+					</ul>
+				</div>
+				<div id="popBoxMemory" v-if="memoryDisplay">
+					<div id="memoryImg" style="margin-top: 5px;margin-left: 5px;">
+						<img :src="memoryDetail.src" height="100px" width="100px">
+					</div>
+					<div id="memoryContent" style="float: left;">
+						<ul>
+							<li>名称：{{memoryDetail.name}}</li>
+							<li>内存大小(GB)：{{memoryDetail.memorySize}}</li>
+							<li>内存类型：{{memoryDetail.memoryType}}</li>
+							<li>价格：{{memoryDetail.price}}</li>
+							<input class="button2" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-on:click="closeBox()" value="返回">
+						</ul>
+					</div>
+				</div>
+				<div id="popBoxHardDriver" v-if="hardDriverDisplay">
+					<img :src="hardDriverDetail.src" height="100px" width="100px">
+					<ul>
+						<li>名称：{{hardDriverDetail.name}}</li>
+						<li>大小：{{hardDriverDetail.capacity}}</li>
+						<li>接口类型：{{hardDriverDetail.interf}}</li>
+						<li>价格：{{hardDriverDetail.price}}</li>
+						<li></li>
+						<input class="button2" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-on:click="closeBox()" value="返回">
+					</ul>
+				</div>
+				<div id="popBoxDisplay" v-if="displayDisplay">
+					<img :src="displayDetail.src" height="100px" width="100px">
+					<ul>
+						<li>名称：{{displayDetail.name}}</li>
+						<li>功耗：{{displayDetail.power}}</li>
+						<li>长度(mm)：{{displayDetail.length}}</li>
+						<li>价格：{{displayDetail.price}}</li>
+						<input class="button2" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-on:click="closeBox()" value="返回">
+					</ul>
+				</div>
+				<div id="popBoxBox" v-if="boxDisplay">
+					<img :src="boxDetail.src" height="100px" width="100px">
+					<ul>
+						<li>名称：{{boxDetail.name}}</li>
+						<li>支持最大显卡长度(mm)：{{boxDetail.displayCard}}</li>
+						<li>支持散热器高度(mm)：{{boxDetail.radiator}}</li>
+						<li>机箱类型：{{boxDetail.type}}</li>
+						<input class="button2" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-on:click="closeBox()" value="返回">
+					</ul>
+				</div>
+				<div id="popBoxPower" v-if="powerDisplay">
+					<img :src="powerDetail.src" height="100px" width="100px">
+					<ul>
+						<li>名称：{{powerDetail.name}}</li>
+						<li>额定功耗(瓦)：{{powerDetail.num}}</li>
+						<li>价格：{{powerDetail.price}}</li>
+						<input class="button2" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-on:click="closeBox()" value="返回">
+					</ul>
+				</div>
+				<div id="popBoxRadiator" v-if="radiatorDisplay">
+					<img :src="radiatorDetail.src" height="100px" width="100px">
+					<ul>
+						<li>名称：{{radiatorDetail.name}}</li>
+						<li>接口类型:{{radiatorDetail.interf}}</li>
+						<li>高度(mm)：{{radiatorDetail.high}}</li>
+						<li>价格：{{radiatorDetail.price}}</li>
+						<input class="button2" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-on:click="closeBox()" value="返回">
+					</ul>
 				</div>
 			</div>
 			<div id="bottom">
@@ -68,246 +165,597 @@
 			let getList=new Vue({
 				el: '#body',
 				data:{
+					message:'',
+					msg:'',
 					object:{
+					},
+					//点击添加，复制name
+					cpuName:' ',
+					mainBoardName:' ',
+					powerName:' ',
+					displayName:' ',
+					hardDriverName:' ',
+					memoryName:' ',
+					boxName:' ',
+					radiatorName:' ',
+				//	选择显示特定弹窗
+					cpuDisplay:false,
+					mainBoardDisplay:false,
+					powerDisplay:false,
+					displayDisplay:false,
+					hardDriverDisplay:false,
+					memoryDisplay:false,
+					boxDisplay:false,
+					radiatorDisplay:false,
+					//遮罩层
+					popLayer:false,
+					configListDetail:{
+						cpuId:0,
+						cpuName:'',
+						mainBoardId:0,
+						mainBoardName:'',
+						memoryId:0,
+						memoryName:'',
+						powerId:0,
+						powerName:'',
+						radiatorId:0,
+						radiatorName:'',
+						displayId:0,
+						displayName:'',
+						hardDiskId:0,
+						hardDiskName:'',
+						boxId:0,
+						boxName:''
+					},
+					cpuDetail:{
+						id:0,
+						name:'',
+						power:0,
+						interf:'',
+						gpu:'',
+						price:0,
+						img:'',
+						src:''
+					},
+					mainBoardDetail:{
+						id:0,
+						name:'',
+						type:'',
+						cpuInterf:'',
+						m2:0,
+						memoryNum:0,
+						memoryType:'',
+						power:0,
+						price:0,
+						sata:0,
+						src:''
+					},
+					memoryDetail:{
+						id:0,
+						memorySize:0,
+						memoryType:'',
+						name:'',
+						price:0,
+						src:''
+					},
+					hardDriverDetail:{
+						id:0,
+						name:'',
+						src:'',
+						interf:'',
+						price:0,
+						capacity:0,
+						src:''
+					},
+					displayDetail:{
+						id:0,
+						length:0,
+						name:'',
+						power:0,
+						price:0,
+						src:''
+					},
+					boxDetail:{
+						id:0,
+						displayCard:0,
+						name:'',
+						price:0,
+						radiator:0,
+						src:'',
+						type:'',
+						src:''
+					},
+					powerDetail:{
+						id:0,
+						name:'',
+						num:0,
+						price:0,
+						src:''
+					},
+					radiatorDetail:{
+						id:0,
+						high:0,
+						interf:'',
+						name:'',
+						price:0,
+						src:''
+					},
+					//搜索
+					type:{
+						cpuSelect:'',
+						mainBoardSelect:'',
+						powerSelect:'',
+						displaySelect:'',
+						hardDriverSelect:'',
+						memorySelect:'',
+						boxSelect:'',
+						radiatorSelect:'',
 					}
 				},
 				mounted:function(){
 					this.getCPU();
 				},
-				//获取页数，获取列表
-				methods:{
-					getCPU:function(currentPage){
-						if(currentPage==null)
-							currentPage=1;
-						hard=1;
-						console.log("hard="+hard);
+				methods: {
+					//初始化搜索条件
+					initSelect:function(){
 						let self=this;
-						axios.post('http://localhost:8080/allCpuByPage',{
-							currentPage:currentPage,
-							pageSize:5
+						self.type.cpuSelect='',
+						self.type.mainBoardSelect='',
+						self.type.powerSelect='',
+						self.type.displaySelect='',
+						self.type.memorySelect='',
+						self.type.boxSelect='',
+						self.type.radiatorSelect=''
+					},
+					select:function(type){
+						let self=this
+						if (hard==1){
+							self.type.cpuSelect=type;
+							self.getCPU(1);
+						}
+						else if (hard==2){
+							self.type.mainBoardSelect=type;
+							self.getMainBoard(1);
+						}
+						else if (hard==3){
+							self.type.memorySelect=type;
+							self.getMemory(1);
+						}
+						else if (hard==4){
+							self.type.hardDriverSelect=type;
+							self.getHardDriver(1);
+						}
+						else if (hard==5){
+							self.type.displaySelect=type;
+							self.getDisplay(1);
+						}
+						// 1代表当前在操作CPU，2代表主板，3代表内存，4硬盘，5显卡，6机箱，7电源，8散热器
+						else if (hard==6){
+							self.type.boxSelect=type;
+							self.getBox(1);
+						}
+						else if (hard==7){
+							self.type.powerSelect=type;
+							self.getPower(1);
+						}
+						else if (hard==8){
+							self.type.radiatorSelect=type;
+							self.getRadiator(1);
+						}
+					},
+					getCPU: function (currentPage) {
+						if (currentPage == null)
+							currentPage = 1;
+						hard = 1;
+						let self = this;
+						axios.post('http://localhost:8080/allCpuByPage', {
+							currentPage: currentPage,
+							pageSize: 10,
+							type:self.type.cpuSelect,
 						})
 								.then(function (response) {
 									console.log(response);
-									let page=pageBar;
+									let page = pageBar;
 									// page.cur=1;
-									axios.get('http://localhost:8080/getCPUPageNum',{
-										params:{pageSize:5}
+									axios.get('http://localhost:8080/getCPUPageNum', {
+										params: {
+											pageSize: 10,
+											type:self.type.cpuSelect,
+										}
 									})
 											.then(function (response) {
-												page.all=response.data;
+												page.all = response.data;
 												console.log(response);
 											})
 											.catch(function (error) {
 												console.log(error);
 											});
-									self.object=response.data;
+									self.object = response.data;
 								})
 								.catch(function (error) {
 									console.log(error);
 								});
 					},
-					getMainBoard:function(currentPage){
-						if(currentPage==null)
-							currentPage=1;
-						hard=2;
-						console.log("hard="+hard);
-						let self=this;
-						axios.post('http://localhost:8080/allMainBoardByPage',{
-							currentPage:currentPage,
-							pageSize:5
+					getMainBoard: function (currentPage) {
+						if (currentPage == null)
+							currentPage = 1;
+						hard = 2;
+						let self = this;
+						axios.post('http://localhost:8080/allMainBoardByPage', {
+							currentPage: currentPage,
+							pageSize: 10,
+							type:self.type.mainBoardSelect,
 						})
 								.then(function (response) {
 									console.log(response);
-									let page=pageBar;
-									axios.get('http://localhost:8080/getMainBoardNum',{
-										params:{pageSize:5}
+									let page = pageBar;
+									axios.get('http://localhost:8080/getMainBoardNum', {
+										params: {
+											pageSize: 10,
+											type:self.type.mainBoardSelect,
+										}
 									})
 											.then(function (response) {
-												page.all=response.data;
+												page.all = response.data;
 												console.log(response);
 											})
 											.catch(function (error) {
 												console.log(error);
 											});
-									self.object=response.data;
+									self.object = response.data;
 								})
 								.catch(function (error) {
 									console.log(error);
 								});
 					},
-					getMemory:function(currentPage){
-						if(currentPage==null)
-							currentPage=1;
-						hard=3;
-						console.log("hard="+hard);
-						let self=this;
-						axios.post('http://localhost:8080/allMemoryByPage',{
-							currentPage:currentPage,
-							pageSize:5
+					getMemory: function (currentPage) {
+						if (currentPage == null)
+							currentPage = 1;
+						hard = 3;
+						let self = this;
+						axios.post('http://localhost:8080/allMemoryByPage', {
+							currentPage: currentPage,
+							pageSize: 10,
+							type:self.type.memorySelect,
 						})
 								.then(function (response) {
 									console.log(response);
-									let page=pageBar;
-									axios.get('http://localhost:8080/getMemoryNum',{
-										params:{pageSize:5}
+									let page = pageBar;
+									axios.get('http://localhost:8080/getMemoryNum', {
+										params: {
+											pageSize: 10,
+											type:self.type.memorySelect,
+										}
 									})
 											.then(function (response) {
-												page.all=response.data;
+												page.all = response.data;
 												console.log(response);
 											})
 											.catch(function (error) {
 												console.log(error);
 											});
-									self.object=response.data;
+									self.object = response.data;
 								})
 								.catch(function (error) {
 									console.log(error);
 								});
 					},
-					getHardDriver:function(currentPage){
-						if(currentPage==null)
-							currentPage=1;
-						hard=4;
-						console.log(hard);
-						let self=this;
-						axios.post('http://localhost:8080/allHardDriverByPage',{
-							currentPage:currentPage,
-							pageSize:5
+					getHardDriver: function (currentPage) {
+						if (currentPage == null)
+							currentPage = 1;
+						hard = 4;
+						let self = this;
+						axios.post('http://localhost:8080/allHardDriverByPage', {
+							currentPage: currentPage,
+							pageSize: 10,
+							type:self.type.hardDriverSelect,
 						})
 								.then(function (response) {
 									console.log(response);
-									let page=pageBar;
-									axios.get('http://localhost:8080/getHardDiskPageNum',{
-										params:{pageSize:5}
+									let page = pageBar;
+									axios.get('http://localhost:8080/getHardDiskPageNum', {
+										params: {
+											pageSize: 10,
+											type:self.type.hardDriverSelect,}
 									})
 											.then(function (response) {
-												page.all=response.data;
+												page.all = response.data;
 												console.log(response);
 											})
 											.catch(function (error) {
 												console.log(error);
 											});
-									self.object=response.data;
+									self.object = response.data;
 								})
 								.catch(function (error) {
 									console.log(error);
 								});
 					},
-					getDisplay:function(currentPage){
-						if(currentPage==null)
-							currentPage=1;
-						hard=5;
-						let self=this;
-						axios.post('http://localhost:8080/allDisplayByPage',{
-							currentPage:currentPage,
-							pageSize:5
-						})
-								.then(function (response) {
-									console.log(response);
-									let page=pageBar;
-									axios.get('http://localhost:8080/getDisplayPageNum',{
-										params:{pageSize:5}
-									})
-											.then(function (response) {
-												page.all=response.data;
-												console.log(response);
-											})
-											.catch(function (error) {
-												console.log(error);
-											});
-									self.object=response.data;
-								})
-								.catch(function (error) {
-									console.log(error);
-								});
-					},
-					getBox:function(currentPage){
-						if(currentPage==null)
-							currentPage=1;
-						hard=6;
-						let self=this;
-						axios.post('http://localhost:8080/allBoxByPage',{
-							currentPage:currentPage,
-							pageSize:5
-						})
-								.then(function (response) {
-									console.log(response);
-									let page=pageBar;
-									axios.get('http://localhost:8080/getBoxPageNum',{
-										params:{pageSize:5}
-									})
-											.then(function (response) {
-												page.all=response.data;
-												console.log(response);
-											})
-											.catch(function (error) {
-												console.log(error);
-											});
-									self.object=response.data;
-								})
-								.catch(function (error) {
-									console.log(error);
-								});
-					},
-					getPower:function(currentPage){
-						if(currentPage==null)
-							currentPage=1;
-						hard=7;
-						let self=this;
-						axios.post('http://localhost:8080/allPowerByPage',{
-							currentPage:currentPage,
-							pageSize:5
-						})
-								.then(function (response) {
-									console.log(response);
-									let page=pageBar;
-									axios.get('http://localhost:8080/getPowerNum',{
-										params:{pageSize:5}
-									})
-											.then(function (response) {
-												page.all=response.data;
-												console.log(response);
-											})
-											.catch(function (error) {
-												console.log(error);
-											});
-									self.object=response.data;
-								})
-								.catch(function (error) {
-									console.log(error);
-								});
-					},
-					getRadiator:function(currentPage){
-						if(currentPage==null)
-							currentPage=1;
-						hard=8;
-						let self=this;
-						axios.post('http://localhost:8080/allRadiatorByPage',{
-							currentPage:currentPage,
-							pageSize:5
-						})
-								.then(function (response) {
-									console.log(response);
-									let page=pageBar;
-									axios.get('http://localhost:8080/getRadiatorNum',{
-										params:{pageSize:5}
-									})
-											.then(function (response) {
-												page.all=response.data;
-												console.log(response);
-											})
-											.catch(function (error) {
-												console.log(error);
-											});
-									self.object=response.data;
-								})
-								.catch(function (error) {
-									console.log(error);
-								});
-					},
+					getDisplay: function (currentPage) {
+						if (currentPage == null)
+							currentPage = 1;
+						hard = 5;
+						let self = this;
 
-				}
-			})
+						axios.post('http://localhost:8080/allDisplayByPage', {
+							currentPage: currentPage,
+							pageSize: 10,
+							type:self.type.displaySelect,
+						})
+								.then(function (response) {
+									console.log(response);
+									let page = pageBar;
+									axios.get('http://localhost:8080/getDisplayPageNum', {
+										params: {
+											pageSize: 10,
+											type:self.type.displaySelect,
+										}
+									})
+											.then(function (response) {
+												page.all = response.data;
+												console.log(response);
+											})
+											.catch(function (error) {
+												console.log(error);
+											});
+									self.object = response.data;
+								})
+								.catch(function (error) {
+									console.log(error);
+								});
+					},
+					getBox: function (currentPage) {
+						if (currentPage == null)
+							currentPage = 1;
+						hard = 6;
+						let self = this;
+						axios.post('http://localhost:8080/allBoxByPage', {
+							currentPage: currentPage,
+							pageSize: 10,
+							type:self.type.boxSelect
+						})
+								.then(function (response) {
+									console.log(response);
+									let page = pageBar;
+									axios.get('http://localhost:8080/getBoxPageNum', {
+										params: {
+											pageSize: 10,
+											type:self.type.boxSelect
+										}
+									})
+											.then(function (response) {
+												page.all = response.data;
+												console.log(response);
+											})
+											.catch(function (error) {
+												console.log(error);
+											});
+									self.object = response.data;
+								})
+								.catch(function (error) {
+									console.log(error);
+								});
+					},
+					getPower: function (currentPage) {
+						if (currentPage == null)
+							currentPage = 1;
+						hard = 7;
+						let self = this;
+						axios.post('http://localhost:8080/allPowerByPage', {
+							currentPage: currentPage,
+							pageSize: 10,
+							type:self.type.powerSelect
+						})
+								.then(function (response) {
+									console.log(response);
+									let page = pageBar;
+									axios.get('http://localhost:8080/getPowerNum', {
+										params: {
+											pageSize: 10,
+											type:self.type.powerSelect}
+									})
+											.then(function (response) {
+												page.all = response.data;
+												console.log(response);
+											})
+											.catch(function (error) {
+												console.log(error);
+											});
+									self.object = response.data;
+								})
+								.catch(function (error) {
+									console.log(error);
+								});
+					},
+					getRadiator: function (currentPage) {
+						if (currentPage == null)
+							currentPage = 1;
+						hard = 8;
+						let self = this;
+						axios.post('http://localhost:8080/allRadiatorByPage', {
+							currentPage: currentPage,
+							pageSize: 10,
+							type:self.type.radiatorSelect
+						})
+								.then(function (response) {
+									console.log(response);
+									let page = pageBar;
+									axios.get('http://localhost:8080/getRadiatorNum', {
+										params: {pageSize: 10,
+											type:self.type.radiatorSelect
+										}
+									})
+											.then(function (response) {
+												page.all = response.data;
+												console.log(response);
+											})
+											.catch(function (error) {
+												console.log(error);
+											});
+									self.object = response.data;
+								})
+								.catch(function (error) {
+									console.log(error);
+								});
+					},
+					//设置全局变量，1代表当前在操作CPU，2代表主板，3代表内存，4硬盘，5显卡，6机箱，7电源，8散热器
+					//包装实体
+					insert: function (name, id) {
+						let left = this;
+						if (hard == 1) {
+							left.configListDetail.cpuId = id;
+							left.configListDetail.cpuName = name;
+							left.cpuName = name;
+						} else if (hard == 2) {
+							left.configListDetail.mainBoardId = id;
+							left.configListDetail.mainBoardName = name;
+							left.mainBoardName = name;
+						} else if (hard == 3) {
+							left.configListDetail.memoryId = id;
+							left.configListDetail.memoryName = name;
+							left.memoryName = name;
+						} else if (hard == 4) {
+							left.configListDetail.hardDiskId = id;
+							left.configListDetail.hardDiskName = name;
+							left.hardDriverName = name;
+						} else if (hard == 5) {
+							left.configListDetail.displayId = id;
+							left.configListDetail.displayName = name;
+							left.displayName = name;
+						} else if (hard == 6) {
+							left.configListDetail.boxId = id;
+							left.configListDetail.boxName = name;
+							left.boxName = name;
+						} else if (hard == 7) {
+							left.configListDetail.powerId = id;
+							left.configListDetail.powerName = name;
+							left.powerName = name;
+						} else if (hard == 8) {
+							left.configListDetail.radiatorId = id;
+							left.configListDetail.radiatorName = name;
+							left.radiatorName = name;
+						}
+					},
+					//发送请求
+					coreService: function () {
+						let self = this;
+						axios.post('http://localhost:8080/main/apis/core', {
+							cpuId: self.configListDetail.cpuId,
+							mainBoardId: self.configListDetail.mainBoardId,
+							powerId: self.configListDetail.powerId,
+							radiatorId: self.configListDetail.radiatorId,
+							memoryId: self.configListDetail.memoryId,
+							displayId: self.configListDetail.displayId,
+							hardDiskId: self.configListDetail.hardDiskId,
+							boxId: self.configListDetail.boxId,
+							userId: self.configListDetail.userId,
+							cpuName: self.configListDetail.cpuName,
+							mainBoardName: self.configListDetail.mainBoardName,
+							powerName: self.configListDetail.powerName,
+							radiatorName: self.configListDetail.radiatorName,
+							memoryName: self.configListDetail.memoryName,
+							displayName: self.configListDetail.displayName,
+							hardDiskName: self.configListDetail.hardDiskName,
+							boxName: self.configListDetail.boxName
+						})
+								.then(function (response) {
+									console.log(response.data);
+									alert(response.data);
+								})
+								.catch(function (error) {
+									console.log(error);
+								});
+					},
+					//点击时，显示相应的详情弹窗,1代表当前在操作CPU，2代表主板，3代表内存，4硬盘，5显卡，6机箱，7电源，8散热器
+					popBox: function (value) {
+						let self = this;
+						console.log(self.cpuDisplay);
+						if (hard == 1) {
+							self.cpuDetail.name = value.name;
+							self.cpuDetail.power = value.power;
+							self.cpuDetail.price = value.price;
+							self.cpuDetail.interf = value.interf;
+							self.cpuDetail.gpu = value.gpu;
+							self.cpuDetail.src = value.src;
+							self.cpuDisplay = true;
+						} else if (hard == 2) {
+							self.mainBoardDetail.id = value.id;
+							self.mainBoardDetail.name = value.name;
+							self.mainBoardDetail.type = value.type;
+							self.mainBoardDetail.cpuInterf = value.cpuInterf;
+							self.mainBoardDetail.m2 = value.m2;
+							self.mainBoardDetail.memoryNum = value.memoryNum;
+							self.mainBoardDetail.memoryType = value.memoryType;
+							self.mainBoardDetail.power = value.power;
+							self.mainBoardDetail.price = value.price;
+							self.mainBoardDetail.sata = value.sata;
+							self.mainBoardDetail.src = value.src;
+							self.mainBoardDisplay = true;
+							console.log(self.mainBoardDisplay);
+						} else if (hard == 3) {
+							self.memoryDetail.id = value.id;
+							self.memoryDetail.memorySize = value.memorySize;
+							self.memoryDetail.memoryType = value.memoryType;
+							self.memoryDetail.name = value.name;
+							self.memoryDetail.price = value.price;
+							self.memoryDetail.src = value.src;
+							self.memoryDisplay = true;
+						} else if (hard == 4) {
+							self.hardDriverDetail.id = value.id;
+							self.hardDriverDetail.name = value.name;
+							self.hardDriverDetail.src = value.src;
+							self.hardDriverDetail.interf = value.interf;
+							self.hardDriverDetail.price = value.price;
+							self.hardDriverDetail.capacity = value.capacity;
+							self.hardDriverDisplay = true;
+						} else if (hard == 5) {
+							self.displayDetail.id = value.id;
+							self.displayDetail.length = value.length;
+							self.displayDetail.name = value.name;
+							self.displayDetail.power = value.power;
+							self.displayDetail.price = value.price;
+							self.displayDetail.src = value.src;
+							self.displayDisplay = true;
+						} else if (hard == 6) {
+							self.boxDetail.id = value.id;
+							self.boxDetail.displayCard = value.displayCard;
+							self.boxDetail.name = value.name;
+							self.boxDetail.price = value.price;
+							self.boxDetail.radiator = value.radiator;
+							self.boxDetail.src = value.src;
+							self.boxDetail.type = value.type;
+							self.boxDisplay = true;
+						} else if (hard == 7) {
+							self.powerDetail.id = value.id;
+							self.powerDetail.name = value.name;
+							self.powerDetail.num = value.num;
+							self.powerDetail.price = value.price;
+							self.powerDetail.src = value.src;
+							self.powerDisplay = true;
+						} else if (hard == 8) {
+							self.radiatorDetail.id = value.id;
+							self.radiatorDetail.high = value.high;
+							self.radiatorDetail.interf = value.interf;
+							self.radiatorDetail.name = value.name;
+							self.radiatorDetail.price = value.price;
+							self.radiatorDetail.src = value.src;
+							self.radiatorDisplay = true;
+						}
+						self.popLayer = true;
+					},
+					closeBox: function () {
+						let self = this;
+						self.cpuDisplay = false;
+						self.mainBoardDisplay = false;
+						self.memoryDisplay = false;
+						self.hardDriverDisplay = false;
+						self.displayDisplay = false;
+						self.boxDisplay = false;
+						self.powerDisplay = false;
+						self.radiatorDisplay = false;
+						self.popLayer = false;
+					}
+				}})
 
 			var pageBar = new Vue({
 				el: '.page-bar',

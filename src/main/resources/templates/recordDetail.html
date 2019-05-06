@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml"
+	  xmlns:v-bind="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta charset="utf-8">
+		<title>小白装机网</title>
+		<link href="css/recordDetail.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<div id="main">
+			<div id="top">
+				<div id="daohang">
+					<ul>
+					  <li><a href="http://localhost:8080/index">主页</a></li>
+					  <li><a class="active" href="http://localhost:8080/luntan">论坛</a></li>
+					  <li><a href="http://localhost:8080/ziyuan">资源</a></li>
+					  <li><a href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
+					</ul>
+				</div>
+				<div id="image"><img class="mb-4" src="img/title.jpg" th:src="@{/img/title.jpg}"></div>
+			</div>
+			<div id="body">
+				<div id="body_left">
+					<div id="body_left_top">
+						<ul id="list">
+							<h4 style="text-align: center;">{{recordName}}</h4>
+							<li v-for="value in object"  style="list-style: none">
+								<table id="table1">
+									<tr style="height: 100px">
+										{{ value.comment }}
+									</tr>
+									<tr>
+										<td style="width: 300px">评论人：{{ value.username }}</td>
+										<td>时间:{{ value.createTime}}</td>
+									</tr>
+								</table>
+								<hr>
+							</li>
+						</ul>
+						<div id="comment">
+							<form action="/addRecordDetail" method="post">
+								<textarea style="margin-left:42px;font-size: 18px;font-family: '微软雅黑';width: 950px;" rows="5" cols="20" name="comment"></textarea>
+								<input v-model="recordId" type="hidden" name="recordId">
+								<input type="submit" class="button2" value="提交评论" style="float: right;">
+							</form>
+						</div>
+					</div>
+					<!-- 分页 -->
+					<div id="body_left_bottom">
+						<div class="page-bar">
+						    <ul>
+						        <li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
+						        <li v-if="cur==1"><a class="banclick">上一页</a></li>
+						        <li v-for="index in indexs"  v-bind:class="{ 'active': cur == index}">
+						            <a v-on:click="btnClick(index)">{{ index }}</a>
+						        </li>
+						        <li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
+						        <li v-if="cur == all"><a class="banclick">下一页</a></li>
+						        <li><a>共<i>{{all}}</i>页</a></li>
+						    </ul>
+						</div>
+					</div>
+				</div>
+				<div id="body_right">
+					<div id="body_right_top">
+						<ul style="margin-left: 0px;">
+							<li>
+								<br><br>
+								用户名：{{object.username}} <br><br>
+								积分：{{object.integ}}
+							</li><br />
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div id="bottom"></div>
+		</div>
+	</body>
+	<script src="js/vue.min.js"></script>
+	<script src="js/axios.min.js"></script>
+	<script src="js/jquery-3.2.1.slim.min.js"></script>
+	<script type="text/javascript">
+		let user=new Vue({
+			el:'#body_right_top',
+			data:{
+				object:{
+				}
+			},
+			mounted:function(){
+				this.getUser();
+			},
+			methods:{
+				getUser(){
+					let self1=this;
+					axios.get('http://localhost:8080/getLoginUserMsg',{
+					})
+							.then(function (response){
+								self1.object=response.data;
+							}).catch(function (error) {
+								console.log(error);
+					});
+				}
+			}
+		})
+
+		var recordDetail=new Vue({
+			el:'#body_left_top',
+			data:{
+				recordId:0,
+				recordName:'',
+				object:{
+				}
+			},
+			mounted:function(){
+				let self=this;
+				self.getRecordDetail(1);
+			},
+			//获取页数，获取列表
+			methods:{
+				getCookie:function(c_name){
+					if (document.cookie.length>0)
+					{
+						c_start=document.cookie.indexOf(c_name + "=")
+						if (c_start!=-1)
+						{
+							c_start=c_start + c_name.length+1
+							c_end=document.cookie.indexOf(";",c_start)
+							if (c_end==-1) c_end=document.cookie.length
+							return unescape(document.cookie.substring(c_start,c_end))
+						}
+					}
+					return ""
+				},
+				getRecordDetail:function (currentPage) {
+					let self=this;
+					let recordId=self.getCookie("recordId");
+					let recordName=self.getCookie("recordName");
+					self.recordId=recordId;
+					console.log(recordId+"and"+recordName);
+					self.recordName=recordName;
+					axios.post('http://localhost:8080/getRecordDetailByPage',{
+						recordId:recordId,
+						currentPage:currentPage,
+						pageSize:10
+					})
+							.then(function (response) {
+								self.object=response.data;
+								axios.get('http://localhost:8080/getRecordDetailCount',{
+									params: {
+										pageSize:10,
+										recordId:recordId
+									}
+								})
+										.then(function (response) {
+											let page=pageBar;
+											page.all=response.data;
+										})
+										.catch(function (error) {
+											console.log(error);
+										})
+							})
+							.catch(function (error) {
+								console.log(error);
+							})
+				}
+			}
+		})
+
+		let pageBar = new Vue({
+			el: '.page-bar',
+			data: {
+				all: 8, //总页数
+				cur: 1//当前页码
+			},
+			watch: {
+				cur: function(oldValue , newValue){
+					console.log(arguments);
+				}
+			},
+			 methods: {
+				btnClick: function(data){//页码点击事件
+					if(data != this.cur){
+						this.cur = data
+					}
+					let self=recordDetail;
+					self.getRecordDetail(data);
+				},
+				pageClick: function(){
+					this.btnClick(this.cur);
+				}
+			},
+			computed: {
+				indexs: function(){
+				  var left = 1;
+				  var right = this.all;
+				  var ar = [];
+				  if(this.all>= 5){
+					if(this.cur > 3 && this.cur < this.all-2){
+							left = this.cur - 2
+							right = this.cur + 2
+					}else{
+						if(this.cur<=3){
+							left = 1
+							right = 5
+						}else{
+							right = this.all
+							left = this.all -4
+						}
+					}
+				 }
+				while (left <= right){
+					ar.push(left)
+					left ++
+				}
+				return ar
+			   }
+
+			}
+		})
+	</script>
+</html>

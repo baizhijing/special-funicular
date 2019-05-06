@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml"
-	  xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-if="http://www.w3.org/1999/xhtml"
-	  xmlns:v-for="http://www.w3.org/1999/xhtml">
+	  xmlns:v-bind="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta charset="utf-8">
 		<title>小白装机网</title>
@@ -10,7 +9,6 @@
 	<body>
 		<div id="main">
 			<div id="top">
-				<div id="image"></div>
 				<div id="daohang">
 					<ul>
 					  <li><a href="http://localhost:8080/index">主页</a></li>
@@ -19,6 +17,7 @@
 					  <li><a href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
 					</ul>
 				</div>
+				<div id="image"><img class="mb-4" src="img/title.jpg" th:src="@{/img/title.jpg}"></div>
 			</div>
 			<div id="body">
 				<div id="body_left">
@@ -26,7 +25,7 @@
 						<ul id="list">
 							<li v-for="value in object"  style="list-style: none">
 								<table id="table1">
-									<tr>
+									<tr v-on:click="recordDetail(value.id,value.title)">
 										<td style="width: 350px">标题：{{ value.title }}</td>
 										<td style="width: 300px">创建人：{{ value.userName }}</td>
 										<td>创建时间:{{ value.createTime}}</td>
@@ -62,22 +61,23 @@
 						</ul>
 					</div>
 					<input class="button" type="button" name="popBox" value="发表新帖" onclick="popBox()"><br>
-					<input class="button" type="button" name="popBox" value="今日签到"><br>
+					<div id="body_right_bottom">
+						<input @click="signIn()" class="button" type="button" name="popBox" value="今日签到"><br>
+					</div>
 				</div>
 			</div>
 			<div id="bottom"></div>
 		</div>
+		<!--遮罩层-->
 		<div id="popLayer"></div>
 		<!--新建帖子弹窗-->
 		<div id="popBox">
 			<div class="content">
-				<form th:action="@{/addRecord}" method="post">
-					请输入帖子名称：<input type="text" name="title"><br/>
-					<button  type="submit">创建帖子</button>
+				<form id="form" th:action="@{/addRecord}" method="post">
+					<div id="RecordName" style="text-align: center;">请输入帖子名称：<input type="text" name="title" value=""><br/></div>
+					<input class="button2" type="button" value="创建帖子" style="margin-right:20px;" onclick="check()">
+					<input class="button2" style="width: 50px; height:16.5px;" href="javascript:void(0)" onclick="closeBox()" value="取消新建">
 				</form>
-			</div>
-			<div class="close">
-				<a href="javascript:void(0)" onclick="closeBox()">关闭</a>
 			</div>
 		</div>
 	</body>
@@ -85,6 +85,20 @@
 	<script src="js/axios.min.js"></script>
 	<script src="js/jquery-3.2.1.slim.min.js"></script>
 	<script type="text/javascript">
+		<!--验证表单是否为空-->
+		function check()
+		{
+			let form=document.getElementById("form");
+			let RecordName=document.getElementById("RecordName");
+			if(form.title.value=="")
+			{
+				alert("请输入帖子名");
+				return false;
+			}
+			form.submit();
+			return true;
+		}
+
 		function popBox() {
 			var popBox = document.getElementById("popBox");
 			var popLayer = document.getElementById("popLayer");
@@ -131,6 +145,13 @@
 			},
 			//获取页数，获取列表
 			methods:{
+				recordDetail:function(id,name){
+					let expdate = new Date();   //初始化时间
+					expdate.setTime(expdate.getTime() + 30 * 60 * 1000);   //时间
+					document.cookie = "recordId="+id+";expires="+expdate.toGMTString()+";path=/";
+					document.cookie = "recordName="+name+";expires="+expdate.toGMTString()+";path=/";
+					window.location.href="http://localhost:8080/recordDetail";
+				},
 				getRecord:function(currentPage){
 					if (currentPage==null)
 						currentPage=1;
@@ -139,45 +160,24 @@
 						currentPage:currentPage,
 						pageSize:10
 					})
-							.then(function (response) {
-								console.log(response);
-								let page=pageBar;
-								axios.get('http://localhost:8080/getRecordNum',{
-									params:{pageSize:10}
-								})
-										.then(function (response) {
-											page.all=response.data;
-											console.log(response);
-										})
-										.catch(function (error) {
-											console.log(error);
-										});
-								self.object=response.data;
+						.then(function (response) {
+							let page=pageBar;
+							axios.get('http://localhost:8080/getRecordNum',{
+								params:{pageSize:10}
 							})
-							.catch(function (error) {
-								console.log(error);
-							});
+								.then(function (response) {
+									page.all=response.data;
+									console.log(response);
+								})
+								.catch(function (error) {
+									console.log(error);
+								});
+							self.object=response.data;
+						})
+						.catch(function (error) {
+							console.log(error);
+						});
 				},
-				// getRecordDeatil:function(val){
-				//     let self=this;
-				//     axios.post('http://loacalhost:8080/getRecordDetailByPage',{
-				//         currentPage:1,
-				//         pageSize:10
-				//     })
-				//         .then(function (response) {
-				//             let page=pageBar;
-				//             axios.get('http://localhost:8080/getRecordDetailCount',{
-				//                 params:{pageSize:10}
-				//             })
-				//                 .then(function (response) {
-				//                     page.all=response.data;
-				//                 })
-				//                 .catch(function (error) {
-				//                     console.log(error)
-				//                 })
-				//             self.object=response.data;
-				//         })
-				// },
 			}
 		})
 
@@ -231,6 +231,34 @@
 				return ar
 			   }
 
+			}
+		})
+
+		let body_right_bottom=new Vue({
+			el:'#body_right_bottom',
+			data:{
+
+			},
+			methods:{
+				signIn:function () {
+					axios.get('http://localhost:8080/signIn',{
+						params: {
+						}
+					})
+							.then(function (response) {
+								if (response.data==true){
+									alert("签到成功");
+									console.log("签到成功");
+									let self=user;
+									self.getUser();
+								}
+								else
+									alert("今天已经签过到了，请明天再来");
+							})
+							.catch(function (error) {
+								console.log(error);
+							})
+				}
 			}
 		})
 	</script>

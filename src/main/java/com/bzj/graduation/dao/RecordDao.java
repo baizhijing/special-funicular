@@ -49,10 +49,4 @@ public class RecordDao {
         pageData.setItems(personRecords);
         return pageData.getItems();
     }
-
-
-
-
-
-
 }

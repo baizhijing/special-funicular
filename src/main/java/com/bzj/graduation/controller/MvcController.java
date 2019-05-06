@@ -36,4 +36,7 @@ public class MvcController {
 
     @RequestMapping("/regist")
     public String regist(){return "regist";}
+
+    @RequestMapping("/recordDetail")
+    public String recordDetail(){return "recordDetail";}
 }

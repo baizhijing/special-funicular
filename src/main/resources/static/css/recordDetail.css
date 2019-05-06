@@ -1,6 +1,6 @@
 #main{
 	width: 1200px;
-	height: 1200px;
+	height: 2500px;
 /* 	font-family:"微软雅黑"; */
 	margin: 0 auto;
 	/* 设置水平居中 */
@@ -16,19 +16,19 @@
 #body{
 	margin: 0px;
 	width: 1200px;
-	height: 700px;
+	height: 2300px;
 }
 
 #body_left{
 	width: 1000px;
-	height: 700px;
+	height: 2300px;
 	background-color: ghostwhite;
 	float: left;
 }
 
 #body_left_top{
 	width: 1000px;
-	height: 620px;
+	height: 400px;
 }
 
 #body_left_top li{
@@ -44,7 +44,7 @@
 
 #body_right{
 	width: 200px;
-	height: 700px;
+	height: 2300px;
 	background-color:beige;
 	float: right;
 }

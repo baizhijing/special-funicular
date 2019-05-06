@@ -8,7 +8,6 @@
 	<body>
 		<div id="main">
 			<div id="top">
-				<div id="image"></div>
 				<div id="daohang">
 					<ul>
 					  <li><a href="http://localhost:8080/index">主页</a></li>
@@ -17,6 +16,7 @@
 					  <li><a class="active" href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
 					</ul>
 				</div>
+				<div id="image"><img class="mb-4" src="img/title.jpg" th:src="@{/img/title.jpg}"></div>
 			</div>
 			<div id="body">
 				<div id="body_left">
@@ -41,7 +41,7 @@
 							<ul style="list-style: none;">
 								<li v-for="value in object">
 									<table style="font-family: '微软雅黑';font-size: 16px;">
-										<tr>
+										<tr v-on:click="recordDetail(value.id,value.title)">
 											<td style="width: 650px;">标题：{{value.title}}</td>
 											<td>创建时间：{{value.createTime}}</td>
 										</tr>
@@ -72,7 +72,7 @@
 							<ul style="list-style: none;">
 								<li v-for="value in object">
 									<table style="font-family: '微软雅黑';font-size: 16px;">
-										<tr>
+										<tr v-on:click="popOpen(value)">
 											<td style="width: 650px;">标题：{{value.name}}</td>
 											<td>价格：{{value.price}}</td>
 										</tr>
@@ -80,6 +80,22 @@
 									<br>
 								</li>
 							</ul>
+							<div id="popLayer" v-if="popLayer"></div>
+							<div id="popBoxConfigList" v-if="ConfigListPop">
+								<ul>
+									<li>配置单名称：{{configListDetail.name}}</li>
+									<li>CPU：{{configListDetail.cpuName}}</li>
+									<li>主板：{{configListDetail.mainBoardName}}</li>
+									<li>内存：{{configListDetail.memoryName}}</li>
+									<li>硬盘：{{configListDetail.hardDiskName}}</li>
+									<li>显卡：{{configListDetail.displayName}}</li>
+									<li>机箱：{{configListDetail.boxName}}</li>
+									<li>电源：{{configListDetail.powerName}}</li>
+									<li>散热器：{{configListDetail.radiatorName}}</li>
+									<li>总价格：{{configListDetail.price}}</li>
+									<input class="button" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-on:click="popClose()" value="返回">
+								</ul>
+							</div>
 						</div>
 						<div id="body_right_bottom_bottom">
 							<div class="page-bar">
@@ -138,6 +154,13 @@
 				this.getPersonRecordList(1);
 			},
 			methods: {
+				recordDetail:function(id,name){
+					let expdate = new Date();   //初始化时间
+					expdate.setTime(expdate.getTime() + 30 * 60 * 1000);   //时间
+					document.cookie = "recordId="+id+";expires="+expdate.toGMTString()+";path=/";
+					document.cookie = "recordName="+name+";expires="+expdate.toGMTString()+";path=/";
+					window.location.href="http://localhost:8080/recordDetail";
+				},
 				getPersonRecordList(currentPage){
 					let self=this;
 					axios.post('http://localhost:8080/getPersonRecord',{
@@ -226,12 +249,46 @@
 			data:{
 				object:{
 				},
+				ConfigListPop:false,
+				popLayer:false,
+				configListDetail:{
+					name:'',
+					boxName:'',
+					cpuName:'',
+					displayName:'',
+					hardDiskName:'',
+					mainBoardName:'',
+					memoryName:'',
+					powerName:'',
+					price:0,
+					radiatorName:''
+				},
 				userId:0
 			},
 			mounted:function () {
 				this.getPersonConfigList(1);
 			},
 			methods: {
+				popOpen:function(value){
+					let self=this;
+					self.configListDetail.name=value.name;
+					self.configListDetail.boxName=value.boxName;
+					self.configListDetail.cpuName=value.cpuName;
+					self.configListDetail.displayName=value.displayName;
+					self.configListDetail.hardDiskName=value.hardDiskName;
+					self.configListDetail.mainBoardName=value.mainBoardName;
+					self.configListDetail.memoryName=value.memoryName;
+					self.configListDetail.powerName=value.powerName;
+					self.configListDetail.price=value.price;
+					self.configListDetail.radiatorName=value.radiatorName;
+					self.ConfigListPop=true;
+					self.popLayer=true;
+				},
+				popClose:function(){
+					let self=this;
+					self.ConfigListPop=false;
+					self.popLayer=false;
+				},
 				getPersonConfigList(currentPage){
 					let self=this;
 					axios.get('http://localhost:8080/getLoginUserId',{
@@ -320,7 +377,6 @@
 					}
 					return ar
 				}
-
 			}
 		})
 	</script>

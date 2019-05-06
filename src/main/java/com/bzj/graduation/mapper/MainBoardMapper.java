@@ -9,10 +9,10 @@ import java.util.List;
 
 @Mapper
 public interface MainBoardMapper {
-    @Select("select cpu_interf from mainboard where id=#{id}")
+    @Select("select cpuInterface from mainboard where id=#{id}")
     String selectIntefById(int id);
 
-    @Select("select memory_type from mainboard where id=#{id}")
+    @Select("select memoryType from mainboard where id=#{id}")
     String selectMemoryTypeById(int id);
 
     @Select("select m2 from mainboard where id=#{id}")
@@ -24,8 +24,14 @@ public interface MainBoardMapper {
     @Select("select * from mainboard")
     List<MainBoard> getAll();
 
+    @Select("select * from mainboard where name like CONCAT('%',#{type},'%')")
+    List<MainBoard> selectAllByType(String type);
+
     @Select("select count(*) from mainboard")
     int getCount();
+
+    @Select("select count(*) from mainboard where name like CONCAT('%',#{type},'%')")
+    int countByType(String type);
 
     @Select("select price from mainboard where id=#{id}")
     Double selectPriceById(Integer id);

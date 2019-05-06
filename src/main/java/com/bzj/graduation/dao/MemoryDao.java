@@ -22,17 +22,28 @@ public class MemoryDao {
     }
 
     //分页查询
-    public List selectMemoryByPage(int currentPage, int pageSize){
+    public List selectMemoryByPage(int currentPage, int pageSize,String type){
+        List<Memory> allMemory;
+        int countNums;
         PageHelper.startPage(currentPage, pageSize);
-        List<Memory> allMemory = memoryMapper.getAll();        //全部商品
-        int countNums = memoryMapper.getCount();            //总记录数
+        if (type==null){
+             allMemory= memoryMapper.getAll();        //全部商品
+            countNums= memoryMapper.getCount();            //总记录数
+        }
+        else {
+            allMemory=memoryMapper.selectAllByType(type);
+            countNums=memoryMapper.countByType(type);
+        }
         PageBean<Memory> pageData = new PageBean<>(currentPage, pageSize, countNums);
         pageData.setItems(allMemory);
         return pageData.getItems();
     }
 
-    public Integer getCount(){
+    public Integer getCount(String type){
+        if (type==null)
         return memoryMapper.getCount();
+        else
+            return memoryMapper.countByType(type);
     }
 
     public Double getPriceById(Integer id){

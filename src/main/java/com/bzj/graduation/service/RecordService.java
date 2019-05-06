@@ -46,4 +46,14 @@ public class RecordService {
             return countNums/pageSize;
         return countNums/pageSize+1;
     }
+
+    public boolean signIn(String username,String time){
+        if (time.equals(loginDao.getlastSignInTime(username)))
+        return false;
+        else{
+            loginDao.updatelastSignInTime(time,username);
+            loginDao.addInteg(1,username);
+            return true;
+        }
+    }
 }

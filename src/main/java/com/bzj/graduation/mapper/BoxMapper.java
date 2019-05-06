@@ -21,8 +21,14 @@ public interface BoxMapper {
     @Select("select * from box")
     List<Box> selectAll();
 
+    @Select("select * from box where name like CONCAT('%',#{type},'%')")
+    List<Box> selectAllByType(String type);
+
     @Select("select count(*) from box")
     int countBoxs();
+
+    @Select("select count(*) from box where name like CONCAT('%',#{type},'%')")
+    int countBoxsByType(String type);
 
     @Select("select price from box where id=#{id}")
     Double selectPriceById(Integer id);

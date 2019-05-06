@@ -1,6 +1,6 @@
 #main{
 	width: 1200px;
-	height: 1200px;
+	height: 1700px;
 /* 	font-family:"微软雅黑"; */
 	margin: 0 auto;
 	/* 设置水平居中 */
@@ -16,20 +16,20 @@
 #body{
 	margin: 0px;
 	width: 1200px;
-	height: 700px;
+	height: 1300px;
 }
 
 #body_left{
 
 	width: 500px;
-	height: 700px;
+	height: 1300px;
 	background-color: ghostwhite;
 	float: left;
 }
 
 #body_right{
 	width: 700px;
-	height: 700px;
+	height: 1300px;
 	background-color:beige;
 	float: right;
 }
@@ -37,7 +37,7 @@
 #body_right li{
     list-style: none; /*去掉小圆点*/
     margin: 30px;
-    margin-top: 70px;
+    margin-top: 50px;
 }
 
 #body_right li img{
@@ -79,7 +79,7 @@ h3{
     padding: 0;
     width: 400px;
     background-color: white;
-	font-size: 20px;
+	font-size: 15px;
 }
 
 .url1 li{
@@ -194,6 +194,209 @@ h3{
     color: #d44950;
     margin: 0px 4px;
     font-size: 12px;
+}
+
+.button2 {
+    background-color: cadetblue;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+    margin-top: 20px;
+    float: right;
+}
+
+/*弹窗遮罩层*/
+#popLayer {
+    /*display: none;*/
+    height: 1800px;
+    background-color: #B3B3B3;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* 层次顺序 */
+    z-index: 10;
+    /* 控制透明度 */
+    -moz-opacity: 0.8;
+    opacity:.80;
+    filter: alpha(opacity=80);/* 只支持IE6、7、8、9 */
+}
+
+/*弹窗*/
+#popBoxCpu {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 320px;
+    height: 350px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
+}
+
+#popBoxCpu ul{
+    list-style: none;
+}
+
+#popBoxCpu ul li{
+    margin: 10px;
+    float: left;
+}
+
+#popBoxMainBoard {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 320px;
+    height: 450px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
+}
+
+#popBoxMainBoard ul{
+    list-style: none;
+}
+
+#popBoxMainBoard ul li{
+    margin: 10px;
+}
+
+#popBoxMemory {
+     background-color: #FFFFFF;
+     z-index: 11;
+     width: 320px;
+     height: 320px;
+     position:fixed;
+     top:0;
+     right:0;
+     left:0;
+     bottom:0;
+     margin:auto;
+ }
+
+#popBoxMemory ul{
+    list-style: none;
+}
+
+#popBoxMemory ul li{
+    margin: 10px;
+}
+
+#popBoxHardDriver {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 340px;
+    height: 300px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
+}
+
+#popBoxHardDriver ul{
+    list-style: none;
+}
+
+#popBoxHardDriver ul li{
+    margin: 10px;
+}
+
+#popBoxDisplay {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 320px;
+    height: 320px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
+}
+
+#popBoxDisplay ul{
+    list-style: none;
+}
+
+#popBoxDisplay ul li{
+    margin: 10px;
+}
+
+#popBoxBox {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 320px;
+    height: 300px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
+}
+
+#popBoxBox ul{
+    list-style: none;
+}
+
+#popBoxBox ul li{
+    margin: 10px;
+}
+
+#popBoxPower {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 320px;
+    height: 280px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
+}
+
+#popBoxPower ul{
+    list-style: none;
+}
+
+#popBoxPower ul li{
+    margin: 10px;
+}
+
+#popBoxRadiator {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 320px;
+    height: 300px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
+}
+
+#popBoxRadiator ul{
+    list-style: none;
+}
+
+#popBoxRadiator ul li{
+    margin: 10px;
 }
 
 

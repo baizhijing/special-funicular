@@ -16,7 +16,7 @@ public class MainBoard {
     private String name;
     private String type;
     private String cpuInterf;//cpu接口
-    private Integer memoryType;
+    private String memoryType;
     private Integer memoryNum;
     private Integer sata;
     private Integer m2;

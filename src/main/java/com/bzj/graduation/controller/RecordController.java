@@ -62,5 +62,14 @@ public class RecordController {
         recordService.delete(id);
     }
 
+    @ResponseBody
+    @GetMapping("/signIn")
+    public boolean signIn(HttpSession session){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//         HH:mm:ss
+        String userName=(String)session.getAttribute("loginUser");
+        String time=df.format(new Date()).toString();
+        return recordService.signIn(userName,time);
+    }
 
 }

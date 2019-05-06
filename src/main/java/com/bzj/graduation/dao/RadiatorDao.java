@@ -25,17 +25,28 @@ public class RadiatorDao {
     }
 
     //分页查询
-    public List selectRadiatorByPage(Integer currentPage, Integer pageSize){
+    public List selectRadiatorByPage(Integer currentPage, Integer pageSize,String type){
         PageHelper.startPage(currentPage, pageSize);
-        List<Radiator> allRadiator = radiatorMapper.getAll();        //全部商品
-        int countNums = radiatorMapper.getCount();            //总记录数
+        List<Radiator> allRadiator;
+        int countNums;
+        if (type==null){
+            allRadiator = radiatorMapper.getAll();        //全部商品
+            countNums = radiatorMapper.getCount();            //总记录数
+        }
+        else{
+            allRadiator=radiatorMapper.selectAllByType(type);
+            countNums=radiatorMapper.countByType(type);
+        }
         PageBean<Radiator> pageData = new PageBean<>(currentPage, pageSize, countNums);
         pageData.setItems(allRadiator);
         return pageData.getItems();
     }
 
-    public Integer getCount(){
+    public Integer getCount(String type){
+        if (type==null)
         return radiatorMapper.getCount();
+        else
+            return radiatorMapper.countByType(type);
     }
 
     public Double getPriceById(Integer id){

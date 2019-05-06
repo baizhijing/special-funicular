@@ -24,17 +24,28 @@ public class DisplayDao {
         return displayMapper.selectLengthById(id);
     }
 
-    public List selectDisplayByPage(int currentPage, int pageSize){
+    public List selectDisplayByPage(int currentPage, int pageSize,String type){
         PageHelper.startPage(currentPage, pageSize);
-        List<Display> allDisplays = displayMapper.getAll();        //全部商品
-        int countNums = displayMapper.getCount();            //总记录数
+        int countNums;
+        List<Display> allDisplays;
+        if (type==null){
+            allDisplays= displayMapper.getAll();        //全部商品
+            countNums=displayMapper.getCount();
+        }
+        else {
+            allDisplays=displayMapper.selectAllByType(type);
+            countNums=displayMapper.countdisplaycardByType(type);
+        }
         PageBean<Display> pageData = new PageBean<>(currentPage, pageSize, countNums);
         pageData.setItems(allDisplays);
         return pageData.getItems();
     }
 
-    public int getCount(){
+    public int getCount(String type){
+        if (type==null)
         return displayMapper.getCount();
+        else
+            return displayMapper.countdisplaycardByType(type);
     }
 
     public Double getPriceById(Integer id){

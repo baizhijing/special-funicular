@@ -16,16 +16,16 @@ public class RecordDetailDao {
     @Autowired
     private RecordDetailMapper recordDetailMapper;
 
-    public void addRecordDetail(int recordId,String username,String userId,String comment,String time){
+    public void addRecordDetail(int recordId,String username,Integer userId,String comment,String time){
         recordDetailMapper.insertRecordDeatil(recordId,username,userId,comment,time);
     }
 
-    public List<RecordDetail> getAll(){
-        return recordDetailMapper.selectAll();
+    public List<RecordDetail> getAll(Integer recordId){
+        return recordDetailMapper.selectAll(recordId);
     }
 
-    public Integer getCount(){
-        return recordDetailMapper.getCount();
+    public Integer getCount(Integer recordId){
+        return recordDetailMapper.getCount(recordId);
     }
 
 }

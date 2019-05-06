@@ -39,4 +39,12 @@ public class LoginDao {
     public void addUser(String username,String password){
         userMapper.insertUser(username,password);
     }
+
+    public void updatelastSignInTime(String time,String username){
+        userMapper.updateLastSignTime(time,username);
+    }
+
+    public String getlastSignInTime(String username){
+        return userMapper.getSignInTime(username);
+    }
 }

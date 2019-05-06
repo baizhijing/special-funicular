@@ -15,28 +15,29 @@ public class DownloadController {
     private DownloadService downloadService;
 
     @RequestMapping("/resource/list")
-    public List getList(@RequestBody Map<String, Integer> map){
-        Integer currentPage=map.get("currentPage");
-        Integer pageSize=map.get("pageSize");
-        return downloadService.getAll(currentPage,pageSize);
-    }
-
-    @RequestMapping("/resource/listByType")
-    public List getListByType(@RequestBody Map<String, Object> map){
+    public List getList(@RequestBody Map<String, Object> map){
         Integer currentPage=(Integer) map.get("currentPage");
         Integer pageSize=(Integer) map.get("pageSize");
-        String type=(String)map.get("type");
-        return downloadService.getAllByType(currentPage,pageSize,type);
+        String type=(String) map.get("type");
+        return downloadService.getAll(currentPage,pageSize,type);
     }
+
+//    @RequestMapping("/resource/listByType")
+//    public List getListByType(@RequestBody Map<String, Object> map){
+//        Integer currentPage=(Integer) map.get("currentPage");
+//        Integer pageSize=(Integer) map.get("pageSize");
+//        String type=(String)map.get("type");
+//        return downloadService.getAllByType(currentPage,pageSize,type);
+//    }
 
     @RequestMapping("/resource/getAllCount")
-    public Integer getAllCount(Integer pageSize)
+    public Integer getAllCount(Integer pageSize,String type)
     {
-        return downloadService.getAllCount(pageSize);
+        return downloadService.getAllCount(pageSize,type);
     }
-
-    @RequestMapping("/resource/getCountByType")
-    public Integer getCountByType(String type,Integer pageSize){
-        return downloadService.getCountByType(type,pageSize);
-    }
+//
+//    @RequestMapping("/resource/getCountByType")
+//    public Integer getCountByType(String type,Integer pageSize){
+//        return downloadService.getCountByType(type,pageSize);
+//    }
 }

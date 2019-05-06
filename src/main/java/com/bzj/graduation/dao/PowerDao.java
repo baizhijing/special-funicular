@@ -21,17 +21,29 @@ public class PowerDao {
     }
 
     //分页查询
-    public List selectPowerByPage(int currentPage, int pageSize){
+    public List selectPowerByPage(int currentPage, int pageSize,String type){
         PageHelper.startPage(currentPage, pageSize);
-        List<Power> allPower = powerMapper.getAll();        //全部商品
-        int countNums = powerMapper.getCount();            //总记录数
+        List<Power> allPower;
+        int countNums;
+        if (type==null)
+        {
+            allPower= powerMapper.getAll();        //全部商品
+            countNums= powerMapper.getCount();            //总记录数
+        }
+        else {
+            allPower=powerMapper.selectAllByType(type);
+            countNums=powerMapper.countByType(type);
+        }
         PageBean<Power> pageData = new PageBean<>(currentPage, pageSize, countNums);
         pageData.setItems(allPower);
         return pageData.getItems();
     }
 
-    public Integer getCount(){
+    public Integer getCount(String type){
+        if (type==null)
         return powerMapper.getCount();
+        else
+            return powerMapper.countByType(type);
     }
 
     public Double getPriceById(Integer id){

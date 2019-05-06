@@ -11,12 +11,15 @@ public interface DownloadMapper {
     @Select("select * from resource")
     List<Resource> getAll();
 
-    @Select("select * from resource where type=#{type}")
-    List<Resource> getListByType(String type);
+    @Select("select * from resource where name like CONCAT('%',#{type},'%')")
+    List<Resource> selectByType(String type);
 
     @Select("select count(*) from resource")
     Integer getAllCount();
 
-    @Select("select count(*) from resource where type=#{type}")
-    Integer getCountByType(String type);
+    @Select("select count(*) from resource where name like CONCAT('%',#{type},'%')")
+    int selectCountByType(String type);
+
+//    @Select("select count(*) from resource where type=#{type}")
+//    Integer getCountByType(String type);
 }

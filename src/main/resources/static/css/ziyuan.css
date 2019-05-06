@@ -99,7 +99,7 @@ li{
 
 #body_left_content li:hover{
     margin-right: 70px;
-    background-color: #e2e6ea;
+    /*background-color: #e2e6ea;*/
 }
 
 #body_left_bottom{
@@ -217,4 +217,95 @@ li{
 
 p {
     text-align: center;
+}
+
+#popLayer {
+    /*display: none;*/
+    height: 1200px;
+    background-color: #B3B3B3;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* 层次顺序 */
+    z-index: 10;
+    /* 控制透明度 */
+    -moz-opacity: 0.8;
+    opacity:.80;
+    filter: alpha(opacity=80);/* 只支持IE6、7、8、9 */
+}
+
+.button {
+    background-color: cadetblue;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+    margin-top: 20px;
+    float: right;
+}
+
+#popBoxSoftWare {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 1200px;
+    height: 200px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
+}
+
+#popBoxSoftWare ul{
+    list-style: none;
+}
+
+#popBoxSoftWare ul li{
+    margin-top: 5px;
+}
+
+#popLayer2 {
+    /*display: none;*/
+    height: 1200px;
+    background-color: #B3B3B3;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* 层次顺序 */
+    z-index: 10;
+    /* 控制透明度 */
+    -moz-opacity: 0.8;
+    opacity:.80;
+    filter: alpha(opacity=80);/* 只支持IE6、7、8、9 */
+}
+
+#popBoxConfigList {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 400px;
+    height: 350px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
+}
+
+#popBoxConfigList ul{
+    list-style: none;
+}
+
+#popBoxConfigList ul li{
+    margin-top: 5px;
 }

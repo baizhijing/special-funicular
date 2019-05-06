@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Component
 @Data
-public class ConfigListDto {
+public class ConfigListDto implements Comparable<ConfigListDto>{
     private Integer id;
 
 //    配置单名称
@@ -47,6 +47,12 @@ public class ConfigListDto {
 
     private String displayName;
 
+    private Integer isPublic;
+
     private Double price;
 
+    @Override
+    public int compareTo(ConfigListDto o) {
+        return this.price.compareTo(o.price);
+    }
 }

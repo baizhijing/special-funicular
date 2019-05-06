@@ -20,17 +20,29 @@ public class HardDiskDao {
         return hardDiskMapper.selectInterfById(id);
     }
 
-    public List selectHardDiskByPage(int currentPage, int pageSize){
+    public List selectHardDiskByPage(int currentPage, int pageSize,String type){
         PageHelper.startPage(currentPage, pageSize);
-        List<HardDisk> allHardDisk = hardDiskMapper.getAll();        //全部商品
-        int countNums = hardDiskMapper.getCount();            //总记录数
+        int countNums;
+        List<HardDisk> allHardDisk;
+        if (type==null)
+        {
+            allHardDisk= hardDiskMapper.getAll();        //全部商品
+            countNums= hardDiskMapper.getCount();            //总记录数
+        }
+        else{
+            allHardDisk=hardDiskMapper.selectAllByType(type);
+            countNums=hardDiskMapper.countByType(type);
+        }
         PageBean<HardDisk> pageData = new PageBean<>(currentPage, pageSize, countNums);
         pageData.setItems(allHardDisk);
         return pageData.getItems();
     }
 
-    public Integer getCount(){
+    public Integer getCount(String type){
+        if (type==null)
         return hardDiskMapper.getCount();
+        else
+            return hardDiskMapper.countByType(type);
     }
 
     public Double getPriceById(Integer id){
