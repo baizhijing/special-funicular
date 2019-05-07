@@ -19,6 +19,9 @@ public class ConfigListDao {
     @Autowired
     private ConfigListMapper configListMapper;
 
+    @Autowired
+    private LoginDao loginDao;
+
     public boolean insertList(ConfigList configList){
         Integer cpuId=configList.getCpuId();
         Integer userId=configList.getUserId();
@@ -42,6 +45,12 @@ public class ConfigListDao {
         configListMapper.InsertList(cpuId,userId,hardDiskId,radiatorId,boxId,powerId,memoryId,mainBoardId,
                 name,cpuName,hardDiskName,radiatorName,boxName,powerName,memoryName,mainBoardName,displayId,displayName,isPublic);
         return true;
+    }
+
+    public void submitConfigList(Integer id,String name){
+        if (configListMapper.addInteg(id)==0)
+            loginDao.addInteg(5,name);
+        configListMapper.submitConfigList(id);
     }
 
     public List<ConfigList> selectConfigListByPage(int currentPage, int pageSize){

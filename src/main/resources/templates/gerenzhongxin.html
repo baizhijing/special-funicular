@@ -75,6 +75,8 @@
 										<tr v-on:click="popOpen(value)">
 											<td style="width: 650px;">标题：{{value.name}}</td>
 											<td>价格：{{value.price}}</td>
+											<input type="button" value="重命名" v-on:click="rename(value.id)">
+											<input type="button" value="发布" v-on:click="submit(value.id)">
 										</tr>
 									</table>
 									<br>
@@ -269,6 +271,20 @@
 				this.getPersonConfigList(1);
 			},
 			methods: {
+				submit:function(id){
+					axios.post('http://localhost:8080/submitConfigList',{
+						id:id,
+					})
+							.then(function (response) {
+								this.getPersonRecordList(1);
+							})
+							.catch(function (error) {
+
+							});
+				},
+				rename:function(){
+
+				},
 				popOpen:function(value){
 					let self=this;
 					self.configListDetail.name=value.name;

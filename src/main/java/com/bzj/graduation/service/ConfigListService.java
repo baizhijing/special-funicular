@@ -271,6 +271,10 @@ public class ConfigListService {
         return countNums/pageSize+1;
     }
 
+    public void submitConfigList(Integer id,String name){
+        configListDao.submitConfigList(id,name);
+    }
+
 //    获取私人配置单
 public List<ConfigListDto> getPersonConfigListByPage(Integer currentPage,Integer pageSize,Integer userId){
     List<ConfigList> list=configListDao.selectPersonConfigListByPage(currentPage,pageSize,userId);
@@ -280,6 +284,7 @@ public List<ConfigListDto> getPersonConfigListByPage(Integer currentPage,Integer
         ConfigListDto configListDto0=new ConfigListDto();
         listDto.add(configListDto0);
         ConfigListDto configListDto=listDto.get(i);
+        configListDto.setId(ct.getId());
         configListDto.setUserId(ct.getUserId());
         configListDto.setCpuId(ct.getCpuId());
         configListDto.setCpuName(ct.getCpuName());
@@ -298,6 +303,7 @@ public List<ConfigListDto> getPersonConfigListByPage(Integer currentPage,Integer
         configListDto.setName(ct.getName());
         configListDto.setDisplayId(ct.getDisplayId());
         configListDto.setDisplayName(ct.getDisplayName());
+        configListDto.setIsPublic(ct.getIsPublic());
         //计算配置单总价格
         double sum=0;
         sum+=cpuDao.getPriceById(ct.getCpuId())

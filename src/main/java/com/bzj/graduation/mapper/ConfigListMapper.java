@@ -4,6 +4,7 @@ import com.bzj.graduation.bean.ConfigList;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
@@ -29,4 +30,10 @@ public interface ConfigListMapper {
 
     @Select("select count(*) from configlist where userId=#{userId}")
     Integer getPersonCount(Integer userId);
+
+    @Update("update configlist set isPublic = 1 where id=#{id}")
+    void submitConfigList(Integer id);
+
+    @Select("select isPublic from configlist where id=#{id}")
+    Integer addInteg(Integer id);
 }

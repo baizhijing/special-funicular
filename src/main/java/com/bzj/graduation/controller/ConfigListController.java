@@ -165,8 +165,13 @@ https://www.cnblogs.com/onetwo/p/7371778.html分页查询参考博客
 
     @GetMapping("/configlist/getPersonCount")
     public Integer getPersonConfiglistCount(Integer pageSize,Integer userId){
-
         return configListService.getPersonConfiglistPageNum(pageSize,userId);
     }
 
+    @PostMapping("/submitConfigList")
+    public void submitConfigList(@RequestBody Map<String,Integer> map,HttpSession session){
+        Integer id=map.get("id");
+        String name=(String)session.getAttribute("loginUser");
+        configListService.submitConfigList(id,name);
+    }
 }
