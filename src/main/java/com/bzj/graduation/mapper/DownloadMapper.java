@@ -20,6 +20,5 @@ public interface DownloadMapper {
     @Select("select count(*) from resource where name like CONCAT('%',#{type},'%')")
     int selectCountByType(String type);
 
-//    @Select("select count(*) from resource where type=#{type}")
-//    Integer getCountByType(String type);
+
 }

@@ -34,9 +34,7 @@ public class ConfigListController {
         configList.setUserId(loginService.getUserId(username));
         return configListService.Core(map,configList);
     }
-/*
-https://www.cnblogs.com/onetwo/p/7371778.html分页查询参考博客
- */
+
     @PostMapping("/allCpuByPage")
     public List<Cpu> getCPUPage(@RequestBody Map<String,Object> map){
         Integer currentPage=(Integer) map.get("currentPage");
@@ -173,5 +171,24 @@ https://www.cnblogs.com/onetwo/p/7371778.html分页查询参考博客
         Integer id=map.get("id");
         String name=(String)session.getAttribute("loginUser");
         configListService.submitConfigList(id,name);
+    }
+
+    @PostMapping("/configlist/rename")
+    public boolean renameConfigList(@RequestParam("title") String title,@RequestParam("id") Integer id){
+        return configListService.renameConfigList(title,id);
+    }
+
+    @PostMapping("/configList/getAll")
+    public List<ConfigListDto> allConfigList(@RequestBody Map<String,Integer> map){
+        Integer currentPage=map.get("currentPage");
+        Integer pageSize=map.get("pageSize");
+        System.out.println(currentPage+" "+pageSize);
+        return configListService.allConfigList(currentPage,pageSize);
+    }
+
+    @ResponseBody
+    @GetMapping("/configList/getCount")
+    public Integer allConfigListCount(Integer pageSize){
+        return configListService.allConfigListCount(pageSize);
     }
 }

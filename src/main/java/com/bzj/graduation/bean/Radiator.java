@@ -16,7 +16,7 @@ public class Radiator {
     private Integer id;
     private String name;
     private String src;
-    private BigDecimal price;
+    private Double price;
     private double high;
     private String Interf;
 }

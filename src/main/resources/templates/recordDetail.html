@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml"
-	  xmlns:v-bind="http://www.w3.org/1999/xhtml">
+	  xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta charset="utf-8">
 		<title>小白装机网</title>
@@ -24,15 +24,19 @@
 					<div id="body_left_top">
 						<ul id="list">
 							<h4 style="text-align: center;">{{recordName}}</h4>
-							<li v-for="value in object"  style="list-style: none">
+							<li v-for="value in object"  style="list-style: none;margin-top: 20px;">
 								<table id="table1">
-									<tr style="height: 100px">
-										{{ value.comment }}
-									</tr>
-									<tr>
-										<td style="width: 300px">评论人：{{ value.username }}</td>
-										<td>时间:{{ value.createTime}}</td>
-									</tr>
+									<ul style="margin-right: 50px">
+										<li style="height: 80px;">{{ value.comment }}</li>
+										<li style="list-style: none;margin-left: 350px">评论人：{{ value.username }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时间:{{ value.createTime}}</li>
+									</ul>
+									<!--<tr style="height: 100px">-->
+										<!--{{ value.comment }}-->
+									<!--</tr>-->
+									<!--<tr>-->
+										<!--<td style="width: 300px">评论人：{{ value.username }}</td>-->
+										<!--<td>时间:{{ value.createTime}}</td>-->
+									<!--</tr>-->
 								</table>
 								<hr>
 							</li>
@@ -136,7 +140,6 @@
 					let recordId=self.getCookie("recordId");
 					let recordName=self.getCookie("recordName");
 					self.recordId=recordId;
-					console.log(recordId+"and"+recordName);
 					self.recordName=recordName;
 					axios.post('http://localhost:8080/getRecordDetailByPage',{
 						recordId:recordId,

@@ -40,4 +40,5 @@ public class DownloadController {
 //    public Integer getCountByType(String type,Integer pageSize){
 //        return downloadService.getCountByType(type,pageSize);
 //    }
+
 }

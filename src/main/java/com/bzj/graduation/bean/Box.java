@@ -16,8 +16,9 @@ public class Box {
     private Integer id;
     private String name;
     private String src;
-    private BigDecimal price;
+    private Double price;
     private String type;
     private double displayCard;
     private double radiator;
+    private String powerDesign;//设计类型
 }

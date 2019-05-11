@@ -17,4 +17,5 @@ public class Record {
     private String userName;
     private String title;
     private String createTime;
+    private String content;
 }

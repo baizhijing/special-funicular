@@ -17,20 +17,20 @@
 #body{
 	margin: 0px;
 	width: 1200px;
-	height: 1150px;
+	height: 1300px;
 }
 
 #body_left{
 
 	width: 500px;
-	height: 1150px;
+	height: 1300px;
 	background-color: ghostwhite;
 	float: left;
 }
 
 #body_right{
 	width: 700px;
-	height: 1150px;
+	height: 1300px;
 	background-color:beige;
 	float: right;
 }
@@ -78,13 +78,14 @@ h3{
     list-style-type: none;
     margin: 0px auto;
     padding: 0;
-    width: 400px;
+    width: 100px;
     background-color: white;
 	font-size: 15px;
     cursor: pointer;
 }
 
 .url1 li{
+
 	padding: 10px;
 }
 
@@ -216,7 +217,7 @@ h3{
 /*弹窗遮罩层*/
 #popLayer {
     /*display: none;*/
-    height: 1800px;
+    height: 3000px;
     background-color: #B3B3B3;
     position: absolute;
     top: 0;
@@ -259,7 +260,7 @@ h3{
     background-color: #FFFFFF;
     z-index: 11;
     width: 320px;
-    height: 450px;
+    height: 610px;
     position:fixed;
     top:0;
     right:0;
@@ -280,7 +281,7 @@ h3{
      background-color: #FFFFFF;
      z-index: 11;
      width: 320px;
-     height: 320px;
+     height: 388px;
      position:fixed;
      top:0;
      right:0;
@@ -301,7 +302,7 @@ h3{
     background-color: #FFFFFF;
     z-index: 11;
     width: 340px;
-    height: 300px;
+    height: 330px;
     position:fixed;
     top:0;
     right:0;
@@ -322,7 +323,7 @@ h3{
     background-color: #FFFFFF;
     z-index: 11;
     width: 320px;
-    height: 320px;
+    height: 415px;
     position:fixed;
     top:0;
     right:0;
@@ -343,7 +344,7 @@ h3{
     background-color: #FFFFFF;
     z-index: 11;
     width: 320px;
-    height: 300px;
+    height: 361px;
     position:fixed;
     top:0;
     right:0;
@@ -364,7 +365,7 @@ h3{
     background-color: #FFFFFF;
     z-index: 11;
     width: 320px;
-    height: 280px;
+    height: 393px;
     position:fixed;
     top:0;
     right:0;
@@ -400,6 +401,105 @@ h3{
 
 #popBoxRadiator ul li{
     margin: 10px;
+}
+
+#cpuEdit {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 350px;
+    height: 396px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
+}
+
+#mainBoardEdit {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 320px;
+    height: 510px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
+}
+
+#memoryEdit {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 320px;
+    height: 248px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
+}
+#hardDriverEdit {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 320px;
+    height: 220px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
+}
+#displayEdit {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 320px;
+    height: 273px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
+}
+#boxEdit {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 320px;
+    height: 240px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
+}
+#powerEdit {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 320px;
+    height: 272px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
+}
+#radiatorEdit {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 320px;
+    height: 180px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
 }
 
 

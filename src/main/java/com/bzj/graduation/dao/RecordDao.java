@@ -16,8 +16,8 @@ public class RecordDao {
     @Autowired
     private RecordMapper recordMapper;
 
-    public void insertRecord(String userName,String title,String content){
-        recordMapper.InsertRecord(userName,title,content);
+    public void insertRecord(String userName,String title,String content,String content1){
+        recordMapper.InsertRecord(userName,title,content,content1);
     }
 
     public void delRecord(Integer id){
@@ -48,5 +48,9 @@ public class RecordDao {
         PageBean<Record> pageData = new PageBean<>(currentPage, pageSize, countNums);
         pageData.setItems(personRecords);
         return pageData.getItems();
+    }
+
+    public Integer selectId(){
+        return recordMapper.selectMaxId();
     }
 }

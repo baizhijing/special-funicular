@@ -24,17 +24,10 @@ li{
 }
 
 #body_left{
-	width: 600px;
+	width: 1200px;
 	height: 700px;
 	background-color:beige;
 	float: left;
-}
-
-#body_right{
-	width: 600px;
-	height: 700px;
-	background-color:ghostwhite;
-	float: right;
 }
 
 /* 提交配置单按钮样式 */
@@ -104,13 +97,16 @@ li{
 }
 
 #body_left_content{
-    margin-top: 50px;
-    margin-left: 25px;
-    width: 550px;
-    height: 500px;
+    margin-top: 5px;
+    margin-left: 100px;
+    width: 1000px;
+    height: 600px;
 }
 
-
+#body_left_content li{
+    height: 42px;
+    margin-top: 5px;
+}
 
 #body_left_content li:hover{
     margin-right: 70px;
@@ -118,8 +114,8 @@ li{
 }
 
 #body_left_bottom{
-     margin-top: 45px;
-     margin-left: 80px;
+     margin-top: 5px;
+     margin-left: 230px;
      width: 600px;
      height: 100px;
  }
@@ -251,6 +247,18 @@ p {
     filter: alpha(opacity=80);/* 只支持IE6、7、8、9 */
 }
 
+#addSoftPop {
+    background-color: #FFFFFF;
+    z-index: 11;
+    width: 320px;
+    height: 148px;
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;        }
+
 .button {
     background-color: cadetblue;
     border: none;
@@ -263,14 +271,13 @@ p {
     margin: 4px 2px;
     cursor: pointer;
     margin-top: 20px;
-    float: right;
 }
 
 #popBoxSoftWare {
     background-color: #FFFFFF;
     z-index: 11;
     width: 1200px;
-    height: 200px;
+    height: 230px;
     position:fixed;
     top:0;
     right:0;
@@ -285,23 +292,6 @@ p {
 
 #popBoxSoftWare ul li{
     margin-top: 5px;
-}
-
-#popLayer2 {
-    /*display: none;*/
-    height: 1200px;
-    background-color: #B3B3B3;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    /* 层次顺序 */
-    z-index: 10;
-    /* 控制透明度 */
-    -moz-opacity: 0.8;
-    opacity:.80;
-    filter: alpha(opacity=80);/* 只支持IE6、7、8、9 */
 }
 
 #popBoxConfigList {

@@ -1,15 +1,10 @@
 #main{
 	width: 1200px;
-	height: 1200px;
+	height: 1800px;
 /* 	font-family:"微软雅黑"; */
 	margin: 0 auto;
 	/* 设置水平居中 */
 }
-
-li{
-    list-style: none;
-}
-
 #top{
 	margin: 0px;
 	width: 1200px;
@@ -20,21 +15,12 @@ li{
 #body{
 	margin: 0px;
 	width: 1200px;
-	height: 700px;
-}
-
-#body_left{
-	width: 600px;
-	height: 700px;
-	background-color:beige;
-	float: left;
 }
 
 #body_right{
-	width: 600px;
-	height: 700px;
+	width: 1200px;
+	height: 1200px;
 	background-color:ghostwhite;
-	float: right;
 }
 
 /* 提交配置单按钮样式 */
@@ -103,104 +89,28 @@ li{
 	height: 100px;
 }
 
-#body_left_content{
-    margin-top: 50px;
-    margin-left: 25px;
-    width: 550px;
-    height: 500px;
-}
-
-
-
-#body_left_content li:hover{
-    margin-right: 70px;
-    /*background-color: #e2e6ea;*/
-}
-
-#body_left_bottom{
-     margin-top: 45px;
-     margin-left: 80px;
-     width: 600px;
-     height: 100px;
- }
-
-#body_left_bottom ul{
-    margin: 0 auto;
-}
-
-#body_left_bottom li{
-    /* margin: 0 auto; */
-    padding: 0px;
-}
-
-#body_left_bottom li{
-    list-style: none
-}
-#body_left_bottom .page-bar li:first-child>a {
-    margin-left: 0px
-}
-#body_left_bottom .page-bar a{
-    border: 1px solid #ddd;
-    text-decoration: none;
-    position: relative;
-    float: left;
-    padding: 6px 12px;
-    margin-left: -1px;
-    line-height: 1.42857143;
-    color: #337ab7;
-    cursor: pointer
-}
-#body_left_bottom .page-bar a:hover{
-    background-color: #eee;
-}
-#body_left_bottom .page-bar a.banclick{
-    cursor:not-allowed;
-}
-#body_left_bottom .page-bar .active a{
-    color: #fff;
-    cursor: default;
-    background-color: #337ab7;
-    border-color: #337ab7;
-}
-#body_left_bottom .page-bar i{
-    font-style:normal;
-    color: #d44950;
-    margin: 0px 4px;
-    font-size: 12px;
-}
-
-
-#body_right_content{
-    margin-top: 50px;
-    margin-left: 25px;
-    width: 550px;
-    height: 500px;
-}
-
-/*第二个分页插件*/
-#body_right_bottom{
+/*分页*/
+.page-bar{
+    margin-left: 280px;
     margin-top: 5px;
-    margin-left: 80px;
-    width: 600px;
-    height: 100px;
 }
 
-#body_right_bottom ul{
+#body_right_top_bottom ul{
     margin: 0 auto;
 }
 
-#body_right_bottom li{
+#body_right_top_bottom li{
     /* margin: 0 auto; */
     padding: 0px;
 }
 
-#body_right_bottom li{
+#body_right_top_bottom li{
     list-style: none
 }
-#body_right_bottom .page-bar li:first-child>a {
+#body_right_top_bottom .page-bar li:first-child>a {
     margin-left: 0px
 }
-#body_right_bottom .page-bar a{
+#body_right_top_bottom .page-bar a{
     border: 1px solid #ddd;
     text-decoration: none;
     position: relative;
@@ -211,32 +121,77 @@ li{
     color: #337ab7;
     cursor: pointer
 }
-#body_right_bottom .page-bar a:hover{
+#body_right_top_bottom .page-bar a:hover{
     background-color: #eee;
 }
-#body_right_bottom .page-bar a.banclick{
+#body_right_top_bottom .page-bar a.banclick{
     cursor:not-allowed;
 }
-#body_right_bottom .page-bar .active a{
+#body_right_top_bottom .page-bar .active a{
     color: #fff;
     cursor: default;
     background-color: #337ab7;
     border-color: #337ab7;
 }
-#body_right_bottom .page-bar i{
+#body_right_top_bottom .page-bar i{
     font-style:normal;
     color: #d44950;
     margin: 0px 4px;
     font-size: 12px;
 }
 
-p {
-    text-align: center;
+#body_right_bottom_bottom{
+    margin-top: 195px;
+    height: 600px;
+}
+/*分页2*/
+#body_right_bottom_bottom ul{
+    margin: 0 auto;
 }
 
-#popLayer {
-    /*display: none;*/
-    height: 1200px;
+#body_right_bottom_bottom li{
+    /* margin: 0 auto; */
+    padding: 0px;
+}
+
+#body_right_bottom_bottom li{
+    list-style: none
+}
+#body_right_bottom_bottom .page-bar li:first-child>a {
+    margin-left: 0px
+}
+#body_right_bottom_bottom .page-bar a{
+    border: 1px solid #ddd;
+    text-decoration: none;
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    cursor: pointer
+}
+#body_right_bottom_bottom .page-bar a:hover{
+    background-color: #eee;
+}
+#body_right_bottom_bottom .page-bar a.banclick{
+    cursor:not-allowed;
+}
+#body_right_bottom_bottom .page-bar .active a{
+    color: #fff;
+    cursor: default;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+#body_right_bottom_bottom .page-bar i{
+    font-style:normal;
+    color: #d44950;
+    margin: 0px 4px;
+    font-size: 12px;
+}
+
+#popLayer{
+    height: 1800px;
     background-color: #B3B3B3;
     position: absolute;
     top: 0;
@@ -251,57 +206,17 @@ p {
     filter: alpha(opacity=80);/* 只支持IE6、7、8、9 */
 }
 
-.button {
-    background-color: cadetblue;
-    border: none;
-    color: white;
-    padding: 8px 16px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 12px;
-    margin: 4px 2px;
-    cursor: pointer;
-    margin-top: 20px;
-    float: right;
-}
-
-#popBoxSoftWare {
+#popConfigListRename{
     background-color: #FFFFFF;
     z-index: 11;
-    width: 1200px;
-    height: 200px;
+    width: 400px;
+    height: 350px;
     position:fixed;
     top:0;
     right:0;
     left:0;
     bottom:0;
     margin:auto;
-}
-
-#popBoxSoftWare ul{
-    list-style: none;
-}
-
-#popBoxSoftWare ul li{
-    margin-top: 5px;
-}
-
-#popLayer2 {
-    /*display: none;*/
-    height: 1200px;
-    background-color: #B3B3B3;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    /* 层次顺序 */
-    z-index: 10;
-    /* 控制透明度 */
-    -moz-opacity: 0.8;
-    opacity:.80;
-    filter: alpha(opacity=80);/* 只支持IE6、7、8、9 */
 }
 
 #popBoxConfigList {

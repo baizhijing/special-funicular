@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml" >
+	<head>
+		<meta charset="utf-8">
+		<title>小白装机网</title>
+		<link href="css/configListManager.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<div id="main">
+			<div id="top">
+				<div id="daohang">
+					<ul>l
+						<li><a href="http://localhost:8080/indexManager">硬件管理</a></li>
+						<li><a href="http://localhost:8080/luntanManager">论坛管理</a></li>
+						<li><a href="http://localhost:8080/resourceManager">软件管理</a></li>
+						<li><a class="active" href="http://localhost:8080/configListManager">配置单管理</a></li>
+					</ul>
+				</div>
+				<div id="image"><img class="mb-4" src="img/title.jpg" th:src="@{/img/title.jpg}"></div>
+			</div>
+			<div id="body">
+				<div id="body_right">
+					<div id="body_right_top">
+						<br>
+						<div id="body_right_bottom_content" style="margin-top: 50px;height: 450px">
+							<ul style="list-style: none;">
+								<li v-for="value in object" style="cursor:pointer;margin-left: 100px;">
+									<table style="font-family: '微软雅黑';font-size: 16px;">
+										<tr v-on:click="popOpen(value)">
+											<td style="width: 650px;">标题：{{value.name}}</td>
+											<td style="width: 100px;">价格：{{value.price}}</td>
+											<td><input style="margin-top: 0px" class="button2" type="button" value="删除" v-on:click="del(value.id)"></td>
+										</tr>
+									</table>
+									<br>
+								</li>
+							</ul>
+							<!--弹窗-->
+							<div id="popConfigListRename" v-if="renamePop">
+								<form id="form" action="/configlist/rename" method="post">
+									<div id="RecordName" style="text-align: center;">请输入配置单名称：<input type="text" name="title" value=""><br/></div>
+									<input type="hidden" name="id" v-model="configListId" value="">
+									<input class="button2" type="button" value="确定" style="margin-right:20px;" onclick="check()">
+									<input class="button2" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-onclick="renameClose()" value="取消">
+								</form>
+							</div>
+							<!--遮罩层-->
+							<div id="popLayer" v-if="popLayer"></div>
+							<div id="popBoxConfigList" v-if="ConfigListPop">
+								<ul>
+									<li>配置单名称：{{configListDetail.name}}</li>
+									<li>CPU：{{configListDetail.cpuName}}</li>
+									<li>主板：{{configListDetail.mainBoardName}}</li>
+									<li>内存：{{configListDetail.memoryName}}</li>
+									<li>硬盘：{{configListDetail.hardDiskName}}</li>
+									<li>显卡：{{configListDetail.displayName}}</li>
+									<li>机箱：{{configListDetail.boxName}}</li>
+									<li>电源：{{configListDetail.powerName}}</li>
+									<li>散热器：{{configListDetail.radiatorName}}</li>
+									<li>总价格：{{configListDetail.price}}</li>
+									<input class="button" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-on:click="popClose()" value="返回">
+								</ul>
+							</div>
+						</div>
+						<div id="body_right_bottom_bottom">
+							<div class="page-bar">
+								<ul>
+									<li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
+									<li v-if="cur==1"><a class="banclick">上一页</a></li>
+									<li v-for="index in indexs"  v-bind:class="{ 'active': cur == index}">
+										<a v-on:click="btnClick(index)">{{ index }}</a>
+									</li>
+									<li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
+									<li v-if="cur == all"><a class="banclick">下一页</a></li>
+									<li><a>共<i>{{all}}</i>页</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="bottom"></div>
+
+	</body>
+	<script src="js/vue.min.js"></script>
+	<script src="js/axios.min.js"></script>
+	<script>
+		let perSonConfigList=new Vue({
+			el:'#body_right_bottom_content',
+			data:{
+				object:{
+				},
+				configListId:0,
+				//配置单弹窗
+				ConfigListPop:false,
+				popLayer:false,
+				//重命名弹窗
+				renamePop:false,
+				configListDetail:{
+					name:'',
+					boxName:'',
+					cpuName:'',
+					displayName:'',
+					hardDiskName:'',
+					mainBoardName:'',
+					memoryName:'',
+					powerName:'',
+					price:0,
+					radiatorName:'',
+				},
+				userId:0,
+			},
+			mounted:function () {
+				this.getConfigList(1);
+			},
+			methods: {
+				renameOpen:function(id){
+					let self=this;
+					self.configListId=id;
+					self.renamePop=true;
+					self.popLayer=true;
+				},
+				renameClose:function(){
+					let self=this;
+					self.renamePop=false;
+					self.popLayer=false;
+				},
+				popOpen:function(value){
+					let self=this;
+					self.configListDetail=value;
+					self.ConfigListPop=true;
+					self.popLayer=true;
+				},
+				popClose:function(){
+					let self=this;
+					self.ConfigListPop=false;
+					self.popLayer=false;
+				},
+				getConfigList(currentPage){
+					let self=this;
+					if (currentPage==null)
+						currentPage=1;
+					axios.post('http://localhost:8080/configList/getAll',{
+						currentPage:currentPage,
+						pageSize:10
+					})
+							.then(function (response) {
+								self.object=response.data;
+							})
+							.catch(function (error) {
+								console.log(error);
+							})
+					axios.get('http://localhost:8080/configList/getCount',{
+						params:{
+							pageSize:10
+						}})
+								.then(function (response) {
+									let page=pageBar2;
+									page.all=response.data;
+								})
+								.catch(function (error) {
+									console.log(error);
+								})
+				},
+				del:function (id) {
+					axios.post('http://localhost:8080/configList/delete',{
+						id:id,
+					})
+					alert("删除成功");
+				}
+			}
+		})
+
+		let pageBar2 = new Vue({
+			el: '#body_right_bottom_bottom',
+			data: {
+				all: 8, //总页数
+				cur: 1//当前页码
+			},
+			watch: {
+				cur: function(oldValue , newValue){
+					console.log(arguments);
+				}
+			},
+			methods: {
+				btnClick: function(data){//页码点击事件
+					if(data != this.cur){
+						this.cur = data
+					}
+					let self=perSonConfigList;
+					self.getConfigList(data);
+				},
+				pageClick: function(){
+					this.btnClick(this.cur);
+					console.log('现在在'+this.cur+'页');
+					let self=perSonConfigList;
+					self.getConfigList(this.cur);
+				}
+			},
+			computed: {
+				indexs: function(){
+					var left = 1;
+					var right = this.all;
+					var ar = [];
+					if(this.all>= 5){
+						if(this.cur > 3 && this.cur < this.all-2){
+							left = this.cur - 2
+							right = this.cur + 2
+						}else{
+							if(this.cur<=3){
+								left = 1
+								right = 5
+							}else{
+								right = this.all
+								left = this.all -4
+							}
+						}
+					}
+					while (left <= right){
+						ar.push(left)
+						left ++
+					}
+					return ar
+				}
+			}
+		})
+	</script>
+</html>

@@ -1,11 +1,14 @@
 package com.bzj.graduation.controller;
 
 import com.bzj.graduation.bean.Record;
+import com.bzj.graduation.bean.RecordDetail;
+import com.bzj.graduation.service.RecordDetailService;
 import com.bzj.graduation.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,12 +20,18 @@ public class RecordController {
     @Autowired
     private RecordService recordService;
 
+    @Autowired
+    private RecordDetailService recordDetailService;
+
     @PostMapping("/addRecord")
-    public String addRecord(@RequestParam("title") String title, HttpSession session){
+    public String addRecord(@RequestParam("title") String title,
+                            @RequestParam("content") String content ,HttpSession session){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String userName=(String)session.getAttribute("loginUser");
-        String content=df.format(new Date()).toString();
-        recordService.Insert(userName,title,content);
+        String time=df.format(new Date()).toString();
+        recordService.Insert(userName,title,time,content);
+        Integer recordId=recordService.selectId();
+        recordDetailService.addRecordDetail(recordId,userName,content);
         return "luntan";
     }
 

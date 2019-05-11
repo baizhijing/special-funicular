@@ -57,6 +57,12 @@
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.2.5</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/works.lmz.composite/composite-servlet3 -->
+        <dependency>
+            <groupId>works.lmz.composite</groupId>
+            <artifactId>composite-servlet3</artifactId>
+            <version>1.1</version>
+        </dependency>
 
     </dependencies>
 

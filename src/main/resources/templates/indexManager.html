@@ -3,17 +3,17 @@
 	<head>
 		<meta charset="utf-8">
 		<title>小白装机网</title>
-		<link href="css/login.css" th:href="@{/css/login.css}" rel="stylesheet">
+		<link href="css/indexManager.css" th:href="@{/css/indexManager.css}" rel="stylesheet">
 	</head>
 	<body>
 		<div id="main">
 			<div id="top">
 				<div id="daohang">
 					<ul>
-						<li><a class="active" href="http://localhost:8080/index">主页</a></li>
-						<li><a href="http://localhost:8080/luntan">论坛</a></li>
-						<li><a href="http://localhost:8080/ziyuan">资源</a></li>
-						<li><a href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
+						<li><a class="active" href="http://localhost:8080/indexManager">硬件管理</a></li>
+						<li><a href="http://localhost:8080/luntanManager">论坛管理</a></li>
+						<li><a href="http://localhost:8080/resourceManager">软件管理</a></li>
+						<li><a href="http://localhost:8080/configListManager">配置单管理</a></li>
 					</ul>
 				</div>
 				<div id="image"><img class="mb-4" src="img/title.jpg" th:src="@{/img/title.jpg}"></div>
@@ -23,30 +23,29 @@
 					<div id="parts-head">
 						<h4>请选择配件</h4>
 						<ul class="url1">
-							<li v-on:click="initSelect(),getCPU(1)" onclick="initCur()" id="topSubSel_1" ><span>CPU&nbsp;&nbsp;--&nbsp;&nbsp;{{cpuName}}</span></li>
-							<li v-on:click="initSelect(),getMainBoard(1)" onclick="initCur()" id="topSubSel_2"><span>主板&nbsp;&nbsp;--&nbsp;&nbsp;{{mainBoardName}}</span></li>
-							<li v-on:click="initSelect(),getMemory(1)" onclick="initCur()" id="topSubSel_3"><span>内存&nbsp;&nbsp;--&nbsp;&nbsp;{{memoryName}}</span></li>
-							<li v-on:click="initSelect(),getHardDriver(1)" onclick="initCur()" id="topSubSel_4"><span>硬盘&nbsp;&nbsp;--&nbsp;&nbsp;{{hardDriverName}}</span></li>
-							<li v-on:click="initSelect(),getDisplay(1)" onclick="initCur()" id="topSubSel_5"><span>显卡&nbsp;&nbsp;--&nbsp;&nbsp;{{displayName}}</span></li>
-							<li v-on:click="initSelect(),getBox(1)" onclick="initCur()" id="topSubSel_6"><span>机箱&nbsp;&nbsp;--&nbsp;&nbsp;{{boxName}}</span></li>
-							<li v-on:click="initSelect(),getPower(1)" onclick="initCur()" id="topSubSel_7"><span>电源&nbsp;&nbsp;--&nbsp;&nbsp;{{powerName}}</span></li>
-							<li v-on:click="initSelect(),getRadiator(1)" onclick="initCur()" id="topSubSel_8"><span>散热器&nbsp;&nbsp;--&nbsp;&nbsp;{{radiatorName}}</span></li>
+							<li v-on:click="initSelect(),getCPU(1)" onclick="initCur()" id="topSubSel_1" ><span>CPU</span></li>
+							<li v-on:click="initSelect(),getMainBoard(1)" onclick="initCur()" id="topSubSel_2"><span>主板</span></li>
+							<li v-on:click="initSelect(),getMemory(1)" onclick="initCur()" id="topSubSel_3"><span>内存</span></li>
+							<li v-on:click="initSelect(),getHardDriver(1)" onclick="initCur()" id="topSubSel_4"><span>硬盘</span></li>
+							<li v-on:click="initSelect(),getDisplay(1)" onclick="initCur()" id="topSubSel_5"><span>显卡</span></li>
+							<li v-on:click="initSelect(),getBox(1)" onclick="initCur()" id="topSubSel_6"><span>机箱</span></li>
+							<li v-on:click="initSelect(),getPower(1)" onclick="initCur()" id="topSubSel_7"><span>电源</span></li>
+							<li v-on:click="initSelect(),getRadiator(1)" onclick="initCur()" id="topSubSel_8"><span>散热器</span></li>
 						</ul>
-						<input class="button" v-on:click="coreService()" type="button" name="popBox" value="提交配置单"/>
 					</div>
 				</div>
 				<div id="body_right">
 						<ul id="list">
-							<div id="selectBox">
-								<input style="height:26px; width: 180px;padding-left: 5px;margin-left: 400px" type="text" v-model="message" @keyup.enter="select(message)" placeholder="硬件名称搜索">
-								<input type="button" style="margin-top: 0px;margin-right: 5px" class="button2" v-on:click="select(message)" value="搜索">
-							</div>
+							<input style="height:26px; width: 180px;padding-left: 5px;margin-left: 320px;margin-top: 20px" type="text" v-model="message" @keyup.enter="select(message)" placeholder="硬件名称搜索">
+							<input class="button2" type="button" v-on:click="addHard()" value="添加硬件">
+							<input class="button2" type="button" v-on:click="select(message)" value="搜索">
 							<li v-for="(value,key) in object">
 								<img :src="value.src" height="100px" width="100px">
 								{{ value.name }}<br><br>
 								价格：{{ value.price }}
 								<div id="details"><input type="button" class="button2" value="详情" v-on:click="popBox(value)"></div>
-								<div id="add"><input type="button" class="button2" value="添加" v-on:click="insert(value.name,value.id)"></div>
+								<div id="add"><input type="button" class="button2" value="编辑" v-on:click="insert(value)"></div>
+								<div id="del"><input type="button" class="button2" value="删除" v-on:click="del(value.id)"></div>
 							</li>
 						</ul>
 				</div>
@@ -166,6 +165,125 @@
 						<input class="button2" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-on:click="closeBox()" value="返回">
 					</ul>
 				</div>
+
+				<!--硬件添加或编辑框-->
+				<div id="cpuEdit" v-if="edit.cpu">
+					<form action="/cpuEdit" method="post">
+
+						&nbsp;&nbsp;&nbsp;&nbsp;CPU名称：<input style="margin-top: 10px;" type="text" name="name" v-model="cpuDetail.name"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;功耗：<input style="margin-top: 10px;" type="text" name="power" v-model="cpuDetail.power"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;接口：<input style="margin-top: 10px;" type="text" name="interf" v-model="cpuDetail.interf"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;显示核心：<input style="margin-top: 10px;" type="text" name="gpu" v-model="cpuDetail.gpu"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;价格：<input style="margin-top: 10px;" type="text" name="price"  v-model="cpuDetail.price"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;系列：<input style="margin-top: 10px;" type="text" name="series"  v-model="cpuDetail.series"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;主频：<input style="margin-top: 10px;" type="text" name="frequency"  v-model="cpuDetail.frequency"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;睿频：<input style="margin-top: 10px;" type="text" name="turbo"  v-model="cpuDetail.turbo"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;核心数：<input style="margin-top: 10px;" type="text" name="cores"  v-model="cpuDetail.cores"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;线程数：<input style="margin-top: 10px;" type="text" name="thread"  v-model="cpuDetail.thread"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;制造工艺：<input style="margin-top: 10px;" type="text" name="technology"  v-model="cpuDetail.technology"><br>
+						<input type="hidden" name="id" v-model="ifAdd">
+						<input type="submit" class="button2" value="提交">
+						<input type="button" class="button2" value="取消" href="javascript:void(0)" v-on:click="closeEdit()"><br>
+					</form>
+				</div>
+				<div id="mainBoardEdit" v-if="edit.mainBoard">
+					<form action="/mainBoardEdit" method="post">
+						&nbsp;&nbsp;&nbsp;&nbsp;主板名称:<input style="margin-top: 10px;" type="text" name="name" v-model="mainBoardDetail.name"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;版型结构:<input style="margin-top: 10px;" type="text" name="type" v-model="mainBoardDetail.type"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;cpu接口:<input style="margin-top: 10px;" type="text" name="cpuInterface" v-model="mainBoardDetail.cpuInterface"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;内存类型:<input style="margin-top: 10px;" type="text" name="memoryType" v-model="mainBoardDetail.memoryType"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;最大内存:<input style="margin-top: 10px;" type="text" name="maxMemory" v-model="mainBoardDetail.maxMemory"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;内存插槽数:<input style="margin-top: 10px;" type="text" name="memoryNum" v-model="mainBoardDetail.memoryNum"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;SATA接口数:<input style="margin-top: 10px;" type="text" name="sata" v-model="mainBoardDetail.sata"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;M.2接口数:<input style="margin-top: 10px;" type="text" name="m2" v-model="mainBoardDetail.m2"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;功耗：<input style="margin-top: 10px;" type="text" name="power" v-model="mainBoardDetail.power"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;价格：<input style="margin-top: 10px;" type="text" name="price" v-model="mainBoardDetail.price"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;DVI数：<input style="margin-top: 10px;" type="text" name="dvi" v-model="mainBoardDetail.dvi"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;HDMI数：<input style="margin-top: 10px;" type="text" name="hdmi" v-model="mainBoardDetail.hdmi"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;VGA数：<input style="margin-top: 10px;" type="text" name="vga" v-model="mainBoardDetail.vga"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;cpu功耗：<input style="margin-top: 10px;" type="text" name="cpuPower"  v-model="mainBoardDetail.cpuPower"><br>
+						<input type="hidden" name="id" v-model="ifAdd">
+						<input type="submit" class="button2" value="提交">
+						<input type="button" class="button2" value="取消" href="javascript:void(0)" v-on:click="closeEdit()"><br>
+					</form>
+				</div>
+				<div id="memoryEdit" v-if="edit.memory">
+					<form action="/memoryEdit" method="post">
+						&nbsp;&nbsp;&nbsp;&nbsp;内存名称：<input style="margin-top: 10px;" type="text" name="name" v-model="memoryDetail.name"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;内存类型：<input style="margin-top: 10px;" type="text" name="memoryType" v-model="memoryDetail.memoryType"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;内存大小：<input style="margin-top: 10px;" type="text" name="memorySize" v-model="memoryDetail.memorySize"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;价格：<input style="margin-top: 10px;" type="text" name="price" v-model="memoryDetail.price"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;频率：<input style="margin-top: 10px;" type="text" name="frequency" v-model="memoryDetail.frequency"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;工作电压：<input type="text" name="voltage" v-model="memoryDetail.voltage"><br>
+						<input type="hidden" name="id" v-model="ifAdd">
+						<input type="submit" class="button2" value="提交">
+						<input type="button" class="button2" value="取消" href="javascript:void(0)" v-on:click="closeEdit()"><br>
+					</form>
+				</div>
+				<div id="hardDriverEdit" v-if="edit.hardDriver">
+					<form action="/hardDriverEdit" method="post">
+						&nbsp;&nbsp;&nbsp;&nbsp;硬盘名称：<input style="margin-top: 10px;" type="text" name="name" v-model="hardDriverDetail.name"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;价格：<input style="margin-top: 10px;" type="text" name="price" v-model="hardDriverDetail.price"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;接口类型：<input style="margin-top: 10px;" type="text" name="interf" v-model="hardDriverDetail.interf"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;容量：<input style="margin-top: 10px;" type="text" name="capacity" v-model="hardDriverDetail.capacity"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;尺寸：<input style="margin-top: 10px;" type="text" name="size" v-model="hardDriverDetail.size"><br>
+						<input type="hidden" name="id" v-model="ifAdd">
+						<input type="submit" class="button2" value="提交">
+						<input type="button" class="button2" value="取消" href="javascript:void(0)" v-on:click="closeEdit()"><br>
+					</form>
+				</div>
+				<div id="displayEdit" v-if="edit.display">
+					<form action="/displayEdit" method="post">
+						&nbsp;&nbsp;&nbsp;&nbsp;显卡名称：<input style="margin-top: 10px;" type="text" name="name" v-model="displayDetail.name"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;价格：<input style="margin-top: 10px;" type="text" name="price" v-model="displayDetail.price"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;长度：<input style="margin-top: 10px;" type="text" name="length" v-model="displayDetail.length"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;功耗：<input style="margin-top: 10px;" type="text" name="power" v-model="displayDetail.power"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;核心频率：<input style="margin-top: 10px;" type="text" name="mhz" v-model="displayDetail.mhz"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;工艺：<input style="margin-top: 10px;" type="text" name="technology" v-model="displayDetail.technology"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;显存大小：<input style="margin-top: 10px;" type="text" name="memory" v-model="displayDetail.memory"><br>
+						<input type="hidden" name="id" v-model="ifAdd">
+						<input type="submit" class="button2" value="提交">
+						<input type="button" class="button2" value="取消" href="javascript:void(0)" v-on:click="closeEdit()"><br>
+					</form>
+				</div>
+				<div id="boxEdit" v-if="edit.box">
+					<form action="/boxEdit" method="post">
+						&nbsp;&nbsp;&nbsp;&nbsp;机箱名称：<input style="margin-top: 10px;" type="text" name="name" v-model="boxDetail.name"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;价格：<input style="margin-top: 10px;" type="text" name="price" v-model="boxDetail.price"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;显卡限长：<input style="margin-top: 10px;" type="text" name="displayCard" v-model="boxDetail.displayCard"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;散热器限高：<input style="margin-top: 10px;" type="text" name="radiator" v-model="boxDetail.radiator"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;机箱类型：<input style="margin-top: 10px;" type="text" name="type" v-model="boxDetail.type"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;电源设计：<input style="margin-top: 10px;" type="text" name="powerDesign" v-model="boxDetail.powerDesign"><br>
+						<input type="hidden" name="id" v-model="ifAdd">
+						<input type="submit" class="button2" value="提交">
+						<input type="button" class="button2" value="取消" href="javascript:void(0)" v-on:click="closeEdit()"><br>
+					</form>
+				</div>
+				<div id="powerEdit" v-if="edit.power">
+					<form action="/powerEdit" method="post">
+						&nbsp;&nbsp;&nbsp;&nbsp;电源名称：<input style="margin-top: 10px;" type="text" name="name" v-model="powerDetail.name"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;功率：<input style="margin-top: 10px;" type="text" name="num" v-model="powerDetail.num"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;价格：<input style="margin-top: 10px;" type="text" name="price" v-model="powerDetail.price"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;主板供电插槽数：<input style="margin-top: 10px;" type="text" name="mainboardPowerNum" v-model="powerDetail.mainboardPowerNum"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;cpu供电插槽数：<input style="margin-top: 10px;" type="text" name="cpuPowerNum" v-model="powerDetail.cpuPowerNum"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;PFC类型：<input style="margin-top: 10px;" type="text" name="pfcType" v-model="powerDetail.pfcType"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;80PLUS认证：<input style="margin-top: 10px;" type="text" name="plus" v-model="powerDetail.plus"><br>
+						<input type="hidden" name="id" v-model="ifAdd">
+						<input type="submit" class="button2" value="提交">
+						<input type="button" class="button2" value="取消" href="javascript:void(0)" v-on:click="closeEdit()"><br>
+					</form>
+				</div>
+				<div id="radiatorEdit" v-if="edit.radiator">
+					<form action="/radiatorEdit" method="post">
+						&nbsp;&nbsp;&nbsp;&nbsp;散热器名称：<input style="margin-top: 10px;" type="text" name="name" v-model="radiatorDetail.name"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;价格：<input style="margin-top: 10px;" type="text" name="price" v-model="radiatorDetail.price"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;高度：<input style="margin-top: 10px;" type="text" name="high" v-model="radiatorDetail.high"><br>
+						&nbsp;&nbsp;&nbsp;&nbsp;接口：<input style="margin-top: 10px;" type="text" name="interf" v-model="radiatorDetail.interf"><br>
+						<input type="hidden" name="id" v-model="ifAdd">
+						<input type="submit" class="button2" value="提交">
+						<input type="button" class="button2" value="取消" href="javascript:void(0)" v-on:click="closeEdit()"><br>
+					</form>
+				</div>
 			</div>
 			<div id="bottom">
 				<div class="page-bar">
@@ -191,17 +309,11 @@
 				el: '#body',
 				data:{
 					message:'',
+					//初始对象
+					initObject:{
+					},
 					object:{
 					},
-					//点击添加，复制name
-					cpuName:' ',
-					mainBoardName:' ',
-					powerName:' ',
-					displayName:' ',
-					hardDriverName:' ',
-					memoryName:' ',
-					boxName:' ',
-					radiatorName:' ',
 				//	选择显示特定弹窗
 					cpuDisplay:false,
 					mainBoardDisplay:false,
@@ -211,6 +323,18 @@
 					memoryDisplay:false,
 					boxDisplay:false,
 					radiatorDisplay:false,
+				//	编辑弹窗
+					ifAdd:0,
+					edit:{
+						cpu:false,
+						mainBoard:false,
+						power:false,
+						display:false,
+						hardDriver:false,
+						memory:false,
+						box:false,
+						radiator:false,
+					},
 					//遮罩层
 					popLayer:false,
 					configListDetail:{
@@ -218,7 +342,6 @@
 					cpuDetail:{
 					},
 					mainBoardDetail:{
-
 					},
 					memoryDetail:{
 					},
@@ -248,6 +371,100 @@
 					this.getCPU();
 				},
 				methods: {
+					closeEdit: function () {
+						let self = this;
+						//初始化弹窗不显示
+						self.edit.cpu = false;
+						self.edit.mainBoard = false;
+						self.edit.power = false;
+						self.edit.display = false;
+						self.edit.hardDriver = false;
+						self.edit.memory = false;
+						self.edit.box = false;
+						self.edit.radiator = false;
+						self.popLayer = false;
+
+						//关闭弹窗时，清空表单内容
+						self.cpuDetail=self.initObject;
+						self.mainBoardDetail=self.initObject;
+						self.memoryDetail=self.initObject;
+						self.hardDriverDetail=self.initObject;
+						self.displayDetail=self.initObject;
+						self.boxDetail=self.initObject;
+						self.powerDetail=self.initObject;
+						self.radiatorDetail=self.initObject;
+
+						// 刷新页面
+						if (hard==1){
+							self.getCPU(1);
+						}
+						else if (hard==2){
+							self.getMainBoard(1);
+						}
+						else if (hard==3){
+							self.getMemory(1);
+						}
+						else if (hard==4){
+							self.getHardDriver(1);
+						}
+						else if (hard==5){
+							self.getDisplay(1);
+						}
+						// 1代表当前在操作CPU，2代表主板，3代表内存，4硬盘，5显卡，6机箱，7电源，8散热器
+						else if (hard==6){
+							self.getBox(1);
+						}
+						else if (hard==7){
+							self.getPower(1);
+						}
+						else if (hard==8){
+							self.getRadiator(1);
+						}
+					},
+					addHard:function (){
+						let self=this;
+						if (hard==1){
+							self.edit.cpu=true;
+						}
+						else if (hard==2){
+							self.edit.mainBoard = true;
+						}
+						else if (hard==3){
+							self.edit.memory = true;
+						}
+						else if (hard==4){
+							self.edit.hardDriver = true;
+						}
+						else if (hard==5){
+							self.edit.display = true;
+						}
+						// 1代表当前在操作CPU，2代表主板，3代表内存，4硬盘，5显卡，6机箱，7电源，8散热器
+						else if (hard==6){
+							self.edit.box = true;
+						}
+						else if (hard==7){
+							self.edit.power = true;
+						}
+						else if (hard==8){
+							self.edit.radiator = true;
+						}
+						self.popLayer=true;
+					},
+
+					del:function(id){
+						let hard1=hard;
+						axios.post('http://localhost:8080/delete',{
+							id:id,
+							type:hard1
+						})
+								.then(function (response) {
+									let self=this;
+									alert("删除成功");
+								})
+								.catch(function (error) {
+									console.log(error);
+								})
+					},
 					//初始化搜索条件
 					initSelect:function(){
 						let self=this;
@@ -551,41 +768,35 @@
 								});
 					},
 					//设置全局变量，1代表当前在操作CPU，2代表主板，3代表内存，4硬盘，5显卡，6机箱，7电源，8散热器
-					//包装实体
-					insert: function (name, id) {
+					//编辑硬件!!!!!!!!!
+					insert: function (value) {
 						let left = this;
+						left.ifAdd=value.id;
+						//获取表单信息,填入表单
+						left.addHard();
 						if (hard == 1) {
-							left.configListDetail.cpuId = id;
-							left.configListDetail.cpuName = name;
-							left.cpuName = name;
-						} else if (hard == 2) {
-							left.configListDetail.mainBoardId = id;
-							left.configListDetail.mainBoardName = name;
-							left.mainBoardName = name;
-						} else if (hard == 3) {
-							left.configListDetail.memoryId = id;
-							left.configListDetail.memoryName = name;
-							left.memoryName = name;
-						} else if (hard == 4) {
-							left.configListDetail.hardDiskId = id;
-							left.configListDetail.hardDiskName = name;
-							left.hardDriverName = name;
-						} else if (hard == 5) {
-							left.configListDetail.displayId = id;
-							left.configListDetail.displayName = name;
-							left.displayName = name;
-						} else if (hard == 6) {
-							left.configListDetail.boxId = id;
-							left.configListDetail.boxName = name;
-							left.boxName = name;
-						} else if (hard == 7) {
-							left.configListDetail.powerId = id;
-							left.configListDetail.powerName = name;
-							left.powerName = name;
-						} else if (hard == 8) {
-							left.configListDetail.radiatorId = id;
-							left.configListDetail.radiatorName = name;
-							left.radiatorName = name;
+							left.cpuDetail=value;
+						}
+						else if (hard == 2) {
+							left.mainBoardDetail=value;
+						}
+						else if (hard == 3) {
+							left.memoryDetail=value;
+						}
+						else if (hard == 4) {
+							left.hardDriverDetail=value;
+						}
+						else if (hard == 5) {
+							left.displayDetail=value;
+						}
+						else if (hard == 6) {
+							left.boxDetail=value;
+						}
+						else if (hard == 7) {
+							left.powerDetail=value;
+						}
+						else if (hard == 8) {
+							left.radiatorDetail=value;
 						}
 					},
 					//发送请求

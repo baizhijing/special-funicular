@@ -1,37 +1,22 @@
-package com.bzj.graduation;
+package com.bzj.graduation.controller;
 
-import com.bzj.graduation.dao.BoxDao;
-import com.bzj.graduation.dao.DisplayDao;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.TimeZone;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class GraduationApplicationTests {
+@WebServlet(urlPatterns = "/time")
+public class TimeServlet extends HttpServlet {
 
-    @Autowired
-    private BoxDao boxDao;
-
-    @Autowired
-    private DisplayDao displayDao;
-    @Test
-    public void contextLoads() {
-        BigDecimal bigDecimal=new BigDecimal("0");
-    }
-
-    @Test
-    public void demo1(){
-        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));//可以对每个时间域单独修改
+    @Override
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setCharacterEncoding("UTF-8");
+        resp.setHeader("Content-Type", "text/html;charset=UTF-8");
+        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH)+1;
         int date = c.get(Calendar.DATE);
@@ -65,5 +50,15 @@ public class GraduationApplicationTests {
         int weekOfYear = c.get(Calendar.WEEK_OF_YEAR);
         String week="今天是"+year+"年的第"+weekOfYear+"周";
         System.out.println(week);
+        PrintWriter out=resp.getWriter();
+        out.println("<html>");
+        out.println("<body>");
+        out.println(nowTime);
+        out.println("<br>");
+        out.println(weekOfYear);
+        out.println("</body>");
+        out.println("</html>");
+        out.flush();
+        out.close();
     }
 }

@@ -16,9 +16,13 @@ public class RecordService {
     @Autowired
     private LoginDao loginDao;
 
-    public void Insert(String userName,String title,String content){
-        recordDao.insertRecord(userName,title,content);
+    public void Insert(String userName,String title,String content,String content1){
+        recordDao.insertRecord(userName,title,content,content1);
         loginDao.addInteg(1,userName);
+    }
+
+    public Integer selectId(){
+        return recordDao.selectId();
     }
 
     public void delete(Integer id){

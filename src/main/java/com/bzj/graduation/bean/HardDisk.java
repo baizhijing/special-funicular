@@ -15,7 +15,8 @@ public class HardDisk {
     private Integer id;
     private String name;
     private String src;
-    private BigDecimal price;
+    private Double price;
     private String interf;
     private Integer capacity;
+    private double size;//尺寸
 }

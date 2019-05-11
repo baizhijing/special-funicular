@@ -39,4 +39,29 @@ public class MvcController {
 
     @RequestMapping("/recordDetail")
     public String recordDetail(){return "recordDetail";}
+
+    @RequestMapping("/manager")
+    public String manager(){
+        return "indexManager";
+    }
+
+    @RequestMapping("/indexManager")
+    public String manager2(){
+        return "indexManager";
+    }
+
+    @RequestMapping("/luntanManager")
+    public String luntan2(){
+        return "luntanManager";
+    }
+
+    @RequestMapping("/resourceManager")
+    public String resource(){
+        return "resourceManager";
+    }
+
+    @RequestMapping("/configListManager")
+    public String configList(){
+        return "configListManager";
+    }
 }

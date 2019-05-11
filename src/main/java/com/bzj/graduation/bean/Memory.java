@@ -17,5 +17,7 @@ public class Memory {
     private String memoryType;
     private Integer memorySize;
     private String src;
-    private BigDecimal price;
+    private Double price;
+    private Integer frequency;//频率
+    private Double voltage;//工作电压
 }

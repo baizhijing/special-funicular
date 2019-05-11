@@ -7,8 +7,8 @@ import java.util.List;
 
 @Mapper
 public interface RecordMapper {
-    @Insert("insert into record values(0,#{userName},#{title},#{content})")
-    void InsertRecord(String userName,String title,String content);
+    @Insert("insert into record values(0,#{userName},#{title},#{content},#{content1})")
+    void InsertRecord(String userName,String title,String content,String content1);
 
     @Delete("delete from record where id=#{id}")
     void delRecord(Integer id);
@@ -27,4 +27,6 @@ public interface RecordMapper {
     @Select("select count(*) from record where userName=#{userName}")
     Integer getPerosonRecordCount(String userName);
 
+    @Select("select max(id) from record")
+    Integer selectMaxId();
 }

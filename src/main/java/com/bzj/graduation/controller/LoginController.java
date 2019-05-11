@@ -28,9 +28,11 @@ public class LoginController {
             int userId=loginService.getUserId(username);
             session.setAttribute("userId",userId);
             session.setAttribute("loginUser", username);
-//            String loginuser=(String)session.getAttribute("loginUser");
-//            System.out.println(loginuser);
+            User user=loginService.getUserByUserName(username);
+            if (user.getType()==2)
             return "index";
+            else
+                return "indexManager";
         }
         //登录失败
         else{

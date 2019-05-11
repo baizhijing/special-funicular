@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml"
+	  xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-for="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta charset="utf-8">
+		<title>小白装机网</title>
+		<link href="css/resourceManager.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<div id="main">
+			<div id="top">
+				<div id="daohang">
+					<ul>
+						<li><a href="http://localhost:8080/indexManager">硬件管理</a></li>
+						<li><a href="http://localhost:8080/luntanManager">论坛管理</a></li>
+						<li><a class="active" href="http://localhost:8080/resourceManager">软件管理</a></li>
+						<li><a href="http://localhost:8080/configListManager">配置单管理</a></li>
+					</ul>
+				</div>
+				<div id="image"><img class="mb-4" src="img/title.jpg" th:src="@{/img/title.jpg}"></div>
+			</div>
+			<div id="body">
+				<div id="body_left">
+					<p>软件资源</p>
+					<div id="body_left_content">
+						<ul>
+							<li>
+								<input class="button" type="button" name="addSoft" value="添加软件" v-on:click="editSoft()">
+								<br>
+								<input style="height:30px; width: 180px;padding-left: 5px;" type="text" v-model="message" @keyup.enter="select(message)" placeholder="软件名称搜索">
+								<input style="" type="button" class="button" v-on:click="select(message)" value="搜索"></li>
+							<div id="empty" style="margin-top: 50px"></div>
+							<li  v-for="value in object" style="cursor:pointer;">
+								<table>
+									<tr>
+										<td style="width: 400px" v-on:click="popOpen(value)">{{value.name}}</td>
+										<br>
+										<td style="width: 350px" v-on:click="popOpen(value)">类型：{{value.type}}</td>
+										<td style="width: 50px">
+											<input type="button" class="button" v-on:click="editSoft(value)" value="编辑">
+										</td>
+										<td style="width: 50px;margin-right: 10px">
+											<input type="button" class="button" v-on:click="del(value.id)" value="删除">
+										</td>
+									</tr>
+								</table>
+							</li>
+						</ul>
+						<div id="popLayer" v-if="popLayer"></div>
+						<div id="popBoxSoftWare" v-if="softWarePop">
+							<ul>
+								<li>软件名：{{softWareDetail.name}}</li>
+								<li>类别：{{softWareDetail.type}}</li>
+								<p style="text-align: left;">下载地址：{{softWareDetail.url}}</p>
+								<input class="button" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-on:click="popClose()" value="返回">
+							</ul>
+						</div>
+						<div id="addSoftPop" v-if="addSoft">
+							<form action="/softEdit" method="post">
+								&nbsp;&nbsp;&nbsp;&nbsp;软件名称：<input style="margin-top: 10px;" type="text" name="name" v-model="softWareDetail.name"><br>
+								&nbsp;&nbsp;&nbsp;&nbsp;类别：<input style="margin-top: 10px;" type="text" name="type" v-model="softWareDetail.type"><br>
+								&nbsp;&nbsp;&nbsp;&nbsp;下载地址：<input style="margin-top: 10px;" type="text" name="url" v-model="softWareDetail.url"><br>
+								<input type="hidden"  name="id" v-model="softWareDetail.id">
+								<input type="submit"  class="button2"  value="提交">
+								<input type="button"  class="button2"  value="取消" href="javascript:void(0)" v-on:click="popClose()"><br>
+							</form>
+						</div>
+					</div>
+					<div id="body_left_bottom">
+						<div class="page-bar">
+							<ul>
+								<li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
+								<li v-if="cur==1"><a class="banclick">上一页</a></li>
+								<li v-for="index in indexs"  v-bind:class="{ 'active': cur == index}">
+									<a v-on:click="btnClick(index)">{{ index }}</a>
+								</li>
+								<li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
+								<li v-if="cur == all"><a class="banclick">下一页</a></li>
+								<li><a>共<i>{{all}}</i>页</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="bottom"></div>
+		</div>
+	</body>
+	<script src="js/vue.min.js"></script>
+	<script src="js/axios.min.js"></script>
+	<script>
+		let Resource=new Vue({
+			el:'#body_left_content',
+			data:{
+				message:'',
+				object:{
+				},
+				initObject:{},
+				softWarePop:false,
+				addSoft:false,
+				popLayer:false,
+				softWareDetail:{
+					name:'',
+					type:'',
+					url:'',
+					id:0,
+				},
+				selectType:''
+			},
+			mounted:function () {
+				this.getResource(1);
+			},
+			methods:{
+				del:function(value){
+					axios.post('http://localhost:8080/resource/delete',{
+						id:value
+					})
+					alert("删除成功");
+				},
+				editSoft:function(value){
+					let self=this;
+					if (value!=null){
+						self.softWareDetail=value;
+					}
+					self.addSoft=true;
+					self.popLayer=true;
+				},
+				select:function(message){
+					let self=this;
+					self.selectType=message;
+					self.getResource(1);
+				},
+				initSelect:function(){
+					let self=this;
+					self.message='';
+				},
+				popOpen:function(value){
+					let self=this;
+					self.softWareDetail=value;
+					self.softWarePop=true;
+					self.popLayer=true;
+				},
+				popClose:function(){
+					let self=this;
+					self.addSoft=false;
+					self.softWarePop=false;
+					self.popLayer=false;
+					self.softWareDetail=self.initObject;
+				},
+				getResource:function(currentPage){
+					if (currentPage==null)
+						currentPage=1;
+					let self=this;
+						axios.post('http://localhost:8080/resource/list',{
+							currentPage:currentPage,
+							pageSize:10,
+							type:self.selectType,
+						})
+								.then(function (response) {
+									console.log(response);
+									let page=pageBar;
+									axios.get('http://localhost:8080/resource/getAllCount',{
+										params:{
+											pageSize:10,
+										 	type:self.selectType
+										}
+									})
+											.then(function (response) {
+												page.all=response.data;//将返回总条数传给插件总页数
+												console.log(response);
+											})
+											.catch(function (error) {
+												console.log(error);
+											});
+									self.object=response.data;
+								})
+								.catch(function (error) {
+									console.log(error);
+								});
+
+				}
+			}
+		})
+
+		let pageBar = new Vue({
+			el: '#body_left_bottom',
+			data: {
+				all: 8, //总页数
+				cur: 1//当前页码
+			},
+			watch: {
+				cur: function(oldValue , newValue){
+					// console.log(arguments);
+				}
+			},
+			methods: {
+				btnClick: function(data){//页码点击事件
+					let resource=Resource;
+					if(data != this.cur) {
+						this.cur = data;
+					}
+					resource.getResource(data,resource.type)
+				},
+				pageClick: function(){
+					console.log('现在在'+this.cur+'页');
+					this.btnClick(this.cur)
+				}
+			},
+
+			computed: {
+				indexs: function(){
+					var left = 1;
+					var right = this.all;
+					var ar = [];
+					if(this.all>= 5){
+						if(this.cur > 3 && this.cur < this.all-2){
+							left = this.cur - 2
+							right = this.cur + 2
+						}else{
+							if(this.cur<=3){
+								left = 1
+								right = 5
+							}else{
+								right = this.all
+								left = this.all -4
+							}
+						}
+					}
+					while (left <= right){
+						ar.push(left)
+						left ++
+					}
+					return ar
+				}
+
+			}
+		})
+	</script>
+</html>

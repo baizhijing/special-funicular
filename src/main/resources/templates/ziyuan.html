@@ -23,9 +23,10 @@
 				<div id="body_left">
 					<p>软件资源</p>
 					<div id="body_left_content">
-						<ul>
-							<input style="height:30px; width: 180px;padding-left: 5px;margin-left: 50px" type="text" v-model="message" @keyup.enter="select(message)" placeholder="软件搜索">
-							<li  v-for="value in object">
+						<ul style="margin-top: -19px">
+							<input style="height:30px; width: 180px;padding-left: 5px;margin-left: 255px" type="text" v-model="message" @keyup.enter="select(message)" placeholder="软件名称搜索">
+							<input type="button" class="button2" v-on:click="select(message)" value="搜索" style="margin-top: 3px">
+							<li  v-for="value in object" style="cursor:pointer;">
 								<table>
 									<tr v-on:click="popOpen(value)">
 										<td style="width: 300px">{{value.name}}</td>
@@ -63,12 +64,12 @@
 				<div id="body_right">
 					<p>公共配置单</p>
 					<div id="body_right_content">
-						<ul>
-							<input style="height:30px; width: 180px;padding-left: 5px;margin-left: 50px" type="button" value="排序" v-on:click="sort()">
-							<li  v-for="value2 in object2">
+						<input style="margin-top: -29px" class="button2" type="button" value="按价格排序" v-on:click="sort()">
+						<ul style="margin-top: 69px">
+							<li  v-for="value2 in object2" style="cursor:pointer;margin-top: 10px">
 								<table>
 									<tr v-on:click="popOpen(value2)">
-										<td style="width: 300px">{{value2.name}}</td>
+										<td style="width: 350px;">{{value2.name}}</td>
 										<br>
 										<td>价格：{{value2.price}}</td>
 									</tr>

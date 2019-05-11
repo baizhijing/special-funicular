@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml" >
 	<head>
 		<meta charset="utf-8">
 		<title>小白装机网</title>
@@ -21,7 +21,7 @@
 			<div id="body">
 				<div id="body_left">
 					<ul>
-						<table style="text-align: left;font-family: '微软雅黑';font-size: 14px;">
+						<table style="text-align: left;font-family: '微软雅黑';font-size: 14px;margin-left: -5px">
 							<tr>
 								<th>用户名：{{object.username}}</th>
 							</tr>
@@ -39,7 +39,7 @@
 						<p style="text-align: center;">我的帖子</p>
 						<div id="body_right_top_content"  style="height: 450px;">
 							<ul style="list-style: none;">
-								<li v-for="value in object">
+								<li v-for="value in object" style="cursor:pointer;">
 									<table style="font-family: '微软雅黑';font-size: 16px;">
 										<tr v-on:click="recordDetail(value.id,value.title)">
 											<td style="width: 650px;">标题：{{value.title}}</td>
@@ -70,18 +70,28 @@
 							<hr>
 							<p style="text-align: center;">我的配置单</p>
 							<ul style="list-style: none;">
-								<li v-for="value in object">
+								<li v-for="value in object" style="cursor:pointer;">
 									<table style="font-family: '微软雅黑';font-size: 16px;">
 										<tr v-on:click="popOpen(value)">
 											<td style="width: 650px;">标题：{{value.name}}</td>
 											<td>价格：{{value.price}}</td>
-											<input type="button" value="重命名" v-on:click="rename(value.id)">
-											<input type="button" value="发布" v-on:click="submit(value.id)">
+											<input type="button" style="margin-right: 5px" class="button2" value="重命名" v-on:click="renameOpen(value.id)">
+											<input type="button" class="button2" value="发布" v-on:click="submit(value.id)">
 										</tr>
 									</table>
 									<br>
 								</li>
 							</ul>
+							<!--弹窗-->
+							<div id="popConfigListRename" v-if="renamePop">
+								<form id="form" action="/configlist/rename" method="post">
+									<div id="RecordName" style="text-align: center;">请输入配置单名称：<input type="text" name="title" value=""><br/></div>
+									<input type="hidden" name="id" v-model="configListId" value="">
+									<input class="button2" type="button" value="确定" style="margin-right:20px;" onclick="check()">
+									<input class="button2" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-onclick="renameClose()" value="取消">
+								</form>
+							</div>
+							<!--遮罩层-->
 							<div id="popLayer" v-if="popLayer"></div>
 							<div id="popBoxConfigList" v-if="ConfigListPop">
 								<ul>
@@ -123,6 +133,18 @@
 	<script src="js/vue.min.js"></script>
 	<script src="js/axios.min.js"></script>
 	<script>
+		function check()
+		{
+			let form=document.getElementById("form");
+			if(form.title.value=="")
+			{
+				alert("请输入配置单名称");
+				return false;
+			}
+			form.submit();
+			console.log("发布成功");
+			return true;
+		}
 		let user=new Vue({
 			el:'#body_left',
 			data:{
@@ -251,8 +273,12 @@
 			data:{
 				object:{
 				},
+				configListId:0,
+				//配置单弹窗
 				ConfigListPop:false,
 				popLayer:false,
+				//重命名弹窗
+				renamePop:false,
 				configListDetail:{
 					name:'',
 					boxName:'',
@@ -263,9 +289,9 @@
 					memoryName:'',
 					powerName:'',
 					price:0,
-					radiatorName:''
+					radiatorName:'',
 				},
-				userId:0
+				userId:0,
 			},
 			mounted:function () {
 				this.getPersonConfigList(1);
@@ -282,21 +308,20 @@
 
 							});
 				},
-				rename:function(){
-
+				renameOpen:function(id){
+					let self=this;
+					self.configListId=id;
+					self.renamePop=true;
+					self.popLayer=true;
+				},
+				renameClose:function(){
+					let self=this;
+					self.renamePop=false;
+					self.popLayer=false;
 				},
 				popOpen:function(value){
 					let self=this;
-					self.configListDetail.name=value.name;
-					self.configListDetail.boxName=value.boxName;
-					self.configListDetail.cpuName=value.cpuName;
-					self.configListDetail.displayName=value.displayName;
-					self.configListDetail.hardDiskName=value.hardDiskName;
-					self.configListDetail.mainBoardName=value.mainBoardName;
-					self.configListDetail.memoryName=value.memoryName;
-					self.configListDetail.powerName=value.powerName;
-					self.configListDetail.price=value.price;
-					self.configListDetail.radiatorName=value.radiatorName;
+					self.configListDetail=value;
 					self.ConfigListPop=true;
 					self.popLayer=true;
 				},

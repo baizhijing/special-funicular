@@ -66,39 +66,31 @@ public class ConfigListService {
         String boxName=(String) map.get("boxName");
         //判断cpu兼容性
         if (!cpuDao.getInterfById(cpuId).equals(mainBoardDao.getInterfById(mainBoardId))) {
-            return "请检查主板，散热器是否支持cpu!";
+            return "主板和CPU不兼容，接口不匹配！！";
         }
-        else if (radiatorDao.getInterfById(radiatorId).indexOf(cpuDao.getInterfById(userId))==-1){
-            return "散热器不兼容此CPU";
+        else if (radiatorDao.getInterfById(radiatorId).indexOf(cpuDao.getInterfById(userId),1)==-1){
+            return "散热器和CPU不兼容，接口不匹配！！";
         }
         //判断内存兼容性
         else if (!(mainBoardDao.getMemoryTypeById(mainBoardId).equals(memoryDao.getMemoryTypeById(memoryId)))) {
-            return "请检查内存规格是否兼容主板!";
+            return "主板和内存不兼容";
         }
         //判断电源功率
         else if ((cpuDao.getPowerById(cpuId)+displayDao.getPowerById(displayId)+100)>powerDao.getNumById(powerId)){
-            return "电源功率不足!";
+            return "电源功率不足!请更换更大功率电源";
         }
         //硬盘兼容性
-        else if (hardDiskDao.getInterfById(hardDiskId)=="m.2" && mainBoardDao.getM2ById(mainBoardId)==0){
+        else if (hardDiskDao.getInterfById(hardDiskId).equals("M2") && mainBoardDao.getM2ById(mainBoardId)==0){
             return "硬盘不兼容，主板缺少M.2接口！!";
         }
-        else if ( StringUtils.isBlank(cpuDao.getGpuById(cpuId)) && displayId==null ){
-            return "该CPU没有显示核心，请添加独立显卡!";
+        else if (boxDao.getTypeById(boxId).equals("MATX")&&mainBoardDao.getTypeById(mainBoardId).equals("ATX")){
+            return "主板与机箱不兼容!";
         }
         else if (boxDao.getDisplayCardById(boxId)<displayDao.getLengthById(displayId)){
             return "显卡过长，请更换显卡或机箱!";
         }
         else if (radiatorDao.getHighById(radiatorId)>boxDao.getRadiatorById(boxId)){
             return "散热器过高，请更换散热器或机箱!";
-        }
-
-        //散热器接口需要判断，有些只兼容intel或AMD的
-
-        //显卡供电接口？？
-
-        else if (boxDao.getTypeById(boxId).indexOf(mainBoardDao.getTypeById(mainBoardId))==-1){
-            return "主板与机箱不兼容!";
         }
 
         configList.setRadiatorId(radiatorId);
@@ -318,4 +310,144 @@ public List<ConfigListDto> getPersonConfigListByPage(Integer currentPage,Integer
     }
     return listDto;
 }
+
+public boolean renameConfigList(String title,Integer id){
+        return configListDao.renameConfigList(title,id);
+}
+
+public void addCpu(Cpu cpu){
+        configListDao.addCpu(cpu);
+}
+
+public void editCpu(Cpu cpu){
+        configListDao.editCpu(cpu);
+}
+
+    public void addMainBoard(MainBoard mainBoard){
+        configListDao.addMainBoard(mainBoard);
+    }
+
+    public void editMainBoard(MainBoard mainBoard){
+        configListDao.editMainBoard(mainBoard);
+    }
+//
+    public void addMemory(Memory memory){
+        configListDao.addMemory(memory);
+    }
+
+    public void editMemory(Memory memory){
+        configListDao.editMemory(memory);
+    }
+//
+    public void addHardDisk(HardDisk hardDisk){
+        configListDao.addHardDisk(hardDisk);
+    }
+
+    public void editHardDisk(HardDisk hardDisk){
+        configListDao.editHardDisk(hardDisk);
+    }
+//
+    public void addDisplay(Display display){
+        configListDao.addDisplay(display);
+    }
+
+    public void editDisplay(Display display){
+        configListDao.editDisplay(display);
+    }
+//
+    public void addBox(Box box){
+        configListDao.addBox(box);
+    }
+
+    public void editBox(Box box){
+        configListDao.editBox(box);
+    }
+
+    public void addPower(Power power){
+        configListDao.addPower(power);
+    }
+
+    public void editPower(Power power){
+        configListDao.editPower(power);
+    }
+
+    public void addRadiator(Radiator radiator){
+        configListDao.addRadiator(radiator);
+    }
+
+    public void editRadiator(Radiator radiator){
+        configListDao.editRadiator(radiator);
+    }
+
+    public void delete(Map<String,Integer> map){
+        configListDao.delete(map);
+    }
+
+    public void addSoft(Resource resource){
+        configListDao.addSoft(resource);
+    }
+
+    public void editSoft(Resource resource){
+        configListDao.editSoft(resource);
+    }
+
+    public void deleteResource(Integer id){
+        configListDao.deleteResource(id);
+    }
+
+
+    public List<ConfigListDto> allConfigList(Integer currentPage,Integer pageSize){
+        List<ConfigList> list=configListDao.allConfigList(currentPage,pageSize);
+        List<ConfigListDto> listDto=new ArrayList<ConfigListDto>();
+        for (int i=0;i<list.size();i++){
+            ConfigList ct=list.get(i);
+            ConfigListDto configListDto0=new ConfigListDto();
+            listDto.add(configListDto0);
+            ConfigListDto configListDto=listDto.get(i);
+            configListDto.setId(ct.getId());
+            configListDto.setUserId(ct.getUserId());
+            configListDto.setCpuId(ct.getCpuId());
+            configListDto.setCpuName(ct.getCpuName());
+            configListDto.setHardDiskId(ct.getHardDiskId());
+            configListDto.setHardDiskName(ct.getHardDiskName());
+            configListDto.setRadiatorId(ct.getRadiatorId());
+            configListDto.setRadiatorName(ct.getRadiatorName());
+            configListDto.setBoxId(ct.getBoxId());
+            configListDto.setBoxName(ct.getBoxName());
+            configListDto.setPowerId(ct.getPowerId());
+            configListDto.setPowerName(ct.getPowerName());
+            configListDto.setMemoryId(ct.getMemoryId());
+            configListDto.setMemoryName(ct.getMemoryName());
+            configListDto.setMainBoardId(ct.getMainBoardId());
+            configListDto.setMainBoardName(ct.getMainBoardName());
+            configListDto.setName(ct.getName());
+            configListDto.setDisplayId(ct.getDisplayId());
+            configListDto.setDisplayName(ct.getDisplayName());
+            configListDto.setIsPublic(ct.getIsPublic());
+            //计算配置单总价格
+            double sum=0;
+            sum+=cpuDao.getPriceById(ct.getCpuId())
+                    +boxDao.getPriceById(ct.getBoxId())
+                    +displayDao.getPriceById(ct.getDisplayId())
+                    +hardDiskDao.getPriceById(ct.getHardDiskId())
+                    +mainBoardDao.getPriceById(ct.getMainBoardId())
+                    +memoryDao.getPriceById(ct.getMemoryId())
+                    +powerDao.getPriceById(ct.getPowerId())
+                    +radiatorDao.getPriceById(ct.getRadiatorId());
+            configListDto.setPrice(sum);
+        }
+        return listDto;
+    }
+
+    public Integer allConfigListCount(Integer pageSize){
+        int countNums= configListDao.allConfigListCount(pageSize);
+        if (countNums%pageSize==0)
+            return countNums/pageSize;
+        return countNums/pageSize+1;
+    }
+
+    public void deleteConfigList(Integer id){
+        configListDao.deleteConfigList(id);
+    }
+
 }

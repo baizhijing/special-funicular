@@ -8,9 +8,14 @@ import java.math.BigDecimal;
 @Component
 @Data
 public class ConfigListDto implements Comparable<ConfigListDto>{
+
+    @Override
+    public int compareTo(ConfigListDto o) {
+        return this.price.compareTo(o.price);
+    }
+
     private Integer id;
 
-//    配置单名称
     private String name;
 
     private Integer userId;
@@ -51,8 +56,4 @@ public class ConfigListDto implements Comparable<ConfigListDto>{
 
     private Double price;
 
-    @Override
-    public int compareTo(ConfigListDto o) {
-        return this.price.compareTo(o.price);
-    }
 }

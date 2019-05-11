@@ -16,5 +16,9 @@ public class Power {
     private String name;
     private Integer num;//瓦数
     private String src;
-    private BigDecimal price;
+    private Double price;
+    private Integer mainboardPowerNum;//主板供电
+    private Integer cpuPowerNum;//主板供电
+    private String pfcType;//PFC类型
+    private String plus;//80PLUS认证
 }

@@ -18,4 +18,5 @@ public class User {
     private String password;
     private Integer integ;//积分
     private String lastSignTime;
+    private Integer type;//用户类型，1代表管理员，2代表客户
 }
