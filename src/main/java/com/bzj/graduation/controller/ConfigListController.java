@@ -140,16 +140,17 @@ public class ConfigListController {
     }
 
     @PostMapping("/configlist/getList")
-    public List<ConfigListDto> getConfigList(@RequestBody Map<String,Integer> map){
-        Integer currentPage=map.get("currentPage");
-        Integer pageSize=map.get("pageSize");
-        Integer sortConfigList=map.get("sortConfigList");
-        return  configListService.getConfigListByPage(currentPage,pageSize,sortConfigList);
+    public List<ConfigListDto> getConfigList(@RequestBody Map<String,Object> map){
+        Integer currentPage=(Integer) map.get("currentPage");
+        Integer pageSize=(Integer)map.get("pageSize");
+        Integer sortConfigList=(Integer)map.get("sortConfigList");
+        String type=(String) map.get("type");
+        return  configListService.getConfigListByPage(currentPage,pageSize,sortConfigList,type);
     }
 
     @GetMapping("/configlist/getCount")
-    public Integer getConfiglistCount(Integer pageSize){
-        return configListService.getConfiglistPageNum(pageSize);
+    public Integer getConfiglistCount(Integer pageSize,String type){
+        return configListService.getConfiglistPageNum(pageSize,type);
     }
 
 //    私人配置单
@@ -179,16 +180,16 @@ public class ConfigListController {
     }
 
     @PostMapping("/configList/getAll")
-    public List<ConfigListDto> allConfigList(@RequestBody Map<String,Integer> map){
-        Integer currentPage=map.get("currentPage");
-        Integer pageSize=map.get("pageSize");
-        System.out.println(currentPage+" "+pageSize);
-        return configListService.allConfigList(currentPage,pageSize);
+    public List<ConfigListDto> allConfigList(@RequestBody Map<String,Object> map){
+        Integer currentPage=(Integer)map.get("currentPage");
+        Integer pageSize=(Integer)map.get("pageSize");
+        String type=(String) map.get("type");
+        return configListService.allConfigList(currentPage,pageSize,type);
     }
 
     @ResponseBody
     @GetMapping("/configList/getCount")
-    public Integer allConfigListCount(Integer pageSize){
-        return configListService.allConfigListCount(pageSize);
+    public Integer allConfigListCount(Integer pageSize,String type){
+        return configListService.allConfigListCount(pageSize,type);
     }
 }

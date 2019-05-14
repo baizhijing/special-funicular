@@ -73,7 +73,7 @@
 		<!--新建帖子弹窗-->
 		<div id="popBox">
 			<div class="content">
-				<form id="form" th:action="@{/addRecord}" method="post">
+				<form id="form" th:action="@{/addRecord}" method="post" onsubmit="dosubmit()">
 					<div id="RecordName" style="text-align: center;">请输入帖子名称：<input type="text" name="title" value=""><br/></div>
 					<textarea rows="4" name="content" placeholder="请输入内容" style="margin-left: 20px;margin-top: 15px;width: 280px"></textarea>
 					<input class="button2" type="button" value="创建帖子" style="margin-right:20px;" onclick="check()">
@@ -116,6 +116,7 @@
 		let user=new Vue({
 			el:'#body_right_top',
 			data:{
+				isCommitted:false,
 				object:{
 				}
 			},
@@ -123,6 +124,15 @@
 				this.getUser();
 			},
 			methods:{
+				dosubmit(){
+					let self=this;
+					if(self.isCommitted==false){
+						self.isCommitted = true;//提交表单后，将表单是否已经提交标识设置为true
+						return true;//返回true让表单正常提交
+					}else{
+						return false;//返回false那么表单将不提交
+					}
+				},
 				getUser(){
 					let self1=this;
 					axios.get('http://localhost:8080/getLoginUserMsg',{

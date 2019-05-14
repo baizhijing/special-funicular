@@ -16,11 +16,32 @@ public interface ConfigListMapper {
     void InsertList(Integer cpuId,Integer userId,Integer hardDiskId,Integer radiatorId,Integer boxId,Integer powerId,Integer memoryId,Integer mainBoardId,
                     String name,String cpuName,String hardDiskName,String radiatorName,String boxName,String powerName,String memoryName,String mainBoardName,
                     Integer displayId,String displayName,Integer isPublic);
-    @Select("select * from configlist where isPublic=1")
-    List<ConfigList> getAll();
+//    @Select("select * from configlist where isPublic=1")
+        @SelectProvider(type = UserDaoProvider.class, method = "getAll")
+        List<ConfigList> getAll(String type);
+        class UserDaoProvider {
+            public String getAll(String type) {
+                String sql = "SELECT * FROM configlist";
+                if(type!=null){
+                    sql += " where name like CONCAT('%',#{type},'%')";
+                }
+                return sql;
+            }
+        }
 
-    @Select("select count(*) from configlist")
-    int getCount();
+
+//    @Select("select count(*) from configlist")
+    @SelectProvider(type = CountProvider.class, method = "getCount")
+    int getCount(String type);
+    class CountProvider {
+        public String getCount(String type) {
+            String sql = "SELECT count(*) FROM configlist";
+            if(type!=null){
+                sql += " where name like CONCAT('%',#{type},'%')";
+            }
+            return sql;
+        }
+    }
 
     @Select("select * from configlist where userId=#{userId}")
     List<ConfigList> selectByUserId(Integer userId);

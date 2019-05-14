@@ -15,21 +15,21 @@
 }
 
 #body{
-	margin: 0px;
+	margin: 0 auto;
 	width: 1200px;
 	height: 1300px;
 }
 
 #body_left{
 
-	width: 500px;
+	width: 300px;
 	height: 1300px;
 	background-color: ghostwhite;
 	float: left;
 }
 
 #body_right{
-	width: 700px;
+	width: 900px;
 	height: 1300px;
 	background-color:beige;
 	float: right;
@@ -74,19 +74,19 @@ h3{
 }
 
 .url1 {
-	text-align: left;
     list-style-type: none;
     margin: 0px auto;
     padding: 0;
-    width: 100px;
+    width: 200px;
     background-color: white;
 	font-size: 15px;
     cursor: pointer;
 }
 
 .url1 li{
-
-	padding: 10px;
+    /*display:inline-block;*/
+	padding: 10px 0px;
+    width: 200px;
 }
 
 .url1 li span {

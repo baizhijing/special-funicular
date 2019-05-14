@@ -201,8 +201,8 @@ public class ConfigListService {
         return radiatorDao.selectRadiatorByPage(currentPage,pageSize,type);
     }
 
-    public List<ConfigListDto> getConfigListByPage(Integer currentPage,Integer pageSize,Integer sortConfigList){
-        List<ConfigList> list=configListDao.selectConfigListByPage(currentPage,pageSize);
+    public List<ConfigListDto> getConfigListByPage(Integer currentPage,Integer pageSize,Integer sortConfigList,String type){
+        List<ConfigList> list=configListDao.selectConfigListByPage(currentPage,pageSize,type);
         List<ConfigListDto> listDto=new ArrayList<ConfigListDto>();
         for (int i=0;i<list.size();i++){
             ConfigList ct=list.get(i);
@@ -239,7 +239,6 @@ public class ConfigListService {
                     +radiatorDao.getPriceById(ct.getRadiatorId());
             configListDto.setPrice(sum);
         }
-        System.out.println(listDto);
         if (sortConfigList!=1)
             return listDto;
         else{
@@ -249,8 +248,8 @@ public class ConfigListService {
         }
     }
 
-    public Integer getConfiglistPageNum(Integer pageSize){
-        int countNums= configListDao.getCount();
+    public Integer getConfiglistPageNum(Integer pageSize,String type){
+        int countNums= configListDao.getCount(type);
         if (countNums%pageSize==0)
             return countNums/pageSize;
         return countNums/pageSize+1;
@@ -396,8 +395,8 @@ public void editCpu(Cpu cpu){
     }
 
 
-    public List<ConfigListDto> allConfigList(Integer currentPage,Integer pageSize){
-        List<ConfigList> list=configListDao.allConfigList(currentPage,pageSize);
+    public List<ConfigListDto> allConfigList(Integer currentPage,Integer pageSize,String type){
+        List<ConfigList> list=configListDao.allConfigList(currentPage,pageSize,type);
         List<ConfigListDto> listDto=new ArrayList<ConfigListDto>();
         for (int i=0;i<list.size();i++){
             ConfigList ct=list.get(i);
@@ -439,8 +438,8 @@ public void editCpu(Cpu cpu){
         return listDto;
     }
 
-    public Integer allConfigListCount(Integer pageSize){
-        int countNums= configListDao.allConfigListCount(pageSize);
+    public Integer allConfigListCount(Integer pageSize,String type){
+        int countNums= configListDao.allConfigListCount(pageSize,type);
         if (countNums%pageSize==0)
             return countNums/pageSize;
         return countNums/pageSize+1;

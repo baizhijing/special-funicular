@@ -41,8 +41,9 @@
 							<ul>
 								<li>软件名：{{softWareDetail.name}}</li>
 								<li>类别：{{softWareDetail.type}}</li>
-								<p style="text-align: left;">下载地址：{{softWareDetail.url}}</p>
-								<input class="button" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-on:click="popClose()" value="返回">
+								<p v-if="urlDisplay" style="text-align: left;">下载地址：{{softWareDetail.url}}</p>
+								<input class="button2" type="button" value="获取下载链接" v-on:click="urlDisplay=true">
+								<input class="button2" style="width: 50px; height:16.5px;" href="javascript:void(0)" v-on:click="popClose()" value="返回">
 							</ul>
 						</div>
 					</div>
@@ -64,8 +65,10 @@
 				<div id="body_right">
 					<p>公共配置单</p>
 					<div id="body_right_content">
-						<input style="margin-top: -29px" class="button2" type="button" value="按价格排序" v-on:click="sort()">
-						<ul style="margin-top: 69px">
+						<input style="height:30px; width: 180px;padding-left: 5px;margin-left: 180px;margin-top: 0px;" type="text" v-model="message" @keyup.enter="selectConfiList(message)" placeholder="配置单搜索">
+						<input type="button" class="button2" v-on:click="selectConfiList(message)" value="搜索" style="margin-top: 0px">
+						<input style="margin-top: -12px;" class="button2" type="button" value="按价格排序" v-on:click="sort()">
+						<ul style="margin-top: -20px">
 							<li  v-for="value2 in object2" style="cursor:pointer;margin-top: 10px">
 								<table>
 									<tr v-on:click="popOpen(value2)">
@@ -128,7 +131,9 @@
 					type:'',
 					url:''
 				},
-				selectType:''
+				urlDisplay:false,
+				selectType:'',
+
 			},
 			mounted:function () {
 				this.getResource(1);
@@ -155,6 +160,7 @@
 					let self=this;
 					self.softWarePop=false;
 					self.popLayer=false;
+					self.urlDisplay=false;
 				},
 				getResource:function(currentPage){
 					if (currentPage==null)
@@ -248,6 +254,7 @@
 		let configList=new Vue({
 			el:'#body_right_content',
 			data:{
+				message:'',
 				object2:{
 				},
 				ConfigListPop:false,
@@ -264,6 +271,7 @@
 					price:0,
 					radiatorName:''
 				},
+				selectConfigListType:'',
 				sortConfigList:0
 			},
 			mounted:function () {
@@ -271,6 +279,11 @@
 				self.getList();
 			},
 			methods:{
+				selectConfiList:function(message){
+					let self=this;
+					self.selectConfigListType=message;
+					self.getList(1);
+				},
 				sort:function(){
 					let self=this;
 					self.sortConfigList=1;
@@ -303,7 +316,8 @@
 					axios.post('http://localhost:8080/configlist/getList',{
 						currentPage:currentPage,
 						pageSize:10,
-						sortConfigList:self.sortConfigList
+						sortConfigList:self.sortConfigList,
+						type:self.selectConfigListType,
 					})
 							.then(function (response) {
 								console.log(response);

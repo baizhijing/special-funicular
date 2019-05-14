@@ -22,7 +22,7 @@
 				<div id="body_right">
 					<div id="body_right_top">
 						<br>
-						<div id="body_right_bottom_content" style="margin-top: 50px;height: 450px">
+						<div id="body_right_bottom_content" style="margin-top: 50px;height: 315px">
 							<ul style="list-style: none;">
 								<li v-for="value in object" style="cursor:pointer;margin-left: 100px;">
 									<table style="font-family: '微软雅黑';font-size: 16px;">
@@ -143,7 +143,7 @@
 						currentPage=1;
 					axios.post('http://localhost:8080/configList/getAll',{
 						currentPage:currentPage,
-						pageSize:10
+						pageSize:5
 					})
 							.then(function (response) {
 								self.object=response.data;
@@ -153,7 +153,7 @@
 							})
 					axios.get('http://localhost:8080/configList/getCount',{
 						params:{
-							pageSize:10
+							pageSize:5
 						}})
 								.then(function (response) {
 									let page=pageBar2;

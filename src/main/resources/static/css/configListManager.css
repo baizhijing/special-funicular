@@ -19,7 +19,7 @@
 
 #body_right{
 	width: 1200px;
-	height: 1200px;
+	height: 1000px;
 	background-color:ghostwhite;
 }
 
@@ -141,7 +141,6 @@
 }
 
 #body_right_bottom_bottom{
-    margin-top: 195px;
     height: 600px;
 }
 /*分页2*/

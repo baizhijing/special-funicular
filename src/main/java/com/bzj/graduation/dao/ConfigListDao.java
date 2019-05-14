@@ -54,10 +54,10 @@ public class ConfigListDao {
         configListMapper.submitConfigList(id);
     }
 
-    public List<ConfigList> selectConfigListByPage(int currentPage, int pageSize){
+    public List<ConfigList> selectConfigListByPage(int currentPage, int pageSize,String type){
         PageHelper.startPage(currentPage, pageSize);
-        List<ConfigList> allConfigLists = configListMapper.getAll();        //全部商品
-        int countNums = configListMapper.getCount();            //总记录数
+        List<ConfigList> allConfigLists = configListMapper.getAll(type);        //全部商品
+        int countNums = configListMapper.getCount(type);            //总记录数
         PageBean<ConfigList> pageData = new PageBean<>(currentPage, pageSize, countNums);
         pageData.setItems(allConfigLists);
         return pageData.getItems();
@@ -72,8 +72,8 @@ public class ConfigListDao {
         return pageData.getItems();
     }
 
-    public Integer getCount(){
-        return configListMapper.getCount();
+    public Integer getCount(String type){
+        return configListMapper.getCount(type);
     }
 
     public Integer getPersonCount(Integer userId){
@@ -192,18 +192,18 @@ public class ConfigListDao {
         configListMapper.deleteCpu(id,"resource");
     }
 
-    public List<ConfigList> allConfigList(int currentPage, int pageSize){
+    public List<ConfigList> allConfigList(int currentPage, int pageSize,String type){
         PageHelper.startPage(currentPage, pageSize);
         List<ConfigList> allConfigLists = configListMapper.allConfigList();
         System.out.println(allConfigLists);
-        int countNums = configListMapper.getCount();            //总记录数
+        int countNums = configListMapper.getCount(type);            //总记录数
         PageBean<ConfigList> pageData = new PageBean<>(currentPage, pageSize, countNums);
         pageData.setItems(allConfigLists);
         return pageData.getItems();
     }
 
-    public Integer allConfigListCount(Integer pageSize){
-        return configListMapper.getCount();
+    public Integer allConfigListCount(Integer pageSize,String type){
+        return configListMapper.getCount(type);
     }
 
     public void deleteConfigList(Integer id){
