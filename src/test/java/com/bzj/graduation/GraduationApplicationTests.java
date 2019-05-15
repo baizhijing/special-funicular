@@ -66,4 +66,12 @@ public class GraduationApplicationTests {
         String week="今天是"+year+"年的第"+weekOfYear+"周";
         System.out.println(week);
     }
+
+    @Test
+    public void hh(){
+        StringBuilder stringBuilder=new StringBuilder();
+        stringBuilder.append("hh");
+        stringBuilder.append(1);
+        System.out.println(stringBuilder);
+    }
 }

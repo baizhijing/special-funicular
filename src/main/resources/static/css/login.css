@@ -17,20 +17,20 @@
 #body{
 	margin: 0px;
 	width: 1200px;
-	height: 1150px;
+	height: 700px;
 }
 
 #body_left{
 
 	width: 500px;
-	height: 1150px;
+	height: 700px;
 	background-color: ghostwhite;
 	float: left;
 }
 
 #body_right{
 	width: 700px;
-	height: 1150px;
+	height: 700px;
 	background-color:beige;
 	float: right;
 }

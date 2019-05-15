@@ -20,19 +20,19 @@ li{
 #body{
 	margin: 0px;
 	width: 1200px;
-	height: 700px;
+	height: 800px;
 }
 
 #body_left{
 	width: 600px;
-	height: 700px;
+	height: 800px;
 	background-color:beige;
 	float: left;
 }
 
 #body_right{
 	width: 600px;
-	height: 700px;
+	height: 800px;
 	background-color:ghostwhite;
 	float: right;
 }
@@ -63,7 +63,6 @@ li{
     font-size: 12px;
     margin: 4px 2px;
     cursor: pointer;
-    margin-top: 20px;
 }
 
 /* 导航栏 */
@@ -117,7 +116,7 @@ li{
 }
 
 #body_left_bottom{
-     margin-top: 45px;
+     margin-top: 240px;
      margin-left: 80px;
      width: 600px;
      height: 100px;
@@ -178,8 +177,8 @@ li{
 
 /*第二个分页插件*/
 #body_right_bottom{
-    margin-top: 5px;
-    margin-left: 80px;
+    margin-top: 217px;
+    margin-left: 94px;
     width: 600px;
     height: 100px;
 }

@@ -12,9 +12,13 @@
 				<div id="daohang">
 					<ul>
 					  <li><a href="http://localhost:8080/index">主页</a></li>
-					  <li><a class="active" href="http://localhost:8080/luntan">论坛</a></li>
 					  <li><a href="http://localhost:8080/ziyuan">资源</a></li>
-					  <li><a href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
+						<li><a class="active" href="http://localhost:8080/luntan">留言板</a></li>
+					  <li v-if="object.username!=null"><a href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
+						<div id="user" style="float: right;font-size: 15px;margin-top: 5px;" v-if="object.username!=null">
+							欢迎你：{{object.username}}
+							<a href="http://localhost:8080"><input  style="margin-top:0px " type="button" class="button2" value="退出登录"></a>
+						</div>
 					</ul>
 				</div>
 				<div id="image"><img class="mb-4" src="img/title.jpg" th:src="@{/img/title.jpg}"></div>
@@ -51,15 +55,15 @@
 					</div>
 				</div>
 				<div id="body_right">
-					<div id="body_right_top">
-						<ul>
-							<li>
-								<br><br>
-								用户名：{{object.username}} <br><br>
-								积分：{{object.integ}}
-							</li><br />
-						</ul>
-					</div>
+					<!--<div id="body_right_top">-->
+						<!--<ul>-->
+							<!--<li>-->
+								<!--<br><br>-->
+								<!--用户名：{{object.username}} <br><br>-->
+								<!--积分：{{object.integ}}-->
+							<!--</li><br />-->
+						<!--</ul>-->
+					<!--</div>-->
 					<input class="button" type="button" name="popBox" value="发表新帖" onclick="popBox()"><br>
 					<div id="body_right_bottom">
 						<input @click="signIn()" class="button" type="button" name="popBox" value="今日签到"><br>
@@ -87,6 +91,7 @@
 	<script src="js/jquery-3.2.1.slim.min.js"></script>
 	<script type="text/javascript">
 		<!--验证表单是否为空-->
+
 		function check()
 		{
 			let form=document.getElementById("form");
@@ -141,6 +146,29 @@
 								self1.object=response.data;
 							}).catch(function (error) {
 								console.log(error);
+					});
+				}
+			}
+		})
+
+		let user1=new Vue({
+			el:'#daohang',
+			data:{
+				object:{
+				}
+			},
+			mounted:function(){
+				this.getUser();
+			},
+			methods:{
+				getUser(){
+					let self=this;
+					axios.get('http://localhost:8080/getLoginUserMsg',{
+					})
+							.then(function (response){
+								self.object=response.data;
+							}).catch(function (error) {
+						console.log(error);
 					});
 				}
 			}

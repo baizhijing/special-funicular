@@ -12,9 +12,13 @@
 				<div id="daohang">
 					<ul>
 					  <li><a href="http://localhost:8080/index">主页</a></li>
-					  <li><a href="http://localhost:8080/luntan">论坛</a></li>
-					  <li><a class="active" href="http://localhost:8080/ziyuan">资源</a></li>
-					  <li><a href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
+						<li><a class="active" href="http://localhost:8080/ziyuan">资源</a></li>
+						<li><a href="http://localhost:8080/luntan">留言板</a></li>
+					  <li v-if="object.username!=null"><a href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
+						<div id="user" style="float: right;font-size: 15px;margin-top: 5px;" v-if="object.username!=null">
+							欢迎你：{{object.username}}
+							<a href="http://localhost:8080"><input  style="margin-top:0px " type="button" class="button2" value="退出登录"></a>
+						</div>
 					</ul>
 				</div>
 				<div id="image"><img class="mb-4" src="img/title.jpg" th:src="@{/img/title.jpg}"></div>
@@ -29,9 +33,10 @@
 							<li  v-for="value in object" style="cursor:pointer;">
 								<table>
 									<tr v-on:click="popOpen(value)">
-										<td style="width: 300px">{{value.name}}</td>
+										<td style="width: 200px">{{value.name}}</td>
 										<br>
-										<td>类型：{{value.type}}</td>
+										<td style="width: 170px">类型：{{value.type}}</td>
+										<td><input type="button" class="button2" v-on:click="popOpen(value)" value="详情"></td>
 									</tr>
 								</table>
 							</li>
@@ -69,12 +74,13 @@
 						<input type="button" class="button2" v-on:click="selectConfiList(message)" value="搜索" style="margin-top: 0px">
 						<input style="margin-top: -12px;" class="button2" type="button" value="按价格排序" v-on:click="sort()">
 						<ul style="margin-top: -20px">
-							<li  v-for="value2 in object2" style="cursor:pointer;margin-top: 10px">
+							<li  v-for="value2 in object2" style="cursor:pointer;">
 								<table>
 									<tr v-on:click="popOpen(value2)">
-										<td style="width: 350px;">{{value2.name}}</td>
+										<td style="width: 300px;">{{value2.name}}</td>
 										<br>
-										<td>价格：{{value2.price}}</td>
+										<td style="width: 100px;">价格：{{value2.price}}元</td>
+										<td><input type="button" class="button2" v-on:click="popOpen(value2)" value="详情"></td>
 									</tr>
 								</table>
 							</li>
@@ -118,6 +124,28 @@
 	<script src="js/vue.min.js"></script>
 	<script src="js/axios.min.js"></script>
 	<script>
+		let user=new Vue({
+			el:'#daohang',
+			data:{
+				object:{
+				}
+			},
+			mounted:function(){
+				this.getUser();
+			},
+			methods:{
+				getUser(){
+					let self=this;
+					axios.get('http://localhost:8080/getLoginUserMsg',{
+					})
+							.then(function (response){
+								self.object=response.data;
+							}).catch(function (error) {
+						console.log(error);
+					});
+				}
+			}
+		})
 		let Resource=new Vue({
 			el:'#body_left_content',
 			data:{
@@ -287,7 +315,7 @@
 				sort:function(){
 					let self=this;
 					self.sortConfigList=1;
-					self.getList(1);
+					self.getList();
 				},
 				popOpen:function(value){
 					let self=this;

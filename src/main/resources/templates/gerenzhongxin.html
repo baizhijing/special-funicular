@@ -11,29 +11,18 @@
 				<div id="daohang">
 					<ul>
 					  <li><a href="http://localhost:8080/index">主页</a></li>
-					  <li><a href="http://localhost:8080/luntan">论坛</a></li>
 					  <li><a href="http://localhost:8080/ziyuan">资源</a></li>
-					  <li><a class="active" href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
+					  <li><a href="http://localhost:8080/luntan">留言板</a></li>
+					  <li v-if=""><a class="active" href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
+					  <div id="user" style="float: right;font-size: 15px;margin-top: 5px">
+						  <a href="http://localhost:8080"><input type="button" class="button2" value="退出登录"></a>
+						  欢迎你：{{object.username}}
+					  </div>
 					</ul>
 				</div>
 				<div id="image"><img class="mb-4" src="img/title.jpg" th:src="@{/img/title.jpg}"></div>
 			</div>
 			<div id="body">
-				<div id="body_left">
-					<ul>
-						<table style="text-align: left;font-family: '微软雅黑';font-size: 14px;margin-left: -5px">
-							<tr>
-								<th>用户名：{{object.username}}</th>
-							</tr>
-							<tr>
-								<th></th>
-							</tr>
-							<tr>
-								<th>积分 ：{{object.integ}}</th>
-							</tr>
-						</table>
-					</ul>
-				</div>
 				<div id="body_right">
 					<div id="body_right_top">
 						<p style="text-align: center;">我的帖子</p>
@@ -147,7 +136,7 @@
 			return true;
 		}
 		let user=new Vue({
-			el:'#body_left',
+			el:'#user',
 			data:{
 				object:{
 				}

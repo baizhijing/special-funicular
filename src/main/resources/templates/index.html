@@ -11,9 +11,13 @@
 				<div id="daohang">
 					<ul>
 						<li><a class="active" href="http://localhost:8080/index">主页</a></li>
-						<li><a href="http://localhost:8080/luntan">论坛</a></li>
 						<li><a href="http://localhost:8080/ziyuan">资源</a></li>
-						<li><a href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
+						<li><a href="http://localhost:8080/luntan">留言板</a></li>
+						<li v-if="object.username!=null"><a href="http://localhost:8080/gerenzhongxin">个人中心</a></li>
+						<div id="user" style="float: right;font-size: 15px;margin-top: 5px"  v-if="object.username!=null">
+							<a href="http://localhost:8080"><input type="button" class="button2" style="margin-top: 0px;margin-left: 5px;" value="退出登录"></a>
+							欢迎你：{{object.username}}
+						</div>
 					</ul>
 				</div>
 				<div id="image"><img class="mb-4" src="img/title.jpg" th:src="@{/img/title.jpg}"></div>
@@ -39,7 +43,7 @@
 						<ul id="list">
 							<div id="selectBox">
 								<input style="height:26px; width: 180px;padding-left: 5px;margin-left: 400px" type="text" v-model="message" @keyup.enter="select(message)" placeholder="硬件名称搜索">
-								<input type="button" style="margin-top: 0px;margin-right: 5px" class="button2" v-on:click="select(message)" value="搜索">
+								<input type="button" style="margin-top: 0px;margin-right: 5px;" class="button2" v-on:click="select(message)" value="搜索">
 							</div>
 							<li v-for="(value,key) in object">
 								<img :src="value.src" height="100px" width="100px">
@@ -187,6 +191,28 @@
 	<script type="text/javascript" th:src="@{/js/axios.min.js}"></script>
 	<script>
 			let hard=1;//设置全局变量，1代表当前在操作CPU，2代表主板，3代表内存，4硬盘，5显卡，6机箱，7电源，8散热器
+			let user=new Vue({
+				el:'#daohang',
+				data:{
+					object:{
+					}
+				},
+				mounted:function(){
+					this.getUser();
+				},
+				methods:{
+					getUser(){
+						let self=this;
+						axios.get('http://localhost:8080/getLoginUserMsg',{
+						})
+								.then(function (response){
+									self.object=response.data;
+								}).catch(function (error) {
+							console.log(error);
+						});
+					}
+				}
+			})
 			let getList=new Vue({
 				el: '#body',
 				data:{
@@ -302,7 +328,7 @@
 						let self = this;
 						axios.post('http://localhost:8080/allCpuByPage', {
 							currentPage: currentPage,
-							pageSize: 10,
+							pageSize: 5,
 							type:self.type.cpuSelect,
 						})
 								.then(function (response) {
@@ -311,7 +337,7 @@
 									// page.cur=1;
 									axios.get('http://localhost:8080/getCPUPageNum', {
 										params: {
-											pageSize: 10,
+											pageSize: 5,
 											type:self.type.cpuSelect,
 										}
 									})
@@ -335,7 +361,7 @@
 						let self = this;
 						axios.post('http://localhost:8080/allMainBoardByPage', {
 							currentPage: currentPage,
-							pageSize: 10,
+							pageSize: 5,
 							type:self.type.mainBoardSelect,
 						})
 								.then(function (response) {
@@ -343,7 +369,7 @@
 									let page = pageBar;
 									axios.get('http://localhost:8080/getMainBoardNum', {
 										params: {
-											pageSize: 10,
+											pageSize: 5,
 											type:self.type.mainBoardSelect,
 										}
 									})
@@ -367,7 +393,7 @@
 						let self = this;
 						axios.post('http://localhost:8080/allMemoryByPage', {
 							currentPage: currentPage,
-							pageSize: 10,
+							pageSize: 5,
 							type:self.type.memorySelect,
 						})
 								.then(function (response) {
@@ -375,7 +401,7 @@
 									let page = pageBar;
 									axios.get('http://localhost:8080/getMemoryNum', {
 										params: {
-											pageSize: 10,
+											pageSize: 5,
 											type:self.type.memorySelect,
 										}
 									})
@@ -399,7 +425,7 @@
 						let self = this;
 						axios.post('http://localhost:8080/allHardDriverByPage', {
 							currentPage: currentPage,
-							pageSize: 10,
+							pageSize: 5,
 							type:self.type.hardDriverSelect,
 						})
 								.then(function (response) {
@@ -407,7 +433,7 @@
 									let page = pageBar;
 									axios.get('http://localhost:8080/getHardDiskPageNum', {
 										params: {
-											pageSize: 10,
+											pageSize: 5,
 											type:self.type.hardDriverSelect,}
 									})
 											.then(function (response) {
@@ -431,7 +457,7 @@
 
 						axios.post('http://localhost:8080/allDisplayByPage', {
 							currentPage: currentPage,
-							pageSize: 10,
+							pageSize: 5,
 							type:self.type.displaySelect,
 						})
 								.then(function (response) {
@@ -439,7 +465,7 @@
 									let page = pageBar;
 									axios.get('http://localhost:8080/getDisplayPageNum', {
 										params: {
-											pageSize: 10,
+											pageSize: 5,
 											type:self.type.displaySelect,
 										}
 									})
@@ -463,7 +489,7 @@
 						let self = this;
 						axios.post('http://localhost:8080/allBoxByPage', {
 							currentPage: currentPage,
-							pageSize: 10,
+							pageSize: 5,
 							type:self.type.boxSelect
 						})
 								.then(function (response) {
@@ -471,7 +497,7 @@
 									let page = pageBar;
 									axios.get('http://localhost:8080/getBoxPageNum', {
 										params: {
-											pageSize: 10,
+											pageSize: 5,
 											type:self.type.boxSelect
 										}
 									})
@@ -495,7 +521,7 @@
 						let self = this;
 						axios.post('http://localhost:8080/allPowerByPage', {
 							currentPage: currentPage,
-							pageSize: 10,
+							pageSize: 5,
 							type:self.type.powerSelect
 						})
 								.then(function (response) {
@@ -503,7 +529,7 @@
 									let page = pageBar;
 									axios.get('http://localhost:8080/getPowerNum', {
 										params: {
-											pageSize: 10,
+											pageSize: 5,
 											type:self.type.powerSelect}
 									})
 											.then(function (response) {
@@ -526,14 +552,14 @@
 						let self = this;
 						axios.post('http://localhost:8080/allRadiatorByPage', {
 							currentPage: currentPage,
-							pageSize: 10,
+							pageSize: 5,
 							type:self.type.radiatorSelect
 						})
 								.then(function (response) {
 									console.log(response);
 									let page = pageBar;
 									axios.get('http://localhost:8080/getRadiatorNum', {
-										params: {pageSize: 10,
+										params: {pageSize: 5,
 											type:self.type.radiatorSelect
 										}
 									})
@@ -551,7 +577,7 @@
 								});
 					},
 					//设置全局变量，1代表当前在操作CPU，2代表主板，3代表内存，4硬盘，5显卡，6机箱，7电源，8散热器
-					//包装实体
+					//包装实体<img width="320" height="240" src="https://2b.zol-img.com.cn/product/192_320x240/751/cet99ESIx8cE.jpg" alt="微星B450M MORTAR">
 					insert: function (name, id) {
 						let left = this;
 						if (hard == 1) {
